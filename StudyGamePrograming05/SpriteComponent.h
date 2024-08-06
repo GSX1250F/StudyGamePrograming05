@@ -5,11 +5,11 @@
 class SpriteComponent : public Component
 {
 public:
-	// •`‰æ‡˜(draworder)‚ª’á‚¢‚Ù‚Ç‰“‚­‚É’u‚©‚ê‚é
 	SpriteComponent(class Actor* owner, int drawOrder = 100);
 	~SpriteComponent();
 
-	virtual void Draw(SDL_Renderer* renderer);
+	//virtual void Draw(SDL_Renderer* renderer);		// •ÏX
+	virtual void Draw(class Shader* shader);
 	
 	virtual void SetTexture(SDL_Texture* texture);
 	SDL_Texture* GetTexture() const { return mTexture; }

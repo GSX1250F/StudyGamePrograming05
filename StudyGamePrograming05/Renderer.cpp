@@ -3,10 +3,15 @@
 #include <SDL_image.h>
 #include <algorithm>
 #include "SpriteComponent.h"
+#include <glew.h>
+#include "Shader.h"
+#include "VertexArray.h"
 
 Renderer::Renderer(Game* game) 
-	:mGame(game)
-	,mWindow(nullptr)
+	: mGame(game)
+	, mWindow(nullptr)
+	, mSpriteShader(nullptr)
+	, mSpriteVerts(nullptr)
 {}
 
 Renderer::~Renderer()
@@ -14,6 +19,23 @@ Renderer::~Renderer()
 
 bool Renderer::Initialize(float screenWidth, float screenHeight)
 {
+	// OpenGL初期設定
+	// OpenGLのコアプロファイルを使用
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	// version 3.3を指定
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	// 各カラーチャンネル8ビット(RGBA)
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	// ダブルバッファ有効化
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	// OpenGLのハードウェアアクセラレータ使用
+	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+
 	mScreenWidth = screenWidth;
 	mScreenHeight = screenHeight;
 
@@ -24,7 +46,7 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 		100,
 		static_cast<int>(screenWidth),
 		static_cast<int>(screenHeight),
-		0
+		SDL_WINDOW_OPENGL					//SDLウィンドウでOpenGLを使用する際に指定
 	);
 
 	if (!mWindow)
@@ -32,15 +54,38 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 		SDL_Log("ウィンドウの作成に失敗しました: %s", SDL_GetError());
 		return false;
 	}
+
+	/* OpenGLでは不要
 	// SDLレンダラーを作成
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
 	if (!mRenderer)
 	{
 		SDL_Log("レンダラーの作成に失敗しました: %s", SDL_GetError());
 		return false;
 	}
+	*/
 
+	// OpenGLコンテクストを生成（すべての帰納にアクセスする）
+	mContext = SDL_GL_CreateContext(mWindow);
+
+	// GLEWを初期化
+	glewExperimental = GL_TRUE;
+	if (glewInit() != GLEW_OK)
+	{
+		SDL_Log("GLEWの初期化に失敗しました。");
+		return false;
+	}
+	glGetError();
+
+	// シェーダーの生成
+	if (!LoadShaders())
+	{
+		SDL_Log("シェーダーの読み込みに失敗しました。");
+		return false;
+	}
+
+	// 頂点配列オブジェクトの生成
+	CreateSpriteVerts();
 
 	return true;
 }
@@ -52,12 +97,17 @@ void Renderer::UnloadData()
 
 void Renderer::Shutdown()
 {
+	delete mSpriteVerts;
+	mSpriteShader->Unload();
+	delete mSpriteShader;
+	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
 }
 
 
 void Renderer::Draw()
 {
+	/* OpenGLでは不要
 	SDL_SetRenderDrawColor(mRenderer, 220, 220, 220, 255);
 	SDL_RenderClear(mRenderer);
 
@@ -69,8 +119,22 @@ void Renderer::Draw()
 			sprite->Draw(mRenderer);
 		}
 	}
-
 	SDL_RenderPresent(mRenderer);
+	*/
+
+	// 背景色を指定して画面をクリア
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	// シェーダーと頂点配列オブジェクトを有効化
+	mSpriteShader->SetActive();
+	mSpriteVerts->SetActive();
+	for (auto sprite : mSprites)
+	{
+		sprite->Draw(mSpriteShader);
+	}
+	// ダブルバッファを交換
+	SDL_GL_SwapWindow(mWindow);
 }
 
 void Renderer::AddSprite(SpriteComponent* sprite)
@@ -129,3 +193,31 @@ SDL_Texture* Renderer::GetTexture(const std::string& filename)
 	return tex;
 }
 
+bool Renderer::LoadShaders()
+{
+	// シェーダーを生成
+	mSpriteShader = new Shader();
+	if (!mSpriteShader->Load("Shaders/Basic.vert", "Shaders/Basic.frag"))
+	{
+		return false;
+	}
+	mSpriteShader->SetActive();
+	return true;
+}
+
+void Renderer::CreateSpriteVerts()
+{
+	float vertices[] = {
+		-0.5f, 0.5f, 0.0f,			// 左上 (ID 0)
+		-0.5f, -0.5f, 0.0f,			// 左下 (ID 1)
+		0.5f, -0.5f, 0.0f,			// 右下 (ID 2)
+		0.5f, 0.5f, 0.0f			// 右上 (ID 3)
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	mSpriteVerts = new VertexArray(vertices, 4, indices, 6);
+}

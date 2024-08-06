@@ -55,7 +55,6 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 		return false;
 	}
 
-	/* OpenGLでは不要
 	// SDLレンダラーを作成
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (!mRenderer)
@@ -63,8 +62,7 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 		SDL_Log("レンダラーの作成に失敗しました: %s", SDL_GetError());
 		return false;
 	}
-	*/
-
+	
 	// OpenGLコンテクストを生成（すべての帰納にアクセスする）
 	mContext = SDL_GL_CreateContext(mWindow);
 
@@ -123,7 +121,7 @@ void Renderer::Draw()
 	*/
 
 	// 背景色を指定して画面をクリア
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// シェーダーと頂点配列オブジェクトを有効化

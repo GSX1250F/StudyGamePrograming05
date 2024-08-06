@@ -38,19 +38,15 @@ void SpriteComponent::Draw(SDL_Renderer* renderer)
 
 void SpriteComponent::Draw(Shader* shader)
 {
-	if (mTexture)
+	if (mTexture && mOwner->GetState() != mOwner->EPaused)	// EPausedのときはDrawしないように修正
 	{
-
-		if (mOwner->GetState() != mOwner->EPaused)	// EPausedのときはDrawしないように修正
-		{
-			// 短径を描画
-			glDrawElements(
-				GL_TRIANGLES,		// 描画するポリゴン／プリミティブの種類
-				6,					// インデックスバッファにあるインデックスの数
-				GL_UNSIGNED_INT,	// インデックスの型
-				nullptr				// 通常はnullptr
-			);
-		}
+		// 短径を描画
+		glDrawElements(
+			GL_TRIANGLES,		// 描画するポリゴン／プリミティブの種類
+			6,					// インデックスバッファにあるインデックスの数
+			GL_UNSIGNED_INT,	// インデックスの型
+			nullptr				// 通常はnullptr
+		);
 	}
 }
 

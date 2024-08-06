@@ -6,15 +6,15 @@ VertexArray::VertexArray(const float* verts, unsigned int numVerts,
 	: mNumVerts(numVerts)
 	, mNumIndices(numIndices)
 {
-	// 頂点配列オブジェクトをOpenGLに生成し、そのIDをメンバー変数mVertexArrayに保存する
+	// バーテックス配列オブジェクトをOpenGLに生成し、そのIDをメンバー変数mVertexArrayに保存する
 	glGenVertexArrays(1, &mVertexArray);
 	glBindVertexArray(mVertexArray);
 
-	// 頂点バッファをOpenGLに生成し、そのIDをメンバー変数mVertexBufferに保存する
+	// バーテックスバッファをOpenGLに生成し、そのIDをメンバー変数mVertexBufferに保存する
 	glGenBuffers(1, &mVertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
 	glBufferData(
-		GL_ARRAY_BUFFER,					// バッファの種類に頂点バッファを指定
+		GL_ARRAY_BUFFER,					// バッファの種類にバーテックスバッファを指定
 		numVerts * 3 * sizeof(float),		//コピーするバイト数
 		verts,								//コピー元の配列
 		GL_STATIC_DRAW						//このデータを1回だけロードしてその後頻繁に使うとき
@@ -29,17 +29,18 @@ VertexArray::VertexArray(const float* verts, unsigned int numVerts,
 		indices,							//コピー元の配列
 		GL_STATIC_DRAW						//このデータを1回だけロードしてその後頻繁に使うとき
 	);
-
-	// 頂点属性を指定する。
+	
+	// バーテックス属性のレイアウトを指定する。
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(
 		0,						// 属性インデックス（１つ目はゼロ）
 		3,						// 要素数
 		GL_FLOAT,				// 要素の型
 		GL_FALSE,				// 整数型のみ使用する。
-		sizeof(float) * 3,		// ストライド（通常は各頂点属性のデータ数
+		sizeof(float) * 3,		// ストライド（通常は各バーテックス属性のデータ数
 		0						// 頂点データの開始位置からこの属性までのオフセット
 	);
+	
 }
 
 VertexArray::~VertexArray()

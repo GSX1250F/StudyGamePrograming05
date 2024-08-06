@@ -17,14 +17,14 @@ Shader::~Shader()
 
 bool Shader::Load(const std::string& vertName, const std::string& fragName)
 {
-	// 頂点シェーダーとフラグメントシェーダーをコンパイルする
+	// バーテックスシェーダーとフラグメントシェーダーをコンパイルする
 	if (!CompileShader(vertName, GL_VERTEX_SHADER, mVertexShader) ||
 		!CompileShader(fragName, GL_FRAGMENT_SHADER, mFragShader))
 	{
 		return false;
 	}
 
-	// 頂点/フラグメントシェーダーをリンクして
+	// バーテックス,フラグメントシェーダーをリンクして
 	// シェーダープログラムを作る
 	mShaderProgram = glCreateProgram();
 	glAttachShader(mShaderProgram, mVertexShader);

@@ -42,13 +42,12 @@ private:
 	SDL_Window* mWindow;
 	// SDL Renderer
 	SDL_Renderer* mRenderer;
-
-	bool LoadShaders();
-	void CreateSpriteVerts();
-	// シェーダー
-	class Shader* mSpriteShader;
-	// 頂点配列オブジェクト
-	class VertexArray* mSpriteVerts;
 	// OpenGL context
 	SDL_GLContext mContext;
+	void InitSpriteVerts();
+	bool LoadShaders();
+	// バーテックス配列オブジェクト
+	class VertexArray* mSpriteVerts;
+	// シェーダー
+	class Shader* mSpriteShader;
 };

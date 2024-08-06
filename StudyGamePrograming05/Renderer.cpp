@@ -63,7 +63,7 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 		return false;
 	}
 	
-	// OpenGLコンテクストを生成（すべての帰納にアクセスする）
+	// OpenGLコンテクストを生成（すべてのOpenGL機能にアクセスする）
 	mContext = SDL_GL_CreateContext(mWindow);
 
 	// GLEWを初期化
@@ -75,6 +75,9 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 	}
 	glGetError();
 
+	// バーテックス配列オブジェクトの生成
+	InitSpriteVerts();
+
 	// シェーダーの生成
 	if (!LoadShaders())
 	{
@@ -82,8 +85,6 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 		return false;
 	}
 
-	// 頂点配列オブジェクトの生成
-	CreateSpriteVerts();
 
 	return true;
 }
@@ -124,9 +125,9 @@ void Renderer::Draw()
 	glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	// シェーダーと頂点配列オブジェクトを有効化
-	mSpriteShader->SetActive();
+	// シェーダーとバーテックス配列オブジェクトを有効化
 	mSpriteVerts->SetActive();
+	mSpriteShader->SetActive();
 	for (auto sprite : mSprites)
 	{
 		sprite->Draw(mSpriteShader);
@@ -191,6 +192,23 @@ SDL_Texture* Renderer::GetTexture(const std::string& filename)
 	return tex;
 }
 
+void Renderer::InitSpriteVerts()
+{
+	float vertices[] = {
+		-0.5f, 0.5f, 0.0f,			// 左上 (インデックス 0)
+		-0.5f, -0.5f, 0.0f,			// 左下 (インデックス 1)
+		0.5f, -0.5f, 0.0f,			// 右下 (インデックス 2)
+		0.5f, 0.5f, 0.0f			// 右上 (インデックス 3)
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	mSpriteVerts = new VertexArray(vertices, 4, indices, 6);
+}
+
 bool Renderer::LoadShaders()
 {
 	// シェーダーを生成
@@ -201,21 +219,4 @@ bool Renderer::LoadShaders()
 	}
 	mSpriteShader->SetActive();
 	return true;
-}
-
-void Renderer::CreateSpriteVerts()
-{
-	float vertices[] = {
-		-0.5f, 0.5f, 0.0f,			// 左上 (ID 0)
-		-0.5f, -0.5f, 0.0f,			// 左下 (ID 1)
-		0.5f, -0.5f, 0.0f,			// 右下 (ID 2)
-		0.5f, 0.5f, 0.0f			// 右上 (ID 3)
-	};
-
-	unsigned int indices[] = {
-		0, 1, 2,
-		2, 3, 0
-	};
-
-	mSpriteVerts = new VertexArray(vertices, 4, indices, 6);
 }

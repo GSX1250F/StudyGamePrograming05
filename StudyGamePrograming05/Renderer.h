@@ -24,6 +24,7 @@ public:
 	
 	float GetScreenWidth() const { return mScreenWidth; }
 	float GetScreenHeight() const { return mScreenHeight; }
+
 private:
 	// テクスチャのマップ
 	std::unordered_map<std::string, SDL_Texture*> mTextures;

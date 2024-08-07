@@ -15,11 +15,14 @@ public:
 	virtual void ProcessInput(const uint8_t* keyState) {}
 
 	// 各コンポーネント更新（オーバーライド可能）
-	virtual void Update(float deltaTime) {};
-
+	virtual void Update(float deltaTime) {}
 
 	// 更新順ゲッター
 	int GetUpdateOrder() const { return mUpdateOrder; }
+
+	// ワールド変換を行ったことの通知
+	virtual void OnUpdateWorldTransform() {}
+
 
 protected:
 	// 所有アクター

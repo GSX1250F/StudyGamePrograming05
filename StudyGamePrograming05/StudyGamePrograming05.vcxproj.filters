@@ -145,12 +145,15 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Shaders\Basic.frag">
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\Basic.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="packages.config" />
+    <None Include="Shaders\Transform.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

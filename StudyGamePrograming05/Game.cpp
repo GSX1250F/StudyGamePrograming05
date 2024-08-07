@@ -112,6 +112,7 @@ void Game::UpdateGame()
 	// ë“ÇøÉAÉNÉ^Å[ÇmActorsÇ…à⁄ìÆ
 	for (auto pending : mPendingActors)
 	{
+		pending->ComputeWorldTransform();
 		mActors.emplace_back(pending);
 	}
 	mPendingActors.clear();
@@ -172,7 +173,7 @@ void Game::LoadData()
 	new ClearPict(this);
 
 	// îwåi
-	new BackGround(this);	
+	//new BackGround(this);	
 }
 
 void Game::UnloadData()

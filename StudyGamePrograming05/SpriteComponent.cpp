@@ -10,7 +10,6 @@ SpriteComponent::SpriteComponent(Actor* owner, int drawOrder)
 	, mDrawOrder(drawOrder)
 	, mTexWidth(0)
 	, mTexHeight(0)
-	, mVisible(true)
 {
 	mOwner->GetGame()->GetRenderer()->AddSprite(this);
 }
@@ -22,7 +21,7 @@ SpriteComponent::~SpriteComponent()
 /* OpenGLでは不要
 void SpriteComponent::Draw(SDL_Renderer* renderer)
 {
-	if (mTexture && GetVisible())
+	if (mTexture)
 	{
 		SDL_Rect r;
 		// 高さと幅を所有アクターのスケールに合わせる
@@ -40,7 +39,13 @@ void SpriteComponent::Draw(Shader* shader)
 {
 	if (mTexture && mOwner->GetState() != mOwner->EPaused)	// EPausedのときはDrawしないように修正
 	{
-		// 短径を描画
+		// テクスチャサイズで再スケーリングしたワールド変換行列を作成
+		Matrix4 scaleMat = Matrix4::CreateScale(static_cast<float>(mTexWidth), static_cast<float>(mTexHeight), 1.0f);
+		Matrix4 world = scaleMat * mOwner->GetWorldTransform();
+		// ワールド変換
+		shader->SetMatrixUniform("uWorldTransform", world);
+
+		// 短形を描画
 		glDrawElements(
 			GL_TRIANGLES,		// 描画するポリゴン／プリミティブの種類
 			6,					// インデックスバッファにあるインデックスの数

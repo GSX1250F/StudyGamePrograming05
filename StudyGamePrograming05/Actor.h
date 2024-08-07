@@ -31,19 +31,22 @@ public:
 	// ゲッター・セッター
 	// 位置
 	const Vector2& GetPosition() const { return mPosition; }
-	void SetPosition(const Vector2& pos) { mPosition = pos; }
+	void SetPosition(const Vector2& pos) { mPosition = pos; mRecomputeWorldTransform = true; }
 	// 拡大率（質量は変えない。半径に影響する）
 	float GetScale() const { return mScale; }
-	void SetScale(float scale) { mScale = scale; }
+	void SetScale(float scale) { mScale = scale; mRecomputeWorldTransform = true;
+	}
 	// 回転
 	const float& GetRotation() const { return mRotation; }
-	void SetRotation(const float& rotation) { mRotation = rotation; }
+	void SetRotation(const float& rotation) { mRotation = rotation; mRecomputeWorldTransform = true;
+	}
 	// 半径
 	float GetRadius() const { return mRadius * mScale; }	//拡大率を考慮
-	void SetRadius(float radius) { mRadius = radius; }
+	void SetRadius(float radius) { mRadius = radius; mRecomputeWorldTransform = true;
+	}
 
 	// 向きの単位ベクトル
-	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), -Math::Sin(mRotation)); }
+	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), Math::Sin(mRotation)); }
 
 	// 状態
 	State GetState() const { return mState; }
@@ -55,6 +58,10 @@ public:
 	void AddComponent(class Component* component);
 	void RemoveComponent(class Component* component);
 
+	// ワールド変換
+	void ComputeWorldTransform();
+	Matrix4 GetWorldTransform() { return mWorldTransform; }
+
 private:
 	State mState;			//アクター状態
 	Vector2 mPosition;		//画面上の位置
@@ -63,4 +70,7 @@ private:
 	float mRadius;			//半径（拡大率は無視）
 	std::vector<class Component*> mComponents;
 	class Game* mGame;
+
+	Matrix4 mWorldTransform;
+	bool mRecomputeWorldTransform;
 };

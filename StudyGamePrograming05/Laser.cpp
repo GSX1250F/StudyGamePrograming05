@@ -24,10 +24,10 @@ void Laser::UpdateActor(float deltaTime)
 	//‰æ–ÊŠO‚É‚Å‚é‚©ADeathTime‚ª0‚É‚È‚Á‚½‚çÁ‹‚·‚éB
 	mDeathTime -= deltaTime;
 	if(mDeathTime <= 0.0f ||
-	   GetPosition().x < 0.0f - GetRadius() ||
-	   GetPosition().x > GetGame()->mWindowWidth + GetRadius() ||
-	   GetPosition().y < 0.0f - GetRadius() ||
-	   GetPosition().y > GetGame()->mWindowHeight + GetRadius())
+	   GetPosition().x < GetGame()->mWindowWidth * (-0.5f) - 2.0f * GetRadius() ||
+	   GetPosition().x > GetGame()->mWindowWidth * 0.5f + 2.0f * GetRadius() ||
+	   GetPosition().y < GetGame()->mWindowHeight * (-0.5f) - 2.0f * GetRadius() ||
+	   GetPosition().y > GetGame()->mWindowHeight * 0.5f + 2.0f * GetRadius())
 	{
 		SetState(EDead);
 	}

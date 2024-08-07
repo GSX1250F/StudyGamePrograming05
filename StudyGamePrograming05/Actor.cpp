@@ -10,6 +10,7 @@ Actor::Actor(Game* game)
 	,mRotation(0.0f)
 	,mRadius(0.0f)
 	,mGame(game)
+	,mRecomputeWorldTransform(true)
 {
 	mGame->AddActor(this);
 }
@@ -45,8 +46,10 @@ void Actor::Update(float deltaTime)
 {
 	if (mState == EActive || mState == EPaused)
 	{
+		ComputeWorldTransform();
 		UpdateComponents(deltaTime); 
 		UpdateActor(deltaTime);
+		ComputeWorldTransform();
 	}
 }
 
@@ -84,5 +87,21 @@ void Actor::RemoveComponent(Component* component)
 	if (iter != mComponents.end())
 	{
 		mComponents.erase(iter);
+	}
+}
+
+void Actor::ComputeWorldTransform()
+{
+	if (mRecomputeWorldTransform)
+	{
+		mRecomputeWorldTransform = false;
+		// スケーリング→回転→平行移動
+		mWorldTransform = Matrix4::CreateScale(mScale);
+		mWorldTransform *= Matrix4::CreateRotationZ(mRotation);
+		mWorldTransform *= Matrix4::CreateTranslation(Vector3(mPosition.x, mPosition.y, 0.0f));
+		for (auto comp : mComponents)
+		{
+			comp->OnUpdateWorldTransform();
+		}
 	}
 }

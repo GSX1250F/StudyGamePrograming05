@@ -8,12 +8,10 @@ Shader::Shader()
 	: mShaderProgram(0)
 	, mVertexShader(0)
 	, mFragShader(0)
-{
-}
+{}
 
 Shader::~Shader()
-{
-}
+{}
 
 bool Shader::Load(const std::string& vertName, const std::string& fragName)
 {
@@ -120,4 +118,17 @@ bool Shader::IsValidProgram()
 
 	return true;
 
+}
+
+void Shader::SetMatrixUniform(const char* name, const Matrix4& matrix)
+{
+	//nameと同じuniform変数をシェーダープログラムから探し、そのIDを受け取る。
+	GLuint uniformId = glGetUniformLocation(mShaderProgram, name);
+	//matrixで上書き
+	glUniformMatrix4fv(
+		uniformId,					// uniform変数のID
+		1,							// 行列の数
+		GL_TRUE,					// 行ベクトルはTRUE
+		matrix.GetAsFloatPtr()		// 上書きする行列のポインタ
+	);
 }

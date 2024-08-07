@@ -113,10 +113,7 @@ void Renderer::Draw()
 	// すべてのスプライトコンポーネントを描画
 	for (auto sprite : mSprites)
 	{
-		if (sprite->GetVisible())
-		{
-			sprite->Draw(mRenderer);
-		}
+		sprite->Draw(mRenderer);
 	}
 	SDL_RenderPresent(mRenderer);
 	*/
@@ -213,10 +210,13 @@ bool Renderer::LoadShaders()
 {
 	// シェーダーを生成
 	mSpriteShader = new Shader();
-	if (!mSpriteShader->Load("Shaders/Basic.vert", "Shaders/Basic.frag"))
+	if (!mSpriteShader->Load("Shaders/Transform.vert", "Shaders/Basic.frag"))
 	{
 		return false;
 	}
 	mSpriteShader->SetActive();
+	// ビュー変換行列を作成。ここでは平行投影変換を行う。
+	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
+	mSpriteShader->SetMatrixUniform("uViewProj", viewProj);
 	return true;
 }

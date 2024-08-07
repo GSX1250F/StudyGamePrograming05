@@ -13,6 +13,8 @@ public:
 	void Unload();
 	//アクティブなシェーダープログラムとして設定
 	void SetActive();
+	//uniform変数に代入する関数
+	void SetMatrixUniform(const char* name, const Matrix4& matrix);
 
 private:
 	//シェーダーをコンパイルする
@@ -26,4 +28,3 @@ private:
 	GLuint mFragShader;
 	GLuint mShaderProgram;
 };
-

@@ -56,13 +56,12 @@ Ship::Ship(Game* game):Actor(game)
 void Ship::Init()
 {
 	SetScale(0.8f);
-	SetPosition(Vector2(GetGame()->mWindowWidth / 2.0f, GetGame()->mWindowHeight / 2.0f));
+	SetPosition(Vector2::Zero);
 	//ランダムな向きで初期化
 	SetRotation(Random::GetFloatRange(0.0f, Math::TwoPi));
 	mIC->SetVelocity(Vector2::Zero);
 	mIC->SetRotSpeed(0.0f);
 	SetState(EActive);
-	mSSC->SetVisible(true);
 
 	mLaserCooldown = 0.0f;
 	mCrashCooldown = 0.0f;
@@ -122,15 +121,15 @@ void Ship::UpdateActor(float deltaTime)
 	if (mCrash == false)
 	{
 		//画面外にでたら反対の位置に移動（ラッピング処理）
-		if (GetPosition().x < 0.0f - 1.0f * GetRadius() ||
-			GetPosition().x > GetGame()->mWindowWidth + 1.0f * GetRadius())
+		if (GetPosition().x < GetGame()->mWindowWidth * (-0.5f) - GetRadius() ||
+			GetPosition().x > GetGame()->mWindowWidth * 0.5f + GetRadius())
 		{
-			SetPosition(Vector2(GetGame()->mWindowWidth - GetPosition().x, GetPosition().y));
+			SetPosition(Vector2(- GetPosition().x, GetPosition().y));
 		}
-		if (GetPosition().y < 0.0f - 1.0f * GetRadius() ||
-			GetPosition().y > GetGame()->mWindowHeight + 1.0f * GetRadius())
+		if (GetPosition().y < GetGame()->mWindowHeight * (-0.5f) - GetRadius() ||
+			GetPosition().y > GetGame()->mWindowHeight * 0.5f + GetRadius())
 		{
-			SetPosition(Vector2(GetPosition().x, GetGame()->mWindowHeight - GetPosition().y));
+			SetPosition(Vector2(GetPosition().x, - GetPosition().y));
 		}
 		//小惑星と衝突したかを判定
 		for (auto ast : GetGame()->GetAsteroids())
@@ -162,7 +161,6 @@ void Ship::UpdateActor(float deltaTime)
 			{
 				//衝突演出後、リスポーンするまで表示停止
 				SetState(EPaused);
-				mSSC->SetVisible(false);
 			}
 			else
 			{

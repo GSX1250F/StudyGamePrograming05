@@ -210,7 +210,7 @@ bool Renderer::LoadShaders()
 {
 	// シェーダーを生成
 	mSpriteShader = new Shader();
-	if (!mSpriteShader->Load("Shaders/Transform.vert", "Shaders/Basic.frag"))
+	if (!mSpriteShader->Load("Shaders/Sprite.vert", "Shaders/Basic.frag"))
 	{
 		return false;
 	}

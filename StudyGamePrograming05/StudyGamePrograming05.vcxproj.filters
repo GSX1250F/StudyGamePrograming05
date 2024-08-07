@@ -152,7 +152,7 @@
     <None Include="Shaders\Basic.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\Transform.vert">
+    <None Include="Shaders\Sprite.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

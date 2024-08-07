@@ -20,7 +20,7 @@ public:
 	// 更新順ゲッター
 	int GetUpdateOrder() const { return mUpdateOrder; }
 
-	// ワールド変換を行ったことの通知
+	// ワールド変換の通知を受け取る。
 	virtual void OnUpdateWorldTransform() {}
 
 

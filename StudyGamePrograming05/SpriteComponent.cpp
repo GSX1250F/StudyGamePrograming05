@@ -37,7 +37,7 @@ void SpriteComponent::Draw(SDL_Renderer* renderer)
 
 void SpriteComponent::Draw(Shader* shader)
 {
-	if (mTexture && mOwner->GetState() != mOwner->EPaused)	// EPausedのときはDrawしないように修正
+	if (mTexture && mOwner->GetState() == mOwner->EActive)
 	{
 		// テクスチャサイズで再スケーリングしたワールド変換行列を作成
 		Matrix4 scaleMat = Matrix4::CreateScale(static_cast<float>(mTexWidth), static_cast<float>(mTexHeight), 1.0f);

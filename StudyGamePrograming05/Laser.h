@@ -13,6 +13,4 @@ private:
 	float mDeathTime;
 	float mLaserSpeed;
 	class CircleComponent* mCircle;		//衝突チェックのためのアクセスポインタ。他のオブジェクトから参照するため。
-
 };
-

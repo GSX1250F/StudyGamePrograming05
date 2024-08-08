@@ -50,4 +50,3 @@ private:
 	// Ä¶‘Ò‚¿‰¹Šy‚Ì”z—ñ
 	std::vector<MusicControl> mMusicControls;
 };
-

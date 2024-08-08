@@ -246,6 +246,3 @@ void Game::RemoveAsteroid(Asteroid* ast)
 		mAsteroids.erase(iter);
 	}
 }
-
-
-

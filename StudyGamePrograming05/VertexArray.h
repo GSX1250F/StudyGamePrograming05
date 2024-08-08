@@ -23,4 +23,3 @@ private:
 	// バーテックス配列オブジェクトのOpenGL ID
 	unsigned int mVertexArray;
 };
-

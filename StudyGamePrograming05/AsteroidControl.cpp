@@ -16,6 +16,5 @@ void AsteroidControl::UpdateActor(float deltaTime)
     {
         GetGame()->AddAsteroid();
         mAsteroidCooldown = InitCooldown;
-    }
-        
+    }        
 }

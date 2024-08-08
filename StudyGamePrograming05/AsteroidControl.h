@@ -11,4 +11,3 @@ private:
 	float mAsteroidCooldown;
 	float InitCooldown;
 };
-

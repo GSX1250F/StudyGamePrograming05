@@ -60,5 +60,3 @@ void Asteroid::UpdateActor(float deltaTime)
 		SetPosition(Vector2(GetPosition().x , - GetPosition().y));
 	}
 }
-
-

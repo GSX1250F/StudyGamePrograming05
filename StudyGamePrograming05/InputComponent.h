@@ -36,6 +36,4 @@ private:
 	int mBwdKey;
 	int mCwsKey;
 	int mCCwsKey;
-
 };
-

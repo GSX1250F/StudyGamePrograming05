@@ -9,4 +9,3 @@ public:
 private:
     class SpriteComponent* sc;
 };
-

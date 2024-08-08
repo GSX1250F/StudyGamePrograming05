@@ -177,4 +177,3 @@ void SoundPlayer::SetMusicControl(const std::string& filename, const std::string
     mc.Repeat = repeat;
     mMusicControls.emplace_back(mc);
 }
-

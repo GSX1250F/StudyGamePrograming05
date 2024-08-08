@@ -51,4 +51,3 @@ private:
 	float mMoveResist;		// 重心速度抵抗率(%)
 	float mRotResist;		// 回転速度抵抗率(%)
 };
-

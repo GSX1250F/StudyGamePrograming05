@@ -55,4 +55,3 @@ void Laser::Shot()
 	MoveComponent* mc = new MoveComponent(this);
 	mc->SetVelocity(mLaserSpeed * GetForward());
 }
-

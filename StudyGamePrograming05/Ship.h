@@ -25,4 +25,3 @@ private:
 	class InputComponent* mIC;
 	std::vector<std::string> mChunkFiles;
 };
-

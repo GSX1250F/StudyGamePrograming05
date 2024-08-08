@@ -17,4 +17,3 @@ private:
 	float mAsteroidCooldown;		//‘B‚Ü‚Å‚Ì‘Ò‹@ŠÔ
 	std::string mChunkFile;
 };
-

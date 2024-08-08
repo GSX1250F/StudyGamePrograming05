@@ -168,9 +168,4 @@ void Ship::UpdateActor(float deltaTime)
 			}
 		}
 	}
-
-
 }
-
-
-

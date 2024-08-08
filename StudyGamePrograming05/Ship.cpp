@@ -62,6 +62,7 @@ void Ship::Init()
 	mIC->SetVelocity(Vector2::Zero);
 	mIC->SetRotSpeed(0.0f);
 	SetState(EActive);
+	mSSC->SetVisible(true);
 
 	mLaserCooldown = 0.0f;
 	mCrashCooldown = 0.0f;
@@ -161,6 +162,7 @@ void Ship::UpdateActor(float deltaTime)
 			{
 				//衝突演出後、リスポーンするまで表示停止
 				SetState(EPaused);
+				mSSC->SetVisible(false);
 			}
 			else
 			{

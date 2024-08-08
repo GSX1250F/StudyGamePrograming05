@@ -11,6 +11,7 @@ ClearPict::ClearPict(Game* game) : Actor(game)
 	//スプライトコンポーネント作成、テクスチャ設定
 	sc = new SpriteComponent(this, 100);
 	sc->SetTexture(game->GetRenderer()->GetTexture("Assets/ClearPict.png"));
+	sc->SetVisible(false);
 }
 
 void ClearPict::UpdateActor(float deltaTime)
@@ -19,5 +20,6 @@ void ClearPict::UpdateActor(float deltaTime)
 	if (numAsteroids <= 0)
 	{
 		SetState(EActive);
+		sc->SetVisible(true);
 	}
 }

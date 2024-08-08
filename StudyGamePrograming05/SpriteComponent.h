@@ -19,10 +19,13 @@ public:
 	int GetTexWidth() const { return mTexWidth; }
 	void SetTexHeight(int height) { mTexHeight = height; }
 	int GetTexHeight() const { return mTexHeight; }
-	
+	void SetVisible(bool value) { mVisible = value; }
+	bool GetVisible() const { return mVisible; }
+
 private:
 	SDL_Texture* mTexture;
 	int mDrawOrder;
 	int mTexWidth;
 	int mTexHeight;
+	bool mVisible;
 };

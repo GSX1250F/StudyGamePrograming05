@@ -10,6 +10,7 @@ SpriteComponent::SpriteComponent(Actor* owner, int drawOrder)
 	, mDrawOrder(drawOrder)
 	, mTexWidth(0)
 	, mTexHeight(0)
+	, mVisible(true)
 {
 	mOwner->GetGame()->GetRenderer()->AddSprite(this);
 }
@@ -21,7 +22,7 @@ SpriteComponent::~SpriteComponent()
 /* OpenGLでは不要
 void SpriteComponent::Draw(SDL_Renderer* renderer)
 {
-	if (mTexture)
+	if (mTexture && mVisible)
 	{
 		SDL_Rect r;
 		// 高さと幅を所有アクターのスケールに合わせる
@@ -37,7 +38,7 @@ void SpriteComponent::Draw(SDL_Renderer* renderer)
 
 void SpriteComponent::Draw(Shader* shader)
 {
-	if (mTexture && mOwner->GetState() == mOwner->EActive)
+	if (mTexture && mVisible)
 	{
 		// テクスチャサイズで再スケーリングしたワールド変換行列を作成
 		Matrix4 scaleMat = Matrix4::CreateScale(static_cast<float>(mTexWidth), static_cast<float>(mTexHeight), 1.0f);

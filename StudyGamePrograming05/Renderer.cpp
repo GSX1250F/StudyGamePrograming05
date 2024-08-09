@@ -107,21 +107,15 @@ void Renderer::Shutdown()
 
 void Renderer::Draw()
 {
-	/* OpenGLでは不要
-	SDL_SetRenderDrawColor(mRenderer, 220, 220, 220, 255);
-	SDL_RenderClear(mRenderer);
-
-	// すべてのスプライトコンポーネントを描画
-	for (auto sprite : mSprites)
-	{
-		sprite->Draw(mRenderer);
-	}
-	SDL_RenderPresent(mRenderer);
-	*/
-
 	// 背景色を指定して画面をクリア
 	glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+	// カラーバッファのアルファブレンディングを有効化
+	glEnable(GL_BLEND);
+	glBlendFunc(
+		GL_SRC_ALPHA,				// srcFactorはsrcAlpha
+		GL_ONE_MINUS_SRC_ALPHA		// dstFactorは(1-srcAlpha)
+	);
 
 	// シェーダーとバーテックス配列オブジェクトを有効化
 	mSpriteVerts->SetActive();
@@ -186,10 +180,10 @@ class Texture* Renderer::GetTexture(const std::string& filename)
 void Renderer::InitSpriteVerts()
 {
 	float vertices[] = {
-		-0.5f, 0.5f, 0.0f,			// 左上 (インデックス 0)
-		-0.5f, -0.5f, 0.0f,			// 左下 (インデックス 1)
-		0.5f, -0.5f, 0.0f,			// 右下 (インデックス 2)
-		0.5f, 0.5f, 0.0f			// 右上 (インデックス 3)
+		-0.5f, 0.5f, 0.0f, 0.0f, 0.0f,			// 左上 (インデックス 0) , テクスチャ座標左下
+		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f,			// 左下 (インデックス 1) , テクスチャ座標左上
+		0.5f, -0.5f, 0.0f, 1.0f, 1.0f,			// 右下 (インデックス 2) , テクスチャ座標右上
+		0.5f, 0.5f, 0.0f, 1.0f, 0.0f			// 右上 (インデックス 3) , テクスチャ座標右下
 	};
 
 	unsigned int indices[] = {
@@ -204,7 +198,7 @@ bool Renderer::LoadShaders()
 {
 	// シェーダーを生成
 	mSpriteShader = new Shader();
-	if (!mSpriteShader->Load("Shaders/Sprite.vert", "Shaders/Basic.frag"))
+	if (!mSpriteShader->Load("Shaders/Sprite.vert", "Shaders/Sprite.frag"))
 	{
 		return false;
 	}

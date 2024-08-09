@@ -15,7 +15,7 @@ VertexArray::VertexArray(const float* verts, unsigned int numVerts,
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
 	glBufferData(
 		GL_ARRAY_BUFFER,					// バッファの種類にバーテックスバッファを指定
-		numVerts * 3 * sizeof(float),		//コピーするバイト数
+		numVerts * 5 * sizeof(float),		//コピーするバイト数
 		verts,								//コピー元の配列
 		GL_STATIC_DRAW						//このデータを1回だけロードしてその後頻繁に使うとき
 	);
@@ -30,17 +30,28 @@ VertexArray::VertexArray(const float* verts, unsigned int numVerts,
 		GL_STATIC_DRAW						//このデータを1回だけロードしてその後頻繁に使うとき
 	);
 	
-	// バーテックス属性のレイアウトを指定する。
+	// バーテックスバッファのレイアウトを指定する。
+	// 属性0はバーテックス座標
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(
 		0,						// 属性インデックス（１つ目はゼロ）
 		3,						// 要素数
 		GL_FLOAT,				// 要素の型
 		GL_FALSE,				// 整数型のみ使用する。
-		sizeof(float) * 3,		// ストライド（通常は各バーテックス属性のデータ数
+		sizeof(float) * 5,		// ストライド（通常は各バーテックス属性のデータ数
 		0						// 頂点データの開始位置からこの属性までのオフセット
 	);
-	
+	// 属性1はテクスチャ座標
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(
+		1,						// 属性インデックス（１つ目はゼロ）
+		2,						// 要素数
+		GL_FLOAT,				// 要素の型
+		GL_FALSE,				// 整数型のみ使用する。
+		sizeof(float) * 5,		// ストライド（通常は各バーテックス属性のデータ数
+		reinterpret_cast<void*>(sizeof(float) * 3)		// 頂点データの開始位置からこの属性までのオフセット
+	);
+
 }
 
 VertexArray::~VertexArray()

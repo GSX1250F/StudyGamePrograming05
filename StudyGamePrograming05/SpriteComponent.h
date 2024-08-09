@@ -11,8 +11,8 @@ public:
 	//virtual void Draw(SDL_Renderer* renderer);		// ïœçX
 	virtual void Draw(class Shader* shader);
 	
-	virtual void SetTexture(SDL_Texture* texture);
-	SDL_Texture* GetTexture() const { return mTexture; }
+	virtual void SetTexture(class Texture* texture);
+	class Texture* GetTexture() const { return mTexture; }
 
 	int GetDrawOrder() const { return mDrawOrder; }
 	void SetTexWidth(int width) { mTexWidth = width; }
@@ -23,7 +23,7 @@ public:
 	bool GetVisible() const { return mVisible; }
 
 private:
-	SDL_Texture* mTexture;
+	class Texture* mTexture;
 	int mDrawOrder;
 	int mTexWidth;
 	int mTexHeight;

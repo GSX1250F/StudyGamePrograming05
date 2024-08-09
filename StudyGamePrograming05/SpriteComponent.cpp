@@ -19,22 +19,6 @@ SpriteComponent::~SpriteComponent()
 {
 	mOwner->GetGame()->GetRenderer()->RemoveSprite(this);
 }
-/* OpenGLでは不要
-void SpriteComponent::Draw(SDL_Renderer* renderer)
-{
-	if (mTexture && mVisible)
-	{
-		SDL_Rect r;
-		// 高さと幅を所有アクターのスケールに合わせる
-		r.w = nearbyint(mTexWidth * mOwner->GetScale());
-		r.h = nearbyint(mTexHeight * mOwner->GetScale());
-		r.x = nearbyint(mOwner->GetPosition().x - r.w / 2);
-		r.y = nearbyint(mOwner->GetPosition().y - r.h / 2);
-
-		SDL_RenderCopyEx(renderer, mTexture, nullptr, &r, -Math::ToDegrees(mOwner->GetRotation()), nullptr, SDL_FLIP_NONE);
-	}
-}
-*/
 
 void SpriteComponent::Draw(Shader* shader)
 {
@@ -45,7 +29,8 @@ void SpriteComponent::Draw(Shader* shader)
 		Matrix4 world = scaleMat * mOwner->GetWorldTransform();
 		// ワールド変換
 		shader->SetMatrixUniform("uWorldTransform", world);
-
+		// 現在のテクスチャをセット
+		mTexture->SetActive();
 		// 短形を描画
 		glDrawElements(
 			GL_TRIANGLES,		// 描画するポリゴン／プリミティブの種類
@@ -56,11 +41,12 @@ void SpriteComponent::Draw(Shader* shader)
 	}
 }
 
-void SpriteComponent::SetTexture(SDL_Texture* texture)
+void SpriteComponent::SetTexture(class Texture* texture)
 {
 	mTexture = texture;
 	// 高さと幅を設定
-	SDL_QueryTexture(texture, nullptr, nullptr, &mTexWidth, &mTexHeight);
+	mTexWidth = texture->GetTexWidth();
+	mTexHeight = texture->GetTexHeight();
 	// 高さと幅の平均をActorの直径とする。
 	mOwner->SetRadius((mTexWidth + mTexHeight) * 0.25f);
 }

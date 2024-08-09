@@ -13,7 +13,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Shaders">
+    <Filter Include="シェーダーファイル">
       <UniqueIdentifier>{fa034681-5cde-41ad-8bb6-999728d62345}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -81,6 +81,9 @@
     <ClCompile Include="VertexArray.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -143,17 +146,20 @@
     <ClInclude Include="VertexArray.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Shaders\Basic.frag">
-      <Filter>Shaders</Filter>
+      <Filter>シェーダーファイル</Filter>
     </None>
     <None Include="Shaders\Basic.vert">
-      <Filter>Shaders</Filter>
+      <Filter>シェーダーファイル</Filter>
     </None>
     <None Include="Shaders\Sprite.vert">
-      <Filter>Shaders</Filter>
+      <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>
 </Project>

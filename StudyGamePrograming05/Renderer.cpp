@@ -6,6 +6,7 @@
 #include <glew.h>
 #include "Shader.h"
 #include "VertexArray.h"
+#include "Texture.h"
 
 Renderer::Renderer(Game* game) 
 	: mGame(game)
@@ -158,11 +159,9 @@ void Renderer::RemoveSprite(SpriteComponent* sprite)
 	mSprites.erase(iter);
 }
 
-SDL_Texture* Renderer::GetTexture(const std::string& filename)
+class Texture* Renderer::GetTexture(const std::string& filename)
 {
-	SDL_Texture* tex = nullptr;
-
-	// すでにロード済みなら、そのテクスチャを返す。
+	class Texture* tex = nullptr;
 	auto iter = mTextures.find(filename);
 	if (iter != mTextures.end())
 	{
@@ -170,24 +169,16 @@ SDL_Texture* Renderer::GetTexture(const std::string& filename)
 	}
 	else
 	{
-		// ファイルからロード
-		SDL_Surface* surf = IMG_Load(filename.c_str());
-		if (!surf)
+		tex = new Texture();
+		if (tex->Load(filename))
 		{
-			SDL_Log("テクスチャファイルの読み込みに失敗しました %s", filename.c_str());
-			return nullptr;
+			mTextures.emplace(filename, tex);
 		}
-
-		// サーフェイスからテクスチャを作成
-		tex = SDL_CreateTextureFromSurface(mRenderer, surf);
-		SDL_FreeSurface(surf);
-		if (!tex)
+		else
 		{
-			SDL_Log("サーフェイスからテクスチャに変換するのに失敗しました %s", filename.c_str());
-			return nullptr;
+			delete tex;
+			tex = nullptr;
 		}
-
-		mTextures.emplace(filename.c_str(), tex);
 	}
 	return tex;
 }

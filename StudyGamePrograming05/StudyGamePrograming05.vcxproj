@@ -165,6 +165,7 @@ xcopy "..\..\external\GLEW\lib\$(PlatformTarget)\*.dll" "$(OutDir)" /i/s/y
     <ClCompile Include="SomeSpriteComponent.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +188,7 @@ xcopy "..\..\external\GLEW\lib\$(PlatformTarget)\*.dll" "$(OutDir)" /i/s/y
     <ClInclude Include="SomeSpriteComponent.h" />
     <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="SpriteComponent.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="VertexArray.h" />
   </ItemGroup>
   <ItemGroup>

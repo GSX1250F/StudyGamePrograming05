@@ -127,7 +127,10 @@ void Renderer::Draw()
 	mSpriteShader->SetActive();
 	for (auto sprite : mSprites)
 	{
-		sprite->Draw(mSpriteShader);
+		if (sprite->GetVisible())
+		{
+			sprite->Draw(mSpriteShader);
+		}
 	}
 	// ダブルバッファを交換
 	SDL_GL_SwapWindow(mWindow);

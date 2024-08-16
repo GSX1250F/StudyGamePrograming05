@@ -173,7 +173,7 @@ void Game::LoadData()
 	new ClearPict(this);
 
 	// îwåi
-	//new BackGround(this);	
+	new BackGround(this);	
 }
 
 void Game::UnloadData()

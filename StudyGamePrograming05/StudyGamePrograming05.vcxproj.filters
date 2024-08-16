@@ -161,5 +161,8 @@
     <None Include="Shaders\Sprite.vert">
       <Filter>シェーダーファイル</Filter>
     </None>
+    <None Include="Shaders\Sprite.frag">
+      <Filter>シェーダーファイル</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -30,7 +30,7 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 	//MoveComponentçÏê¨
 	MoveComponent* mc = new MoveComponent(this);
 	mc->SetVelocity(GetForward() * Random::GetFloatRange(50.0f, 200.0f));
-	mc->SetRotSpeed(Random::GetFloatRange(-1.0f * Math::TwoPi, 1.0f * Math::TwoPi));
+	mc->SetRotSpeed(Random::GetFloatRange(-1.0f * Math::Pi, 1.0f * Math::Pi));
 	
 	//CircleComponentçÏê¨
 	mCircle = new CircleComponent(this);

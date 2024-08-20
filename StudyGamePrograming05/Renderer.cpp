@@ -55,7 +55,7 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 		SDL_Log("ウィンドウの作成に失敗しました: %s", SDL_GetError());
 		return false;
 	}
-
+	/*
 	// SDLレンダラーを作成
 	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (!mRenderer)
@@ -63,7 +63,7 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 		SDL_Log("レンダラーの作成に失敗しました: %s", SDL_GetError());
 		return false;
 	}
-	
+	*/
 	// OpenGLコンテクストを生成（すべてのOpenGL機能にアクセスする）
 	mContext = SDL_GL_CreateContext(mWindow);
 

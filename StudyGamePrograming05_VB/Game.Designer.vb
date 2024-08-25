@@ -36,6 +36,9 @@ Partial Class Game
         PictureBox.TabIndex = 0
         PictureBox.TabStop = False
         ' 
+        ' RunLoop
+        ' 
+        ' 
         ' Game
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -43,7 +46,7 @@ Partial Class Game
         ClientSize = New Size(800, 450)
         Controls.Add(PictureBox)
         Name = "Game"
-        Text = "Game"
+        Text = "StudyGamePrograming VB"
         CType(PictureBox, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub

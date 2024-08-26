@@ -42,8 +42,6 @@ Public Class Renderer
 		' 画面初期化
 		GL.Viewport(0, 0, 1024, 768)
 
-		AddHandler mWindow.Paint, AddressOf mWindow_Paint
-
 		Return True
 	End Function
 	Public Sub Shutdown()

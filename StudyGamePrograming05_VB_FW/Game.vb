@@ -2,6 +2,7 @@
 Imports System.Numerics
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify
+Imports OpenTK
 
 Public Class Game
     <DllImport("user32.dll", ExactSpelling:=True)>
@@ -15,15 +16,14 @@ Public Class Game
 
     '変数群
     'Public
-    Public mWindowWidth As Integer      'PictureBoxの横幅
-    Public mWindowHeight As Integer     'PictureBoxの縦幅
+    Public mWindowWidth As Integer      'glControlの横幅
+    Public mWindowHeight As Integer     'glControlの縦幅
 
     'Private
     Private Ticks As New System.Diagnostics.Stopwatch()     '時間管理
     Private mTicksCount As Integer     'ゲーム開始時からの経過時間
     Private mIsRunning As Boolean   'ゲーム実行中
     Private mRenderer As Renderer   'レンダラー
-    Private mPictureBox As PictureBox   'PictureBox
     Private mKeyBoardByte(255) As Byte      'キーボード入力検知
     Private mKeyState(255) As Boolean      'キーボード状態
     Private mSoundPlayer As SoundPlayer     'サウンドプレイヤ
@@ -55,11 +55,11 @@ Public Class Game
         'ウィンドウ初期化
         mWindowWidth = 1024
         mWindowHeight = 768
-        Me.SetDesktopBounds(100, 100, mWindowWidth + 26, mWindowHeight + 49)
+        Me.SetBounds(100, 100, mWindowWidth + 26, mWindowHeight + 49)
         Me.DoubleBuffered = True
-        'PictureBox初期化
-        mPictureBox = PictureBox
-        mPictureBox.SetBounds(5, 5, mWindowWidth, mWindowHeight)
+
+        'glControl初期化
+        glControl.SetBounds(5, 5, mWindowWidth, mWindowHeight)
         'レンダラー作成
         mRenderer = New Renderer(Me)
         If (mRenderer.Initialize(mWindowWidth, mWindowHeight)) = False Then
@@ -133,7 +133,7 @@ Public Class Game
         '死んだアクターを一時配列に追加
         Dim deadActors As New List(Of Actor)
         For Each actor In mActors
-            If actor.GetState() = actor.State.EDead Then
+            If actor.GetState() = Actor.State.EDead Then
                 deadActors.Add(actor)
             End If
         Next
@@ -171,7 +171,7 @@ Public Class Game
         Dim astCtrl As New AsteroidControl(Me)
 
         '背景を作成
-        Dim bg As New Background(Me)
+        Dim bg As New BackGround(Me)
 
         Dim clrPict As New ClearPict(Me)
 
@@ -211,8 +211,8 @@ Public Class Game
     Public Function GetRenderer() As Renderer
         Return mRenderer
     End Function
-    Public Function GetPictureBox() As PictureBox
-        Return mPictureBox
+    Public Function GetGLControl() As GLControl
+        Return glControl
     End Function
     Public Function GetSoundPlayer() As SoundPlayer
         Return mSoundPlayer

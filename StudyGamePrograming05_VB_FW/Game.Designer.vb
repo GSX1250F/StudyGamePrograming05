@@ -23,36 +23,33 @@ Partial Class Game
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Me.PictureBox = New System.Windows.Forms.PictureBox()
         Me.RunLoop = New System.Windows.Forms.Timer(Me.components)
-        CType(Me.PictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.glControl = New OpenTK.GLControl()
         Me.SuspendLayout()
-        '
-        'PictureBox
-        '
-        Me.PictureBox.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.PictureBox.Location = New System.Drawing.Point(24, 12)
-        Me.PictureBox.Name = "PictureBox"
-        Me.PictureBox.Size = New System.Drawing.Size(642, 356)
-        Me.PictureBox.TabIndex = 0
-        Me.PictureBox.TabStop = False
         '
         'RunLoop
         '
+        '
+        'glControl
+        '
+        Me.glControl.BackColor = System.Drawing.Color.Black
+        Me.glControl.Location = New System.Drawing.Point(66, 41)
+        Me.glControl.Name = "glControl"
+        Me.glControl.Size = New System.Drawing.Size(381, 271)
+        Me.glControl.TabIndex = 0
+        Me.glControl.VSync = False
         '
         'Game
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
-        Me.Controls.Add(Me.PictureBox)
+        Me.Controls.Add(Me.glControl)
         Me.Name = "Game"
         Me.Text = "StudyGamePrograming VB(Framework)"
-        CType(Me.PictureBox, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
-
-    Friend WithEvents PictureBox As PictureBox
     Friend WithEvents RunLoop As Timer
+    Friend WithEvents glControl As OpenTK.GLControl
 End Class

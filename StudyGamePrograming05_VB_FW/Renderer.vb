@@ -1,10 +1,12 @@
-﻿Public Class Renderer
+﻿Imports OpenTK
+Imports OpenTK.Graphics
+Imports OpenTK.Graphics.OpenGL
+Public Class Renderer
 	Implements IDisposable      '明示的にクラスを開放するために必要
 	Private disposedValue As Boolean
 
 	Private mGame As Game
-	Private mWindow As Bitmap
-	Private mGraphics As Graphics
+	Private mWindow As GLControl
 	Private mScreenWidth As Integer
 	Private mScreenHeight As Integer
 	Private mTextures As New Dictionary(Of String, Image)   'テクスチャの配列
@@ -13,7 +15,6 @@
 	Sub New(ByRef game As Game)
 		mGame = game
 		mWindow = Nothing
-		mGraphics = Nothing
 	End Sub
 	Protected disposed = False     '開放処理が実施済みかのフラグ
 	Public Overloads Sub Dispose() Implements IDisposable.Dispose
@@ -35,13 +36,18 @@
 	Public Function Initialize(ByVal screenWidth As Integer, ByVal screenHeight As Integer) As Boolean
 		mScreenWidth = screenWidth
 		mScreenHeight = screenHeight
-		mWindow = New Bitmap(mScreenWidth, mScreenHeight)
-		mGraphics = Graphics.FromImage(mWindow)
+		mWindow = mGame.GetGLControl()
+		' 背景色の設定
+		GL.ClearColor(0.3, 0.3, 0.3, 1.0)
+		' 画面初期化
+		GL.Viewport(0, 0, 1024, 768)
+
+		AddHandler mWindow.Paint, AddressOf mWindow_Paint
+
 		Return True
 	End Function
 	Public Sub Shutdown()
 		mWindow.Dispose()
-		mGraphics.Dispose()
 		Me.Dispose()
 	End Sub
 	Public Sub UnloadData()
@@ -100,6 +106,14 @@
 	Public Function GetScreenHeight() As Double
 		Return mScreenHeight
 	End Function
+
+	Private Sub mWindow_Paint(sender As Object, e As PaintEventArgs)
+
+		' 背景色でクリア
+		GL.Clear(ClearBufferMask.ColorBufferBit)
+
+		mWindow.SwapBuffers()
+	End Sub
 
 
 End Class

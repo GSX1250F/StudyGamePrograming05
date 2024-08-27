@@ -1,5 +1,6 @@
-﻿Imports System.Numerics
-Imports OpenTK
+﻿Imports OpenTK
+Imports System.Numerics
+Imports Vector2 = System.Numerics.Vector2
 
 Public Class Actor
     Implements IDisposable      '明示的にクラスを開放するために必要
@@ -110,7 +111,7 @@ Public Class Actor
         mRecomputeWorldTransform = True
     End Sub
     Public Function GetForward() As Vector2
-        Dim v = New Vector2(Math.Cos(mRotation), -Math.Sin(mRotation))       '向きの単位ベクトル
+        Dim v = New Vector2(Math.Cos(mRotation), Math.Sin(mRotation))       '向きの単位ベクトル
         Return v
     End Function
     Public Function GetState() As State
@@ -155,10 +156,7 @@ Public Class Actor
             'スケーリング→回転→平行移動
             mWorldTransform = Matrix4.CreateScale(mScale)
             mWorldTransform *= Matrix4.CreateRotationZ(mRotation)
-            mWorldTransform *= Matrix4.CreateTranslation(mPosition.x, mPosition.y, 0.0)
-            For Each comp In mComponents
-                comp.OnUpdateWorldTransform()
-            Next
+            mWorldTransform *= Matrix4.CreateTranslation(mPosition.X, mPosition.Y, 0.0)
         End If
     End Sub
     Private mRecomputeWorldTransform As Boolean

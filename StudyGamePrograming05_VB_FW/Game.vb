@@ -56,7 +56,7 @@ Public Class Game
         mWindowWidth = 1024
         mWindowHeight = 768
         Me.SetBounds(100, 100, mWindowWidth + 26, mWindowHeight + 49)
-        Me.DoubleBuffered = True
+        'Me.DoubleBuffered = True
 
         'glControl初期化
         glControl.SetBounds(5, 5, mWindowWidth, mWindowHeight)
@@ -171,7 +171,7 @@ Public Class Game
         Dim astCtrl As New AsteroidControl(Me)
 
         '背景を作成
-        Dim bg As New BackGround(Me)
+        'Dim bg As New BackGround(Me)
 
         Dim clrPict As New ClearPict(Me)
 

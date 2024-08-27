@@ -1,4 +1,8 @@
-﻿Public Class SpriteComponent
+﻿Imports OpenTK
+Imports OpenTK.Graphics
+Imports OpenTK.Graphics.OpenGL
+
+Public Class SpriteComponent
     Inherits Component
 
     Private mTexture As Image
@@ -29,26 +33,33 @@
 
     Public Overridable Sub Draw()
         If (mTexture IsNot Nothing) And (mVisible = True) Then
-            Dim w As Double = mTexWidth * mOwner.GetScale()
-            Dim h As Double = mTexHeight * mOwner.GetScale()
-            Dim x0 As Double = mOwner.GetPosition().X
-            Dim y0 As Double = mOwner.GetPosition().Y
+            Dim vertices As List(Of Vector2) = New List(Of Vector2) From {
+                    New Vector2(-0.5, -0.5),
+                    New Vector2(0.5, -0.5),
+                    New Vector2(-0.5, 0.5),
+                    New Vector2(0.5, 0.5)}
 
-            '画像を回転して表示
-            Dim angle As Double = mOwner.GetRotation()
+            ' テクスチャサイズで再スケーリングしたワールド変換行列を作成
+            Dim scaleMat As Matrix4 = Matrix4.CreateScale(mTexWidth, mTexHeight, 1.0)
+            Dim world As Matrix4 = scaleMat * mOwner.GetWorldTransform()
 
-            Dim x1 As Double = (-w / 2) * Math.Cos(angle) + (h / 2) * Math.Sin(angle) + x0     '左上
-            Dim y1 As Double = w / 2 * Math.Sin(angle) + (h / 2) * Math.Cos(angle) + y0
-            Dim x2 As Double = w / 2 * Math.Cos(angle) + (h / 2) * Math.Sin(angle) + x0        '右上
-            Dim y2 As Double = (-w / 2) * Math.Sin(angle) + (h / 2) * Math.Cos(angle) + y0
-            Dim x3 As Double = (-w / 2) * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0        '左下
-            Dim y3 As Double = w / 2 * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0
-            Dim x4 As Double = w / 2 * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0           '右下
-            Dim y4 As Double = (-w / 2) * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0
-            'PointF配列を作成
-            Dim destinationPoints() As PointF = {New PointF(x1, y1), New PointF(x2, y2), New PointF(x3, y3)}
+            'OpenGLで四角形を描画（'TriangleStripの場合、0,1,2→1つ目、1,2,3→2つ目の三角形となる。）
+            GL.Begin(PrimitiveType.TriangleStrip)
+            ' 各頂点を行列で変換
+            For i = 0 To vertices.Count - 1
+                Dim v As Vector4 = New Vector4(vertices(i).X, vertices(i).Y, 0.0, 1.0)
+                'ワールド変換
+                v *= world
+                ' ビュー変換　（2D不要）
+                ' 射影変換　（2D不要）
+                ' ビューポート変換
+                scaleMat = Matrix4.CreateScale(2.0 / mOwner.GetGame().mWindowWidth, 2.0 / mOwner.GetGame().mWindowHeight, 0.0)
+                v *= scaleMat
 
-            mGraphics.DrawImage(mTexture, destinationPoints)
+                GL.Vertex2(v.X, v.Y)
+            Next
+            GL.End()
+
         End If
 
     End Sub

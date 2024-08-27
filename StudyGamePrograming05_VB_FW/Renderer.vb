@@ -53,15 +53,17 @@ Public Class Renderer
 	End Sub
 	Public Sub Draw()
 		'画面のクリア
-		mGraphics.Clear(Color.Gray)
+		GL.ClearColor(0.3, 0.3, 0.3, 1.0)
+		GL.Clear(ClearBufferMask.ColorBufferBit)
 
 		'すべてのスプライトコンポーネントを描画
 		For Each sprite In mSprites
 			If sprite.GetVisible() = True Then
-				sprite.Draw(mGraphics)
+				sprite.Draw()
 			End If
 		Next
-		mGame.GetPictureBox().Image = mWindow
+		mWindow.SwapBuffers()
+		mWindow.Refresh()
 	End Sub
 	Public Sub AddSprite(ByRef sprite As SpriteComponent)
 		Dim myDrawOrder As Integer = sprite.GetDrawOrder()

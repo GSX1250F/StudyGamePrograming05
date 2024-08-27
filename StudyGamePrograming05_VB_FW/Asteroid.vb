@@ -15,16 +15,16 @@ Public Class Asteroid
 
 		Dim rng As RandomNumberGenerator = RandomNumberGenerator.Create()   '乱数生成器クラスを生成
 		Dim bs(1) As Byte   'バイト型乱数を格納する配列。２つ分。
-		randPos.X = GetGame().mWindowWidth * 0.5
-		randPos.Y = GetGame().mWindowHeight * 0.5
+		randPos.X = 0.0
+		randPos.Y = 0.0
 		'画面の中央3/5区画以外になるまで繰り返し処理
-		While (randPos.X > GetGame().mWindowWidth * 0.2) And
-			  (randPos.X < GetGame().mWindowWidth * 0.8) And
-			  (randPos.Y > GetGame().mWindowHeight * 0.2) And
-			  (randPos.Y < GetGame().mWindowHeight * 0.8)
+		While (randPos.X > GetGame().mWindowWidth * (-0.3)) And
+			  (randPos.X < GetGame().mWindowWidth * 0.3) And
+			  (randPos.Y > GetGame().mWindowHeight * (-0.3)) And
+			  (randPos.Y < GetGame().mWindowHeight * 0.3)
 			rng.GetBytes(bs)    '乱数生成。0以上255以下
-			randPos.X = bs(0) / 255 * GetGame().mWindowWidth
-			randPos.Y = bs(1) / 255 * GetGame().mWindowHeight
+			randPos.X = bs(0) / 255 * GetGame().mWindowWidth - 0.5 * GetGame().mWindowWidth
+			randPos.Y = bs(1) / 255 * GetGame().mWindowHeight - 0.5 * GetGame().mWindowHeight
 		End While
 		SetPosition(randPos)
 		rng.GetBytes(bs)    '乱数生成
@@ -65,21 +65,21 @@ Public Class Asteroid
 
 	Public Overrides Sub UpdateActor(ByVal detaTime As Double)
 		'画面外にでたら反対の位置に移動（ラッピング処理）
-		If (GetPosition().X < 0.0 - GetRadius() Or
-			GetPosition().X > GetGame().mWindowWidth + GetRadius()) _
+		If (GetPosition().X < GetGame().mWindowWidth * (-0.5) - GetRadius() Or
+			GetPosition().X > GetGame().mWindowWidth * 0.5 + GetRadius()) _
 			   Then
 			Dim v As Vector2
-			v.X = GetGame().mWindowWidth - GetPosition().X
+			v.X = -GetPosition().X
 			v.Y = GetPosition().Y
 			SetPosition(v)
 		End If
 
-		If (GetPosition().Y < 0.0 - GetRadius() Or
-			GetPosition().Y > GetGame().mWindowHeight + GetRadius()) _
+		If (GetPosition().Y < GetGame().mWindowHeight * (-0.5) - GetRadius() Or
+			GetPosition().Y > GetGame().mWindowHeight * 0.5 + GetRadius()) _
 			Then
 			Dim v As Vector2
 			v.X = GetPosition().X
-			v.Y = GetGame().mWindowHeight - GetPosition().Y
+			v.Y = -GetPosition().Y
 			SetPosition(v)
 		End If
 

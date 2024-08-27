@@ -45,4 +45,7 @@
         Return mUpdateOrder
     End Function
 
+    'ワールド変換の通知を受け取る（オーバーライド可能）
+    Public Overridable Sub OnUpdateWorldTransform()
+    End Sub
 End Class

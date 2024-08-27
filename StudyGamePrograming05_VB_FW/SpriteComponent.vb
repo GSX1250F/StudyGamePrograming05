@@ -27,7 +27,7 @@
         MyBase.Dispose(disposing)
     End Sub
 
-    Public Overridable Sub Draw(ByRef mGraphics As Object)
+    Public Overridable Sub Draw()
         If (mTexture IsNot Nothing) And (mVisible = True) Then
             Dim w As Double = mTexWidth * mOwner.GetScale()
             Dim h As Double = mTexHeight * mOwner.GetScale()
@@ -37,12 +37,14 @@
             '画像を回転して表示
             Dim angle As Double = mOwner.GetRotation()
 
-            Dim x1 As Integer = CInt((-w / 2) * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0)
-            Dim y1 As Integer = CInt(-(-w / 2) * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0)
-            Dim x2 As Integer = CInt(w / 2 * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0)
-            Dim y2 As Integer = CInt(-w / 2 * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0)
-            Dim x3 As Integer = CInt((-w / 2) * Math.Cos(angle) + h / 2 * Math.Sin(angle) + x0)
-            Dim y3 As Integer = CInt(-(-w / 2) * Math.Sin(angle) + h / 2 * Math.Cos(angle) + y0)
+            Dim x1 As Double = (-w / 2) * Math.Cos(angle) + (h / 2) * Math.Sin(angle) + x0     '左上
+            Dim y1 As Double = w / 2 * Math.Sin(angle) + (h / 2) * Math.Cos(angle) + y0
+            Dim x2 As Double = w / 2 * Math.Cos(angle) + (h / 2) * Math.Sin(angle) + x0        '右上
+            Dim y2 As Double = (-w / 2) * Math.Sin(angle) + (h / 2) * Math.Cos(angle) + y0
+            Dim x3 As Double = (-w / 2) * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0        '左下
+            Dim y3 As Double = w / 2 * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0
+            Dim x4 As Double = w / 2 * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0           '右下
+            Dim y4 As Double = (-w / 2) * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0
             'PointF配列を作成
             Dim destinationPoints() As PointF = {New PointF(x1, y1), New PointF(x2, y2), New PointF(x3, y3)}
 

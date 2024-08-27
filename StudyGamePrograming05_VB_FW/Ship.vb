@@ -61,21 +61,21 @@ Public Class Ship
 
         If (mCrash = False) Then
             '画面外にでたら反対の位置に移動（ラッピング処理）
-            If (GetPosition().X < 0.0 - 1.0 * GetRadius() Or
-                GetPosition().X > GetGame().mWindowWidth + 1.0 * GetRadius()) _
+            If (GetPosition().X < GetGame().mWindowWidth * (-0.5) - GetRadius() Or
+                GetPosition().X > GetGame().mWindowWidth * 0.5 + GetRadius()) _
                 Then
                 Dim v As Vector2
-                v.X = GetGame().mWindowWidth - GetPosition().X
+                v.X = -GetPosition().X
                 v.Y = GetPosition().Y
                 SetPosition(v)
             End If
 
-            If (GetPosition().Y < 0.0 - 1.0 * GetRadius() Or
-                GetPosition().Y > GetGame().mWindowHeight + 1.0 * GetRadius()) _
+            If (GetPosition().Y < GetGame().mWindowHeight * (-0.5) - GetRadius() Or
+                GetPosition().Y > GetGame().mWindowHeight * 0.5 + GetRadius()) _
                 Then
                 Dim v As Vector2
                 v.X = GetPosition().X
-                v.Y = GetGame().mWindowHeight - GetPosition().Y
+                v.Y = -GetPosition().Y
                 SetPosition(v)
             End If
 
@@ -146,8 +146,8 @@ Public Class Ship
 
         SetScale(0.8)
         Dim v As Vector2
-        v.X = GetGame().mWindowWidth / 2
-        v.Y = GetGame().mWindowHeight / 2
+        v.X = 0.0
+        v.Y = 0.0
         SetPosition(v)
         Dim rng As RandomNumberGenerator = RandomNumberGenerator.Create()
         Dim b(0) As Byte

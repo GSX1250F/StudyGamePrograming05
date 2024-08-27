@@ -1,4 +1,5 @@
 ﻿Imports System.Numerics
+Imports OpenTK
 
 Public Class Actor
     Implements IDisposable      '明示的にクラスを開放するために必要
@@ -22,6 +23,7 @@ Public Class Actor
         mScale = 1.0
         mRotation = 0.0
         mRadius = 0.0
+        mRecomputeWorldTransform = True
         mGame = game
         mGame.AddActor(Me)
     End Sub
@@ -51,10 +53,12 @@ Public Class Actor
     'ゲームから呼び出される更新関数(オーバーライド不可)
     Public Sub Update(ByVal deltaTime As Double)
         If mState = State.EActive Or mState = State.EPaused Then
+            ComputeWorldTransform()
             For Each comp In mComponents
                 comp.Update(deltaTime)
             Next
             UpdateActor(deltaTime)
+            ComputeWorldTransform()
         End If
     End Sub
 
@@ -82,24 +86,28 @@ Public Class Actor
     End Function
     Public Sub SetPosition(ByRef pos As Vector2)
         mPosition = pos
+        mRecomputeWorldTransform = True
     End Sub
     Public Function GetScale() As Double
         Return mScale
     End Function
     Public Sub SetScale(ByRef scale As Double)
         mScale = scale
+        mRecomputeWorldTransform = True
     End Sub
     Public Function GetRotation() As Double
         Return mRotation
     End Function
     Public Sub SetRotation(ByRef rotation As Double)
         mRotation = rotation
+        mRecomputeWorldTransform = True
     End Sub
     Public Function GetRadius() As Double
         Return mRadius * mScale
     End Function
     Public Sub SetRadius(ByRef radius As Double)
         mRadius = radius
+        mRecomputeWorldTransform = True
     End Sub
     Public Function GetForward() As Vector2
         Dim v = New Vector2(Math.Cos(mRotation), -Math.Sin(mRotation))       '向きの単位ベクトル
@@ -137,4 +145,22 @@ Public Class Actor
             mComponents.RemoveAt(iter)
         End If
     End Sub
+
+    Public Function GetWorldTransform() As Matrix4
+        Return mWorldTransform
+    End Function
+    Public Sub ComputeWorldTransform()
+        If (mRecomputeWorldTransform = True) Then
+            mRecomputeWorldTransform = False
+            'スケーリング→回転→平行移動
+            mWorldTransform = Matrix4.CreateScale(mScale)
+            mWorldTransform *= Matrix4.CreateRotationZ(mRotation)
+            mWorldTransform *= Matrix4.CreateTranslation(mPosition.x, mPosition.y, 0.0)
+            For Each comp In mComponents
+                comp.OnUpdateWorldTransform()
+            Next
+        End If
+    End Sub
+    Private mRecomputeWorldTransform As Boolean
+    Private mWorldTransform As Matrix4
 End Class

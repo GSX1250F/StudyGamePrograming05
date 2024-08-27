@@ -34,10 +34,10 @@
 		'DeathTimeが0になるか位置が画面外になったら消去する。
 		mDeathTime -= deltaTime
 		If (mDeathTime <= 0.0 Or
-			GetPosition().X < 0.0 - 2.0 * GetRadius() Or
-			GetPosition().X > GetGame().mWindowWidth + 2.0 * GetRadius() Or
-			GetPosition().Y < 0.0 - 2.0 * GetRadius() Or
-			GetPosition().Y > GetGame().mWindowHeight + 2.0 * GetRadius()) Then
+			GetPosition().X < GetGame().mWindowWidth * (-0.5) - 2.0 * GetRadius() Or
+			GetPosition().X > GetGame().mWindowWidth * 0.5 + 2.0 * GetRadius() Or
+			GetPosition().Y < GetGame().mWindowHeight * (-0.5) - 2.0 * GetRadius() Or
+			GetPosition().Y > GetGame().mWindowHeight * 0.5 + 2.0 * GetRadius()) Then
 
 			SetState(State.EDead)
 		Else

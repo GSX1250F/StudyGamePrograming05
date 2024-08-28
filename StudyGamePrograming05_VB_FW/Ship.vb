@@ -20,11 +20,11 @@ Public Class Ship
         MyBase.New(game)
         mSSC = New SomeSpriteComponent(Me, 30)
         mSSC.TextureFiles = New List(Of String) From {
-            "\Assets\Ship01.png",
-            "\Assets\Ship02.png",
-            "\Assets\Ship03.png",
-            "\Assets\Ship04.png",
-            "\Assets\Ship05.png"}
+            "Assets\Ship01.png",
+            "Assets\Ship02.png",
+            "Assets\Ship03.png",
+            "Assets\Ship04.png",
+            "Assets\Ship05.png"}
         mSSC.SetSomeTextures(mSSC.TextureFiles)
 
         mIC = New InputComponent(Me, 10)

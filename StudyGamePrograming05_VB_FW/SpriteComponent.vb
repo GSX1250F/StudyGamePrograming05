@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing.Drawing2D
+Imports System.Net.Mime.MediaTypeNames
 Imports OpenTK
 Imports OpenTK.Graphics
 Imports OpenTK.Graphics.OpenGL
@@ -6,7 +7,7 @@ Imports OpenTK.Graphics.OpenGL
 Public Class SpriteComponent
     Inherits Component
 
-    Private mTexture As Image
+    Private mTexture As Texture
     Private mDrawOrder As Integer
     Private mTexWidth As Integer
     Private mTexHeight As Integer
@@ -34,6 +35,8 @@ Public Class SpriteComponent
 
     Public Overridable Sub Draw()
         If (mTexture IsNot Nothing) And (mVisible = True) Then
+            'mTexture.SetActive()
+
             'TriangleStripの場合、0,1,2→1つ目、2,1,3→2つ目の三角形となる。
             Dim vertices As List(Of Vector2) = New List(Of Vector2) From {
                     New Vector2(-0.5, -0.5),
@@ -63,19 +66,13 @@ Public Class SpriteComponent
                 scaleMat = Matrix4.CreateScale(2.0 / mOwner.GetGame().mWindowWidth, 2.0 / mOwner.GetGame().mWindowHeight, 0.0)
                 v *= scaleMat
 
+                'GL.TexCoord2(texcoords(i).X, texcoords(i).Y)
                 GL.Vertex2(v.X, v.Y)
             Next
             GL.End()
 
         End If
 
-    End Sub
-    Public Sub SetTexture(ByRef tex As Image)
-        mTexture = tex
-        mTexWidth = tex.Width
-        mTexHeight = tex.Height
-        ' 高さと幅の平均をActorの直径とする。
-        mOwner.SetRadius((mTexWidth + mTexHeight) / 4)
     End Sub
 
     Public Function GetDrawOrder() As Integer
@@ -87,9 +84,16 @@ Public Class SpriteComponent
     Public Function GetTexHeight() As Integer
         Return mTexHeight
     End Function
-    Public Function GetTexture() As Image
+    Public Function GetTexture() As Texture
         Return mTexture
     End Function
+    Public Sub SetTexture(ByRef texture As Texture)
+        mTexture = texture
+        mTexWidth = texture.GetTexWidth()
+        mTexHeight = texture.GetTexHeight()
+        ' 高さと幅の平均をActorの直径とする。
+        mOwner.SetRadius((mTexWidth + mTexHeight) / 4)
+    End Sub
     Public Sub SetVisible(ByVal visible As Boolean)
         mVisible = visible
     End Sub

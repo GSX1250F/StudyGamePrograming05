@@ -33,7 +33,7 @@ Public Class Asteroid
 
 		'スプライトコンポーネント作成、テクスチャ設定
 		Dim sc As New SpriteComponent(Me, 40)
-		sc.SetTexture(game.GetRenderer().GetTexture("\Assets\Asteroid.png"))
+		sc.SetTexture(game.GetRenderer().GetTexture("Assets\Asteroid.png"))
 
 		'MoveComponent作成
 		Dim mc As New MoveComponent(Me, 10)

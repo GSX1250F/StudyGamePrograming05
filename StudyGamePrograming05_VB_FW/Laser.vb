@@ -11,7 +11,7 @@
 		mDeathTime = 1.0
 		mLaserSpeed = 900.0
 		Dim sc As New SpriteComponent(Me, 50)
-		sc.SetTexture(game.GetRenderer().GetTexture("\Assets\Laser.png"))
+		sc.SetTexture(game.GetRenderer().GetTexture("Assets\Laser.png"))
 
 		'CircleComponent作成
 		mCircle = New CircleComponent(Me, 10)

@@ -13,7 +13,7 @@ Public Class ClearPict
 
         'スプライトコンポーネント作成、テクスチャ設定
         sc = New SpriteComponent(Me, 100)
-        sc.SetTexture(game.GetRenderer().GetTexture("\Assets\ClearPict.png"))
+        sc.SetTexture(game.GetRenderer().GetTexture("Assets\ClearPict.png"))
         sc.SetVisible(False)
     End Sub
     Public Overrides Sub UpdateActor(ByVal deltaTime As Double)

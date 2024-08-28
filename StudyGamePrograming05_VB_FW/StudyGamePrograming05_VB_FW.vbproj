@@ -117,6 +117,7 @@
     <Compile Include="SomeSpriteComponent.vb" />
     <Compile Include="SoundPlayer.vb" />
     <Compile Include="SpriteComponent.vb" />
+    <Compile Include="Texture.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Game.resx">

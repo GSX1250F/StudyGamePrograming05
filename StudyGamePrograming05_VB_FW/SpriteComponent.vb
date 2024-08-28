@@ -1,4 +1,5 @@
-﻿Imports OpenTK
+﻿Imports System.Drawing.Drawing2D
+Imports OpenTK
 Imports OpenTK.Graphics
 Imports OpenTK.Graphics.OpenGL
 
@@ -33,11 +34,17 @@ Public Class SpriteComponent
 
     Public Overridable Sub Draw()
         If (mTexture IsNot Nothing) And (mVisible = True) Then
+            'TriangleStripの場合、0,1,2→1つ目、2,1,3→2つ目の三角形となる。
             Dim vertices As List(Of Vector2) = New List(Of Vector2) From {
                     New Vector2(-0.5, -0.5),
                     New Vector2(0.5, -0.5),
                     New Vector2(-0.5, 0.5),
                     New Vector2(0.5, 0.5)}
+            'Textureの座標は頂点座標と上下反転する
+            Dim texcoords As List(Of Vector2) = New List(Of Vector2) From {New Vector2(0.0, 1.0),
+                                                                       New Vector2(1.0, 1.0),
+                                                                       New Vector2(0.0, 0.0),
+                                                                       New Vector2(1.0, 0.0)}
 
             ' テクスチャサイズで再スケーリングしたワールド変換行列を作成
             Dim scaleMat As Matrix4 = Matrix4.CreateScale(mTexWidth, mTexHeight, 1.0)

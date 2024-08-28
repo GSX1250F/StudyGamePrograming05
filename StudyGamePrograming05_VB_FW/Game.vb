@@ -4,6 +4,7 @@ Imports System.Runtime.InteropServices
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify
 Imports OpenTK
 
+
 Public Class Game
     <DllImport("user32.dll", ExactSpelling:=True)>
     Private Shared Function GetKeyboardState(ByVal keyStates() As Byte) As Boolean

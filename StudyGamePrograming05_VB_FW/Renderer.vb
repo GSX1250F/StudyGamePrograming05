@@ -9,7 +9,8 @@ Public Class Renderer
 	Private mWindow As GLControl
 	Private mScreenWidth As Integer
 	Private mScreenHeight As Integer
-	Private mTextures As New Dictionary(Of String, BitmapData)   'テクスチャの配列
+	'Private mTextures As New Dictionary(Of String, Image)   'ファイル名→Imageの連想配列
+	Private mTextures As New Dictionary(Of String, Integer)   'ファイル名→OpenGLのテクスチャのインデックスの連想配列
 	Private mSprites As New List(Of SpriteComponent)    'スプライトコンポーネントの配列
 
 	Sub New(ByRef game As Game)
@@ -85,22 +86,45 @@ Public Class Renderer
 			mSprites.RemoveAt(iter)
 		End If
 	End Sub
-	Public Function GetTexture(ByRef filename As String) As BitmapData
-		Dim Data As BitmapData = Nothing
+
+	Public Sub SetTexture(ByRef filename As String)
+		'画像ファイルをOpenGLに登録する。テクスチャのインデックスを連想配列に保存する。
 		Dim b As Boolean = mTextures.ContainsKey(filename)
 		If b = True Then
-			'すでに読み込み済み
-			Data = mTextures(filename)
+			'すでに読み込み済みなので何もしない
 		Else
-			'画像ファイルを読み込んで、Imageオブジェクトを作成し、ファイル名と紐づけする
-			Dim tex As Bitmap = New Bitmap(Application.StartupPath & filename)
-			'画像をロック
-			Data = tex.LockBits(New Rectangle(0, 0, tex.Width, tex.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb)
-			'ロックをしたら必ずアンロックする
-			tex.UnlockBits(Data)
-			mTextures.Add(filename, Data)
+			'画像ファイルを読み込んで、Bitmapオブジェクトを作成する。
+			Dim bmp As Bitmap = New Bitmap(filename)
+			'ビットマップをロック
+			Dim Data As BitmapData = bmp.LockBits(New Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb)
+			'ビットマップアンロック
+			bmp.UnlockBits(Data)
+			Dim textureid As Integer
+			'OpenGLテクスチャ領域確保
+			GL.GenTextures(1, textureid)
+			'アクティブ設定
+			GL.BindTexture(TextureTarget.Texture2D, textureid)
+			'テクスチャ領域にピクセルデータを貼り付ける
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Data.Width, Data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, Data.Scan0)
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, Int(TextureMinFilter.Nearest))
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, Int(TextureMagFilter.Linear))
+			GL.GenerateMipmap(GenerateMipmapTarget.Texture2D)
+			'メモリ開放
+			bmp.Dispose()
+			Data = Nothing
+			'テクスチャのインデックスを連想配列に保存
+			mTextures.Add(filename, textureid)
 		End If
-		Return Data
+	End Sub
+
+	Public Function GetTexture(ByRef filename As String) As Integer
+		'ファイル名にひもづいたOpenGLテクスチャインデックスを返す。
+		Dim b As Boolean = mTextures.ContainsKey(filename)
+		If b = True Then
+			Return mTextures(filename)
+		Else
+			Return Nothing
+		End If
 	End Function
 	Public Function GetScreenWidth() As Double
 		Return mScreenWidth

@@ -38,16 +38,12 @@ Public Class Texture
         mTexWidth = image.Width
         mTexHeight = image.Height
 
-        'Dim Data As BitmapData = image.LockBits(New Rectangle(0, 0, mTexWidth, mTexHeight), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb)
-        'image.UnlockBits(Data)
         'テクスチャをOpenGLに生成し、そのIDをメンバ変数mTextureIDに保存する。
         GL.GenTextures(1, mTextureID)
         GL.BindTexture(TextureTarget.Texture2D, mTextureID)
         GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data)
-        'GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, mTexWidth, mTexHeight, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, Data.Scan0)
         'OpenGLに登録が完了したら画像データを開放する。
-        'image.Dispose()
-
+        image = Nothing
         'バイリニアフィルタリングを有効化
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, Int(TextureMinFilter.Linear))
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, Int(TextureMagFilter.Linear))

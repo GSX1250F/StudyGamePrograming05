@@ -42,6 +42,8 @@ Public Class Renderer
 		GL.ClearColor(0.3, 0.3, 0.3, 1.0)
 		' 画面初期化
 		GL.Viewport(0, 0, screenWidth, screenHeight)
+		'テクスチャ有効化
+		GL.Enable(EnableCap.Texture2D)
 		Return True
 	End Function
 	Public Sub Shutdown()
@@ -53,7 +55,7 @@ Public Class Renderer
 	End Sub
 	Public Sub Draw()
 		'画面のクリア
-		GL.ClearColor(0.86, 0.86, 0.86, 1.0)
+		GL.ClearColor(0.3, 0.3, 0.3, 1.0)
 		GL.Clear(ClearBufferMask.ColorBufferBit)
 
 		'すべてのスプライトコンポーネントを描画

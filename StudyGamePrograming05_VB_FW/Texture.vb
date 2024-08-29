@@ -31,7 +31,9 @@ Public Class Texture
 
     Public Function Load(ByRef filename As String) As Boolean
         Dim image As Bitmap = New Bitmap(filename)
-        Dim Data As BitmapData = image.LockBits(New Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb)
+        mTexWidth = image.Width
+        mTexHeight = image.Height
+        Dim Data As BitmapData = image.LockBits(New Rectangle(0, 0, mTexWidth, mTexHeight), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb)
         image.UnlockBits(Data)
         'テクスチャをOpenGLに生成し、そのIDをメンバ変数mTextureIDに保存する。
         GL.GenTextures(1, mTextureID)
@@ -57,6 +59,9 @@ Public Class Texture
     End Function
     Public Function GetTexHeight() As Integer
         Return mTexHeight
+    End Function
+    Public Function GetTextureID() As UInteger
+        Return mTextureID
     End Function
 
     Private mTextureID As UInteger

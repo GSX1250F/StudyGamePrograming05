@@ -1,7 +1,10 @@
 ﻿Imports System.Drawing.Imaging
+Imports System.IO
 Imports OpenTK
 Imports OpenTK.Graphics
 Imports OpenTK.Graphics.OpenGL
+Imports StbImageSharp
+Imports PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat
 
 Public Class Texture
     Implements IDisposable      '明示的にクラスを開放するために必要
@@ -30,20 +33,23 @@ Public Class Texture
     End Sub
 
     Public Function Load(ByRef filename As String) As Boolean
-        Dim image As Bitmap = New Bitmap(filename)
+        StbImage.stbi_set_flip_vertically_on_load(1)
+        Dim image As ImageResult = ImageResult.FromStream(File.OpenRead(filename), ColorComponents.RedGreenBlueAlpha)
         mTexWidth = image.Width
         mTexHeight = image.Height
-        Dim Data As BitmapData = image.LockBits(New Rectangle(0, 0, mTexWidth, mTexHeight), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb)
-        image.UnlockBits(Data)
+
+        'Dim Data As BitmapData = image.LockBits(New Rectangle(0, 0, mTexWidth, mTexHeight), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb)
+        'image.UnlockBits(Data)
         'テクスチャをOpenGLに生成し、そのIDをメンバ変数mTextureIDに保存する。
         GL.GenTextures(1, mTextureID)
         GL.BindTexture(TextureTarget.Texture2D, mTextureID)
-        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, mTexWidth, mTexHeight, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, Data.Scan0)
+        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data)
+        'GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, mTexWidth, mTexHeight, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, Data.Scan0)
         'OpenGLに登録が完了したら画像データを開放する。
-        image.Dispose()
+        'image.Dispose()
 
         'バイリニアフィルタリングを有効化
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, Int(TextureMinFilter.Nearest))
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, Int(TextureMinFilter.Linear))
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, Int(TextureMagFilter.Linear))
 
         Return True

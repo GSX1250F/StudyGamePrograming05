@@ -165,7 +165,7 @@ Public Class Game
         mShip = New Ship(Me)    'プレイヤーの宇宙船を作成
 
         '小惑星を複数生成
-        Dim initialNumAsteroids = 15        '初期値
+        Dim initialNumAsteroids = 20        '初期値
         For i As Integer = 0 To initialNumAsteroids - 1
             AddAsteroid()
         Next

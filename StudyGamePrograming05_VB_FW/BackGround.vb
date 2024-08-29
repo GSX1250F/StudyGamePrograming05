@@ -14,7 +14,7 @@ Public Class BackGround
 		v.Y = 0.0
 		bgactor.SetPosition(v)
 		Dim sc As New SpriteComponent(bgactor, 5)
-		sc.SetTexture(GetGame().GetRenderer().GetTexture("\Assets\Farback01.png"))
+		sc.SetTexture(GetGame().GetRenderer().GetTexture("Assets\Farback01.png"))
 		Dim mc As New MoveComponent(bgactor, 30)
 		v.X = -10.0
 		v.Y = 0.0
@@ -27,7 +27,7 @@ Public Class BackGround
 		v.Y = 0.0
 		bgactor.SetPosition(v)
 		sc = New SpriteComponent(bgactor, 5)
-		sc.SetTexture(GetGame().GetRenderer().GetTexture("\Assets\Farback02.png"))
+		sc.SetTexture(GetGame().GetRenderer().GetTexture("Assets\Farback02.png"))
 		mc = New MoveComponent(bgactor, 30)
 		v.X = -10.0
 		v.Y = 0.0
@@ -40,7 +40,7 @@ Public Class BackGround
 		v.Y = 0.0
 		bgactor.SetPosition(v)
 		sc = New SpriteComponent(bgactor, 10)
-		sc.SetTexture(GetGame().GetRenderer().GetTexture("\Assets\Stars.png"))
+		sc.SetTexture(GetGame().GetRenderer().GetTexture("Assets\Stars.png"))
 		mc = New MoveComponent(bgactor, 30)
 		v.X = -20.0
 		v.Y = 0.0
@@ -53,7 +53,7 @@ Public Class BackGround
 		v.Y = 0.0
 		bgactor.SetPosition(v)
 		sc = New SpriteComponent(bgactor, 5)
-		sc.SetTexture(GetGame().GetRenderer().GetTexture("\Assets\Stars.png"))
+		sc.SetTexture(GetGame().GetRenderer().GetTexture("Assets\Stars.png"))
 		mc = New MoveComponent(bgactor, 30)
 		v.X = -20.0
 		v.Y = 0.0

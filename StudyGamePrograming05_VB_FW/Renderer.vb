@@ -58,6 +58,10 @@ Public Class Renderer
 		GL.ClearColor(0.3, 0.3, 0.3, 1.0)
 		GL.Clear(ClearBufferMask.ColorBufferBit)
 
+		'アルファブレンディング
+		GL.Enable(EnableCap.Blend)
+		GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha)
+
 		'すべてのスプライトコンポーネントを描画
 		For Each sprite In mSprites
 			If sprite.GetVisible() = True Then

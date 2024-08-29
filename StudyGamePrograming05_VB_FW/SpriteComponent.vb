@@ -55,7 +55,6 @@ Public Class SpriteComponent
             Dim world As Matrix4 = scaleMat * mOwner.GetWorldTransform()
 
             'OpenGLで四角形を描画（'TriangleStripの場合、0,1,2→1つ目、1,2,3→2つ目の三角形となる。）
-            mTexture.SetActive()
             GL.Begin(PrimitiveType.TriangleStrip)
             ' 各頂点を行列で変換
             For i = 0 To vertices.Count - 1
@@ -89,11 +88,11 @@ Public Class SpriteComponent
     Public Function GetTexture() As Texture
         Return mTexture
     End Function
-    Public Sub SetTexture(ByRef texture As Texture)
-        mTexture = texture
-        mTextureID = texture.GetTextureID()
-        mTexWidth = texture.GetTexWidth()
-        mTexHeight = texture.GetTexHeight()
+    Public Sub SetTexture(ByRef tex As Texture)
+        mTexture = tex
+        mTextureID = tex.GetTextureID()
+        mTexWidth = tex.GetTexWidth()
+        mTexHeight = tex.GetTexHeight()
         ' 高さと幅の平均をActorの直径とする。
         mOwner.SetRadius((mTexWidth + mTexHeight) / 4)
     End Sub

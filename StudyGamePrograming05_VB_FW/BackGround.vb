@@ -10,11 +10,11 @@ Public Class BackGround
 		'背景1つ目
 		Dim bgactor As New Actor(game)
 		Dim v As Vector2
-		v.X = game.mWindowWidth * (-0.5)
+		v.X = 0.0
 		v.Y = 0.0
 		bgactor.SetPosition(v)
 		Dim sc As New SpriteComponent(bgactor, 5)
-		sc.SetTexture(GetGame().GetRenderer().GetTexture("\Assets\Farback01.png"))
+		sc.SetTexture(GetGame().GetRenderer().GetTexture("Assets\Farback01.png"))
 		Dim mc As New MoveComponent(bgactor, 30)
 		v.X = -10.0
 		v.Y = 0.0
@@ -23,11 +23,11 @@ Public Class BackGround
 
 		'背景2つ目
 		bgactor = New Actor(game)
-		v.X = game.mWindowWidth * 0.5
+		v.X = game.mWindowWidth
 		v.Y = 0.0
 		bgactor.SetPosition(v)
 		sc = New SpriteComponent(bgactor, 5)
-		sc.SetTexture(GetGame().GetRenderer().GetTexture("\Assets\Farback02.png"))
+		sc.SetTexture(GetGame().GetRenderer().GetTexture("Assets\Farback02.png"))
 		mc = New MoveComponent(bgactor, 30)
 		v.X = -10.0
 		v.Y = 0.0
@@ -36,11 +36,11 @@ Public Class BackGround
 
 		'背景3つ目
 		bgactor = New Actor(game)
-		v.X = game.mWindowWidth * (-0.5)
+		v.X = 0.0
 		v.Y = 0.0
 		bgactor.SetPosition(v)
 		sc = New SpriteComponent(bgactor, 10)
-		sc.SetTexture(GetGame().GetRenderer().GetTexture("\Assets\Stars.png"))
+		sc.SetTexture(GetGame().GetRenderer().GetTexture("Assets\Stars.png"))
 		mc = New MoveComponent(bgactor, 30)
 		v.X = -20.0
 		v.Y = 0.0
@@ -49,11 +49,11 @@ Public Class BackGround
 
 		'背景4つ目
 		bgactor = New Actor(game)
-		v.X = game.mWindowWidth * 0.5
+		v.X = game.mWindowWidth
 		v.Y = 0.0
 		bgactor.SetPosition(v)
 		sc = New SpriteComponent(bgactor, 5)
-		sc.SetTexture(GetGame().GetRenderer().GetTexture("\Assets\Stars.png"))
+		sc.SetTexture(GetGame().GetRenderer().GetTexture("Assets\Stars.png"))
 		mc = New MoveComponent(bgactor, 30)
 		v.X = -20.0
 		v.Y = 0.0
@@ -66,21 +66,21 @@ Public Class BackGround
 		'ラッピング処理
 		Dim v As New Vector2
 		For Each bg In mBGs
-			If (bg.GetPosition().X < GetGame().mWindowWidth * (-1.0)) Then
-				v.X = bg.GetPosition().X + GetGame().mWindowWidth
+			If (bg.GetPosition().X < -GetGame().mWindowWidth) Then
+				v.X = bg.GetPosition().X + 2.0 * GetGame().mWindowWidth
 				v.Y = bg.GetPosition().Y
 				bg.SetPosition(v)
-			ElseIf (bg.GetPosition().X > GetGame().mWindowWidth * 1.0) Then
-				v.X = bg.GetPosition().X - GetGame().mWindowWidth
+			ElseIf (bg.GetPosition().X > GetGame().mWindowWidth) Then
+				v.X = bg.GetPosition().X - 2.0 * GetGame().mWindowWidth
 				v.Y = bg.GetPosition().Y
 				bg.SetPosition(v)
 			End If
-			If (bg.GetPosition().Y < GetGame().mWindowHeight * (-1.0)) Then
-				v.Y = bg.GetPosition().Y + GetGame().mWindowHeight
+			If (bg.GetPosition().Y < -GetGame().mWindowHeight) Then
+				v.Y = bg.GetPosition().Y + 2.0 * GetGame().mWindowHeight
 				v.X = bg.GetPosition().X
 				bg.SetPosition(v)
-			ElseIf (bg.GetPosition().Y > GetGame().mWindowHeight * 1.0) Then
-				v.Y = bg.GetPosition().Y - GetGame().mWindowHeight
+			ElseIf (bg.GetPosition().Y > GetGame().mWindowHeight) Then
+				v.Y = bg.GetPosition().Y - 2.0 * GetGame().mWindowHeight
 				v.X = bg.GetPosition().X
 				bg.SetPosition(v)
 			End If

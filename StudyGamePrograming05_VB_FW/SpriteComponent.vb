@@ -45,10 +45,10 @@ Public Class SpriteComponent
                     New Vector2(-0.5, 0.5),
                     New Vector2(0.5, 0.5)}
             'Textureの座標は頂点座標と上下反転する
-            Dim texcoords As List(Of Vector2) = New List(Of Vector2) From {New Vector2(0.0, 1.0),
-                                                                       New Vector2(1.0, 1.0),
-                                                                       New Vector2(0.0, 0.0),
-                                                                       New Vector2(1.0, 0.0)}
+            Dim texcoords As List(Of Vector2) = New List(Of Vector2) From {New Vector2(0.0, 0.0),
+                                                                       New Vector2(1.0, 0.0),
+                                                                       New Vector2(0.0, 1.0),
+                                                                       New Vector2(1.0, 1.0)}
 
             ' テクスチャサイズで再スケーリングしたワールド変換行列を作成
             Dim scaleMat As Matrix4 = Matrix4.CreateScale(mTexWidth, mTexHeight, 1.0)

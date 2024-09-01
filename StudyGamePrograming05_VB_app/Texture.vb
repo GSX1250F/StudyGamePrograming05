@@ -1,10 +1,8 @@
-﻿Imports System.Drawing.Imaging
-Imports System.IO
+﻿Imports System.IO
 Imports OpenTK
 Imports OpenTK.Graphics
 Imports OpenTK.Graphics.OpenGL
 Imports StbImageSharp
-Imports PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat
 
 Public Class Texture
     Implements IDisposable      '明示的にクラスを開放するために必要
@@ -33,29 +31,28 @@ Public Class Texture
     End Sub
 
     Public Function Load(ByRef filename As String) As Boolean
-        StbImage.stbi_set_flip_vertically_on_load(1)
-        Dim image As ImageResult = ImageResult.FromStream(File.OpenRead(filename), ColorComponents.RedGreenBlueAlpha)
-        mTexWidth = image.Width
-        mTexHeight = image.Height
+        mTextureID = GL.GenTexture()
 
-        'テクスチャをOpenGLに生成し、そのIDをメンバ変数mTextureIDに保存する。
-        GL.GenTextures(1, mTextureID)
         GL.ActiveTexture(TextureUnit.Texture0)
         GL.BindTexture(TextureTarget.Texture2D, mTextureID)
-        GL.TexImage2D(TextureTarget.Texture2D,
-                      0,
-                      PixelInternalFormat.Rgba,
-                      mTexWidth,
-                      mTexHeight,
-                      0,
-                      PixelFormat.Rgba,
-                      PixelType.UnsignedByte,
-                      image.Data)
-        'OpenGLに登録が完了したら画像データを開放する。
-        image = Nothing
+
+        StbImage.stbi_set_flip_vertically_on_load(1)
+
+        Using stream As Stream = File.OpenRead(filename)
+            Dim image As ImageResult = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha)
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data)
+            mTexWidth = image.Width
+            mTexHeight = image.Height
+        End Using
+
         'バイリニアフィルタリングを有効化
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, Int(TextureMinFilter.Linear))
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, Int(TextureMagFilter.Linear))
+
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, Int(TextureWrapMode.Repeat))
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, Int(TextureWrapMode.Repeat))
+
+        GL.GenerateMipmap(GenerateMipmapTarget.Texture2D)
 
         Return True
     End Function

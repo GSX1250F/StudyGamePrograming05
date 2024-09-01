@@ -35,8 +35,6 @@ Public Class Renderer
         mScreenHeight = screenHeight
         ' 画面初期化
         GL.Viewport(0, 0, screenWidth, screenHeight)
-        'テクスチャ有効化
-        GL.Enable(EnableCap.Texture2D)
 
         ' バーテックス配列オブジェクトの生成
         InitSpriteVerts()
@@ -151,7 +149,8 @@ Public Class Renderer
         End If
         mSpriteShader.SetActive()
         ' ビュー変換行列を作成。ここでは平行投影変換を行う。
-        Dim viewProj As Matrix4 = Matrix4.CreateScale(2.0 / mScreenWidth, 2.0 / mScreenHeight, 1.0)
+        'Dim viewProj As Matrix4 = Matrix4.CreateScale(2.0 / mScreenWidth, 2.0 / mScreenHeight, 1.0)
+        Dim viewProj As Matrix4 = Matrix4.CreateScale(1.0)
         mSpriteShader.SetMatrixUniform("uViewProj", viewProj)
         Return True
     End Function

@@ -147,7 +147,8 @@ Public Class Ship
         SetScale(0.8)
         Dim v As Vector2 = Vector2.Zero
         SetPosition(v)
-        SetRotation(RandomNumberGenerator.GetInt32(0, 1000) * 0.01 * Math.PI * 2.0)        'SetRotation(0.0)
+        'SetRotation(RandomNumberGenerator.GetInt32(0, 1000) * 0.01 * Math.PI * 2.0)        'SetRotation(0.0)
+        SetRotation(0.0)
         mIC.SetVelocity(Vector2.Zero)
         mIC.SetRotSpeed(0.0)
         SetState(State.EActive)

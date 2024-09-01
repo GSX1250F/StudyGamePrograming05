@@ -57,12 +57,12 @@ Public Class Actor
     Public Sub Update(ByVal deltaTime As Double)
         If mState = State.EActive Or mState = State.EPaused Then
             ComputeWorldTransform()
-            UpdateCompoents(deltaTime)
+            UpdateComponents(deltaTime)
             UpdateActor(deltaTime)
             ComputeWorldTransform()
         End If
     End Sub
-    Public Sub UpdateCompoents(ByVal deltaTime As Double)
+    Public Sub UpdateComponents(ByVal deltaTime As Double)
         For Each comp In mComponents
             comp.Update(deltaTime)
         Next

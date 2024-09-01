@@ -130,15 +130,15 @@ Public Class Renderer
     'private
     Private Sub InitSpriteVerts()
         Dim vertices As Single() = New Single() {
-            -0.5, 0.5, 0.0, 0.0, 0.0,
-            -0.5, -0.5, 0.0, 0.0, 1.0,
-            0.5, -0.5, 0.0, 1.0, 1.0,
-            0.5, 0.5, 0.0, 1.0, 0.0
+            -0.5, -0.5, 0.0, 0.0, 0.0,
+            0.5, -0.5, 0.0, 1.0, 0.0,
+            -0.5, 0.5, 0.0, 0.0, 1.0,
+            0.5, 0.5, 0.0, 1.0, 1.0
         }
 
-        Dim indices As Integer() = New Integer() {
+        Dim indices As UInteger() = New UInteger() {
             0, 1, 2,
-            2, 3, 0
+            2, 1, 3
         }
 
         mSpriteVerts = New VertexArray(vertices, 4, indices, 6)
@@ -156,7 +156,7 @@ Public Class Renderer
         Return True
     End Function
     Private disposedValue As Boolean
-    Private mWindow As Game     'GameクラスはOpenTK.GameWindowの子クラス
+    Private mGame As Game     'GameクラスはOpenTK.GameWindowの子クラス
     Private mScreenWidth As Integer
     Private mScreenHeight As Integer
     Private mTextures As New Dictionary(Of String, Texture)

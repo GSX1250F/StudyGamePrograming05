@@ -8,7 +8,7 @@ Public Class VertexArray
 
     'public
     Public Sub New(ByRef verts As Single(), ByVal numVerts As Integer,
-                   ByRef indices As Integer(), ByVal numIndices As Integer)
+                   ByRef indices As UInteger(), ByVal numIndices As Integer)
         mNumVerts = numVerts
         mNumIndices = numIndices
         GL.GenVertexArrays(1, mVertexArray)
@@ -26,7 +26,7 @@ Public Class VertexArray
         GL.GenBuffers(1, mIndexBuffer)
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, mIndexBuffer)
         GL.BufferData(BufferTarget.ElementArrayBuffer,
-                      numIndices * Marshal.SizeOf(Of Integer),
+                      numIndices * Marshal.SizeOf(Of UInteger),
                       indices,
                       BufferUsageHint.StaticDraw)
 

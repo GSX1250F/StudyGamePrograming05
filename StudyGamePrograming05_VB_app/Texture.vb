@@ -40,6 +40,7 @@ Public Class Texture
 
         'テクスチャをOpenGLに生成し、そのIDをメンバ変数mTextureIDに保存する。
         GL.GenTextures(1, mTextureID)
+        GL.ActiveTexture(TextureUnit.Texture0)
         GL.BindTexture(TextureTarget.Texture2D, mTextureID)
         GL.TexImage2D(TextureTarget.Texture2D,
                       0,
@@ -62,6 +63,7 @@ Public Class Texture
         GL.DeleteTextures(1, mTextureID)
     End Sub
     Public Sub SetActive()
+        GL.ActiveTexture(TextureUnit.Texture0)
         GL.BindTexture(TextureTarget.Texture2D, mTextureID)
     End Sub
     Public Function GetTexWidth() As Integer

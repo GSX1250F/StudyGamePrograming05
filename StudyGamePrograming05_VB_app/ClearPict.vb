@@ -8,7 +8,7 @@ Public Class ClearPict
     Sub New(ByRef game As Game)
         MyBase.New(game)
         SetState(State.EPaused)
-        Dim pos = New Vector2(0.0, 0.0)
+        Dim pos As Vector2 = Vector2.Zero
         SetPosition(pos)
 
         'スプライトコンポーネント作成、テクスチャ設定

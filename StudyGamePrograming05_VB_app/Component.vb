@@ -47,4 +47,7 @@ Public Class Component
         Return mUpdateOrder
     End Function
 
+    Public Overridable Sub OnUpdateWorldTransform()
+
+    End Sub
 End Class

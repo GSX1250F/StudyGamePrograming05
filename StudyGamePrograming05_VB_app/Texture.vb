@@ -41,7 +41,15 @@ Public Class Texture
         'テクスチャをOpenGLに生成し、そのIDをメンバ変数mTextureIDに保存する。
         GL.GenTextures(1, mTextureID)
         GL.BindTexture(TextureTarget.Texture2D, mTextureID)
-        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data)
+        GL.TexImage2D(TextureTarget.Texture2D,
+                      0,
+                      PixelInternalFormat.Rgba,
+                      mTexWidth,
+                      mTexHeight,
+                      0,
+                      PixelFormat.Rgba,
+                      PixelType.UnsignedByte,
+                      image.Data)
         'OpenGLに登録が完了したら画像データを開放する。
         image = Nothing
         'バイリニアフィルタリングを有効化

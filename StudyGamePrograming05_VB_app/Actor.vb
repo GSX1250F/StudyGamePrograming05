@@ -57,12 +57,15 @@ Public Class Actor
     Public Sub Update(ByVal deltaTime As Double)
         If mState = State.EActive Or mState = State.EPaused Then
             ComputeWorldTransform()
-            For Each comp In mComponents
-                comp.Update(deltaTime)
-            Next
+            UpdateCompoents(deltaTime)
             UpdateActor(deltaTime)
             ComputeWorldTransform()
         End If
+    End Sub
+    Public Sub UpdateCompoents(ByVal deltaTime As Double)
+        For Each comp In mComponents
+            comp.Update(deltaTime)
+        Next
     End Sub
 
     'アクター独自の更新処理(オーバーライド可能)
@@ -159,6 +162,10 @@ Public Class Actor
             mWorldTransform = Matrix4.CreateScale(mScale)
             mWorldTransform *= Matrix4.CreateRotationZ(mRotation)
             mWorldTransform *= Matrix4.CreateTranslation(mPosition.X, mPosition.Y, 0.0)
+            For Each comp In mComponents
+                comp.OnUpdateWorldTransform()
+            Next
+
         End If
     End Sub
     Private mRecomputeWorldTransform As Boolean

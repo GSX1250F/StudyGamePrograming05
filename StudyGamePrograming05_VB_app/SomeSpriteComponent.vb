@@ -9,7 +9,7 @@
 
 	End Sub
 
-	Public Sub SetSomeTextures(ByRef texturefiles As List(Of String))
+	Public Sub SetSomeTextures(ByVal texturefiles As List(Of String))
 		For Each file In texturefiles
 			SetTexture(mOwner.GetGame().GetRenderer().GetTexture(file))
 		Next

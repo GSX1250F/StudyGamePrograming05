@@ -8,7 +8,7 @@
 	Sub New(ByRef game As Game)
 		MyBase.New(game)
 		'スプライトコンポーネント作成、テクスチャ設定
-		mDeathTime = 1.0
+		mDeathTime = 2.0
 		mLaserSpeed = 900.0
 		Dim sc As New SpriteComponent(Me, 50)
 		sc.SetTexture(game.GetRenderer().GetTexture("Assets\Laser.png"))

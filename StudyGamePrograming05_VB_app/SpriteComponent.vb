@@ -9,13 +9,6 @@ Imports OpenTK.Mathematics
 Public Class SpriteComponent
     Inherits Component
 
-    Private mTexture As Texture
-    Private mTextureID As UInteger
-    Private mDrawOrder As Integer
-    Private mTexWidth As Integer
-    Private mTexHeight As Integer
-    Private mVisible As Boolean
-
     Sub New(ByRef owner As Actor, ByVal drawOrder As Integer)
         MyBase.New(owner, drawOrder)
         mTexture = Nothing
@@ -44,9 +37,12 @@ Public Class SpriteComponent
             ' ワールド変換
             shader.SetMatrixUniform("uWorldTransform", world)
             ' 現在のテクスチャをセット
-            'mTexture.SetActive()
+            mTexture.SetActive()
             ' 短形を描画
-            GL.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, 0)
+            GL.DrawElements(PrimitiveType.Triangles,
+                            6,
+                            DrawElementsType.UnsignedInt,
+                            0)
 
         End If
 
@@ -66,7 +62,6 @@ Public Class SpriteComponent
     End Function
     Public Sub SetTexture(ByRef tex As Texture)
         mTexture = tex
-        mTextureID = tex.GetTextureID()
         mTexWidth = tex.GetTexWidth()
         mTexHeight = tex.GetTexHeight()
         ' 高さと幅の平均をActorの直径とする。
@@ -78,4 +73,12 @@ Public Class SpriteComponent
     Public Function GetVisible() As Boolean
         Return mVisible
     End Function
+
+    'private
+    Private mTexture As Texture
+    Private mDrawOrder As Integer = 100
+    Private mTexWidth As Integer
+    Private mTexHeight As Integer
+    Private mVisible As Boolean
+
 End Class

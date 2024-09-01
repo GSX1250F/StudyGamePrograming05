@@ -8,8 +8,10 @@ Public Class Renderer
     Implements IDisposable      '明示的にクラスを開放するために必要
 
     'public
-    Sub New(ByRef window As Game)
-        mWindow = window
+    Sub New(ByRef game As Game)
+        mGame = game
+        mSpriteShader = Nothing
+        mSpriteVerts = Nothing
     End Sub
     Protected disposed = False     '開放処理が実施済みかのフラグ
     Public Overloads Sub Dispose() Implements IDisposable.Dispose
@@ -74,7 +76,7 @@ Public Class Renderer
                 sprite.Draw(mSpriteShader)
             End If
         Next
-        mWindow.SwapBuffers()
+        mGame.SwapBuffers()
     End Sub
 
     Public Sub AddSprite(ByRef sprite As SpriteComponent)
@@ -107,7 +109,7 @@ Public Class Renderer
             tex = mTextures(filename)
         Else
             'Textureクラスを生成し、連想配列に追加する。
-            tex = New Texture
+            tex = New Texture()
             If (tex.Load(filename)) Then
                 mTextures.Add(filename, tex)
             Else
@@ -134,7 +136,7 @@ Public Class Renderer
             0.5, 0.5, 0.0, 1.0, 0.0
         }
 
-        Dim indices As UInteger() = New UInteger() {
+        Dim indices As Integer() = New Integer() {
             0, 1, 2,
             2, 3, 0
         }

@@ -9,9 +9,7 @@ Public Class BackGround
 
 		'背景1つ目
 		Dim bgactor As New Actor(game)
-		Dim v As Vector2
-		v.X = 0.0
-		v.Y = 0.0
+		Dim v As Vector2 = Vector2.Zero
 		bgactor.SetPosition(v)
 		Dim sc As New SpriteComponent(bgactor, 5)
 		sc.SetTexture(GetGame().GetRenderer().GetTexture("Assets\Farback01.png"))

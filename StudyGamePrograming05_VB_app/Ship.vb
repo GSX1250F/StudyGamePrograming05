@@ -144,18 +144,10 @@ Public Class Ship
     End Sub
 
     Public Sub Init()
-
         SetScale(0.8)
-        Dim v As Vector2
-        v.X = 0.0
-        v.Y = 0.0
+        Dim v As Vector2 = Vector2.Zero
         SetPosition(v)
-        Dim rng As RandomNumberGenerator = RandomNumberGenerator.Create()
-        Dim b(0) As Byte
-        rng.GetBytes(b)
-        SetRotation(b(0) / 255 * Math.PI * 2.0)     'ランダムな向き
-        rng.Dispose()
-        'SetRotation(0.0)
+        SetRotation(RandomNumberGenerator.GetInt32(0, 1000) * 0.01 * Math.PI * 2.0)        'SetRotation(0.0)
         mIC.SetVelocity(Vector2.Zero)
         mIC.SetRotSpeed(0.0)
         SetState(State.EActive)

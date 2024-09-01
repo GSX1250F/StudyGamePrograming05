@@ -29,6 +29,8 @@ Public Class Game
         mUpdatingActors = False
     End Sub
     Public Function Initialize() As Boolean
+        GL.Viewport(0, 0, Size.X, Size.Y)
+
         'レンダラー作成
         mRenderer = New Renderer(Me)
         If (mRenderer.Initialize(mWindowWidth, mWindowHeight)) = False Then
@@ -60,7 +62,7 @@ Public Class Game
         Me.Close()
     End Sub
 
-    Public Function GetRenderer()
+    Public Function GetRenderer() As Renderer
         Return mRenderer
     End Function
     Public Function GetSoundPlayer() As SoundPlayer
@@ -93,9 +95,9 @@ Public Class Game
         End If
     End Sub
 
-
     Public mWindowWidth As Integer
     Public mWindowHeight As Integer
+
 
     'private
     Private Sub ProcessInput()
@@ -115,7 +117,7 @@ Public Class Game
         End While
         'デルタタイムの計算
         Dim deltaTime As Double = (Ticks.ElapsedMilliseconds - mTicksCount) / 1000
-
+        Dim fps As Double = 1 / deltaTime
         'デルタタイムを最大値で制限する
         If deltaTime > 0.05 Then
             deltaTime = 0.05
@@ -131,6 +133,7 @@ Public Class Game
 
         '待ちアクターをmActorsに移動
         For Each pending In mPendingActors
+            pending.ComputeWorldTransform()
             mActors.Add(pending)
         Next
         mPendingActors.Clear()
@@ -226,12 +229,12 @@ Public Class Game
     End Sub
 
     Protected Overrides Sub OnUpdateFrame(e As FrameEventArgs)
+        MyBase.OnUpdateFrame(e)
         '毎フレーム更新時に呼び出される。
         If mIsRunning Then
             ProcessInput()
             UpdateGame()
             GenerateOutput()
-            MyBase.OnUpdateFrame(e)     '最後に親クラス関数呼び出し
         Else
             Shutdown()
         End If
@@ -240,7 +243,7 @@ Public Class Game
     Protected Overrides Sub OnResize(e As ResizeEventArgs)
         '画面サイズ変更時に呼び出される。
         MyBase.OnResize(e)
-        GL.Viewport(0, 0, Size.X, Size.Y)
+
     End Sub
 
     Protected Overrides Sub OnUnload()

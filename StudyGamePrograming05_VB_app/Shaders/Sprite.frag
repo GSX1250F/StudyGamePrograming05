@@ -1,5 +1,5 @@
 // GLSL3.3を要求
-#version 330
+#version 330 core
 
 // カラーバッファへの出力色
 out vec4 outColor;

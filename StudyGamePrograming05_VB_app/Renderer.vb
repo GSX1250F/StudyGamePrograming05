@@ -71,7 +71,7 @@ Public Class Renderer
         'すべてのスプライトコンポーネントを描画
         For Each sprite In mSprites
             If sprite.GetVisible() = True Then
-                sprite.Draw()
+                sprite.Draw(mSpriteShader)
             End If
         Next
         mWindow.SwapBuffers()
@@ -128,13 +128,13 @@ Public Class Renderer
     'private
     Private Sub InitSpriteVerts()
         Dim vertices As Single() = New Single() {
-            -0.5F, 0.5F, 0.0F, 0.0F, 0.0F,
-            -0.5F, -0.5F, 0.0F, 0.0F, 1.0F,
-            0.5F, -0.5F, 0.0F, 1.0F, 1.0F,
-            0.5F, 0.5F, 0.0F, 1.0F, 0.0F
+            -0.5, 0.5, 0.0, 0.0, 0.0,
+            -0.5, -0.5, 0.0, 0.0, 1.0,
+            0.5, -0.5, 0.0, 1.0, 1.0,
+            0.5, 0.5, 0.0, 1.0, 0.0
         }
 
-        Dim indices As Integer() = New Integer() {
+        Dim indices As UInteger() = New UInteger() {
             0, 1, 2,
             2, 3, 0
         }
@@ -149,7 +149,7 @@ Public Class Renderer
         End If
         mSpriteShader.SetActive()
         ' ビュー変換行列を作成。ここでは平行投影変換を行う。
-        Dim viewProj As Matrix4 = Matrix4.CreateOrthographic(mScreenWidth, mScreenHeight, 0.01, 1.0)
+        Dim viewProj As Matrix4 = Matrix4.CreateScale(2.0 / mScreenWidth, 2.0 / mScreenHeight, 1.0)
         mSpriteShader.SetMatrixUniform("uViewProj", viewProj)
         Return True
     End Function

@@ -7,7 +7,7 @@ Public Class VertexArray
     Implements IDisposable      '明示的にクラスを開放するために必要
 
     'public
-    Public Sub New(ByRef verts As Single(), ByVal numVerts As Integer, ByRef indices As Integer(), ByVal numIndices As Integer)
+    Public Sub New(ByRef verts As Single(), ByVal numVerts As Integer, ByRef indices As UInteger(), ByVal numIndices As Integer)
         mNumVerts = numVerts
         mNumIndices = numIndices
         GL.GenVertexArrays(1, mVertexArray)
@@ -21,7 +21,7 @@ Public Class VertexArray
         ' インデックスバッファをOpenGLに生成し、そのIDをメンバー変数mIndexBufferに保存する
         GL.GenBuffers(1, mIndexBuffer)
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, mIndexBuffer)
-        GL.BufferData(BufferTarget.ElementArrayBuffer, numIndices * Marshal.SizeOf(Of Integer), indices, BufferUsageHint.StaticDraw)
+        GL.BufferData(BufferTarget.ElementArrayBuffer, numIndices * Marshal.SizeOf(Of UInteger), indices, BufferUsageHint.StaticDraw)
 
         ' バーテックスバッファのレイアウトを指定する。
         ' 属性0はバーテックス座標

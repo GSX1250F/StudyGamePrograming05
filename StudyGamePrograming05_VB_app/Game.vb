@@ -9,9 +9,6 @@ Imports OpenTK.Graphics.OpenGL
 
 Public Class Game
     Inherits GameWindow
-    <DllImport("user32.dll", ExactSpelling:=True)>
-    Private Shared Function GetKeyboardState(ByVal keyStates() As Byte) As Boolean
-    End Function
 #If Win64 Then
     Private Declare PtrSafe Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String,     ByVal uReturnLength As Long, ByVal hwndCallback As Long) As Long
 #Else
@@ -26,6 +23,7 @@ Public Class Game
         mWindowWidth = width
         mWindowHeight = height
         mRenderer = Nothing
+        mSoundPlayer = Nothing
         mIsRunning = True
         mTicksCount = 0
         mUpdatingActors = False
@@ -35,9 +33,11 @@ Public Class Game
         mRenderer = New Renderer(Me)
         If (mRenderer.Initialize(mWindowWidth, mWindowHeight)) = False Then
             mRenderer.Dispose()
+            Return False
         End If
         'サウンドプレイヤ作成
         mSoundPlayer = New SoundPlayer(Me)
+
         'ストップウォッチ開始
         Ticks = New Stopwatch()
         Ticks.Start()
@@ -187,8 +187,6 @@ Public Class Game
     Private Ticks As Stopwatch
     Private mTicksCount As Integer
     Private mIsRunning As Boolean
-    Private mKeyBoardByte(255) As Byte      'キーボード入力検知
-    Private mKeyState(255) As Boolean      'キーボード状態
     Private mSoundPlayer As SoundPlayer     'サウンドプレイヤ
     Private mUpdatingActors As Boolean      'アクター更新中
     Private mActors As New List(Of Actor)   'すべてのアクター

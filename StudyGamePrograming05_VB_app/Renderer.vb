@@ -31,13 +31,29 @@ Public Class Renderer
     Public Function Initialize(ByVal screenWidth As Integer, ByVal screenHeight As Integer) As Boolean
         mScreenWidth = screenWidth
         mScreenHeight = screenHeight
+        ' 画面初期化
+        GL.Viewport(0, 0, screenWidth, screenHeight)
+        'テクスチャ有効化
+        GL.Enable(EnableCap.Texture2D)
 
+        ' バーテックス配列オブジェクトの生成
+        InitSpriteVerts()
+
+        ' シェーダーの生成
+        If (LoadShaders() <> True) Then
+            Console.WriteLine("シェーダーの読み込みに失敗しました。")
+            Return False
+        End If
         Return True
     End Function
     Public Sub Shutdown()
+        mSpriteVerts.Dispose()
+        mSpriteShader.Unload()
+        mSpriteShader.Dispose()
         Me.Dispose()
     End Sub
     Public Sub UnloadData()
+        mTextures.Clear()
     End Sub
     Public Sub Draw()
         '背景色を指定して画面をクリア
@@ -47,15 +63,60 @@ Public Class Renderer
         GL.Enable(EnableCap.Blend)
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha)
 
-        'test
 
+        ' シェーダーとバーテックス配列オブジェクトを有効化
+        mSpriteVerts.SetActive()
+        mSpriteShader.SetActive()
 
-
-
-
-        'ダブルバッファを交換
+        'すべてのスプライトコンポーネントを描画
+        For Each sprite In mSprites
+            If sprite.GetVisible() = True Then
+                sprite.Draw()
+            End If
+        Next
         mWindow.SwapBuffers()
     End Sub
+
+    Public Sub AddSprite(ByRef sprite As SpriteComponent)
+        Dim myDrawOrder As Integer = sprite.GetDrawOrder()
+        Dim cnt As Integer = mSprites.Count     '配列の要素数
+        Dim iter As Integer
+        If cnt > 0 Then
+            For iter = 0 To mSprites.Count - 1
+                If myDrawOrder < mSprites(iter).GetDrawOrder() Then
+                    Exit For
+                End If
+            Next
+        End If
+        mSprites.Insert(iter, sprite)
+    End Sub
+    Public Sub RemoveSprite(ByRef sprite As SpriteComponent)
+        Dim iter As Integer = mSprites.IndexOf(sprite)
+        '見つからなかったら-1が返される。
+        If iter >= 0 Then
+            mSprites.RemoveAt(iter)
+        End If
+    End Sub
+
+    Public Function GetTexture(ByRef filename As String) As Texture
+        Dim tex As Texture = Nothing
+        '画像ファイルが連想配列になければ追加する。
+        Dim b As Boolean = mTextures.ContainsKey(filename)
+        If b = True Then
+            'すでに読み込み済みなので、そのデータを返す。
+            tex = mTextures(filename)
+        Else
+            'Textureクラスを生成し、連想配列に追加する。
+            tex = New Texture
+            If (tex.Load(filename)) Then
+                mTextures.Add(filename, tex)
+            Else
+                tex.Dispose()
+                tex = Nothing
+            End If
+        End If
+        Return tex
+    End Function
 
     Public Function GetScreenWidth() As Double
         Return mScreenWidth
@@ -65,9 +126,39 @@ Public Class Renderer
     End Function
 
     'private
+    Private Sub InitSpriteVerts()
+        Dim vertices As Single() = New Single() {
+            -0.5F, 0.5F, 0.0F, 0.0F, 0.0F,
+            -0.5F, -0.5F, 0.0F, 0.0F, 1.0F,
+            0.5F, -0.5F, 0.0F, 1.0F, 1.0F,
+            0.5F, 0.5F, 0.0F, 1.0F, 0.0F
+        }
+
+        Dim indices As Integer() = New Integer() {
+            0, 1, 2,
+            2, 3, 0
+        }
+
+        mSpriteVerts = New VertexArray(vertices, 4, indices, 6)
+    End Sub
+    Private Function LoadShaders() As Boolean
+        ' シェーダーを生成
+        mSpriteShader = New Shader()
+        If (mSpriteShader.Load("Shaders/Sprite.vert", "Shaders/Sprite.frag") <> True) Then
+            Return False
+        End If
+        mSpriteShader.SetActive()
+        ' ビュー変換行列を作成。ここでは平行投影変換を行う。
+        Dim viewProj As Matrix4 = Matrix4.CreateOrthographic(mScreenWidth, mScreenHeight, 0.01, 1.0)
+        mSpriteShader.SetMatrixUniform("uViewProj", viewProj)
+        Return True
+    End Function
     Private disposedValue As Boolean
     Private mWindow As Game     'GameクラスはOpenTK.GameWindowの子クラス
     Private mScreenWidth As Integer
     Private mScreenHeight As Integer
-
+    Private mTextures As New Dictionary(Of String, Texture)
+    Private mSprites As New List(Of SpriteComponent)
+    Private mSpriteVerts As VertexArray
+    Private mSpriteShader As Shader
 End Class

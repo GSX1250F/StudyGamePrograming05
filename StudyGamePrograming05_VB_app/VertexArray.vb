@@ -7,7 +7,7 @@ Public Class VertexArray
     Implements IDisposable      '明示的にクラスを開放するために必要
 
     'public
-    Public Sub New(ByRef verts As Single, ByVal numVerts As Integer, ByRef indices As Integer, ByVal numIndices As Integer)
+    Public Sub New(ByRef verts As Single(), ByVal numVerts As Integer, ByRef indices As Integer(), ByVal numIndices As Integer)
         mNumVerts = numVerts
         mNumIndices = numIndices
         GL.GenVertexArrays(1, mVertexArray)

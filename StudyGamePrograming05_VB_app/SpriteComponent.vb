@@ -3,6 +3,7 @@ Imports System.Net.Mime.MediaTypeNames
 Imports OpenTK
 Imports OpenTK.Graphics
 Imports OpenTK.Graphics.OpenGL
+Imports OpenTK.Mathematics
 
 Public Class SpriteComponent
     Inherits Component
@@ -64,8 +65,7 @@ Public Class SpriteComponent
                 ' ビュー変換　（2D不要）
                 ' 射影変換　（2D不要）
                 ' ビューポート変換
-                scaleMat = Matrix4.CreateOrthographic(mOwner.GetGame().mWindowWidth, mOwner.GetGame().mWindowHeight, 0.01, 1.0)
-                'scaleMat = Matrix4.CreateScale(1.0 / mOwner.GetGame().mWindowWidth, 1.0 / mOwner.GetGame().mWindowHeight, 0.0)
+                scaleMat = Matrix4.CreateScale(2.0 / mOwner.GetGame().mWindowWidth, 2.0 / mOwner.GetGame().mWindowHeight, 0.0)
                 v *= scaleMat
 
                 GL.TexCoord2(texcoords(i).X, texcoords(i).Y)

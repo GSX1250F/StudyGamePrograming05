@@ -30,7 +30,7 @@ Public Class Game
         mUpdatingActors = False
     End Sub
     Public Function Initialize() As Boolean
-        GL.Viewport(0, 0, Size.X, Size.Y)
+        GL.Viewport(0, 0, mWindowWidth, mWindowHeight)
 
         'レンダラー作成
         mRenderer = New Renderer(Me)
@@ -113,12 +113,8 @@ Public Class Game
         mUpdatingActors = False
     End Sub
     Private Sub UpdateGame()
-        ''前のフレームから16ms経つまで待つ
-        'While Ticks.ElapsedMilliseconds < mTicksCount + 16
-        'End While
         'デルタタイムの計算
         Dim deltaTime As Double = (Ticks.ElapsedMilliseconds - mTicksCount) / 1000
-        Dim fps As Double = 1 / deltaTime
         'デルタタイムを最大値で制限する
         If deltaTime > 0.05 Then
             deltaTime = 0.05
@@ -142,7 +138,7 @@ Public Class Game
         '死んだアクターを一時配列に追加
         Dim deadActors As New List(Of Actor)
         For Each actor In mActors
-            If actor.GetState() = actor.State.EDead Then
+            If actor.GetState() = Actor.State.EDead Then
                 deadActors.Add(actor)
             End If
         Next
@@ -219,15 +215,13 @@ Public Class Game
 
 
     'OpenTK original function
-    Protected Overrides Sub OnLoad()        'Loadされたら呼び出される。Initializeと同等？
-        MyBase.OnLoad()
-    End Sub
+    'Protected Overrides Sub OnLoad()        'Loadされたら呼び出される。Initializeと同等？
+    '    MyBase.OnLoad()
+    'End Sub
 
-    Protected Overrides Sub OnRenderFrame(e As FrameEventArgs)
-        'フレーム毎の描画時に呼び出される。
-        '特に何もしない。
-        MyBase.OnRenderFrame(e)
-    End Sub
+    'Protected Overrides Sub OnRenderFrame(e As FrameEventArgs)         'フレーム毎の描画時に呼び出される。
+    '    MyBase.OnRenderFrame(e)
+    'End Sub
 
     Protected Overrides Sub OnUpdateFrame(e As FrameEventArgs)
         MyBase.OnUpdateFrame(e)
@@ -241,14 +235,12 @@ Public Class Game
         End If
     End Sub
 
-    Protected Overrides Sub OnResize(e As ResizeEventArgs)
-        '画面サイズ変更時に呼び出される。
-        MyBase.OnResize(e)
+    'Protected Overrides Sub OnResize(e As ResizeEventArgs)          '画面サイズ変更時に呼び出される。
+    '    MyBase.OnResize(e)
+    'End Sub
 
-    End Sub
-
-    Protected Overrides Sub OnUnload()
-        MyBase.OnUnload()
-    End Sub
+    'Protected Overrides Sub OnUnload()
+    '    MyBase.OnUnload()
+    'End Sub
 
 End Class

@@ -31,8 +31,10 @@ Public Class Shader
         Dispose(False)
     End Sub
     Public Function Load(ByRef vertName As String, ByRef fragName As String)
-        If CompileShader(vertName, ShaderType.VertexShader, mVertexShader) = False Or
-           CompileShader(fragName, ShaderType.FragmentShader, mFragShader) = False Then
+        If CompileShader(vertName, ShaderType.VertexShader, mVertexShader) = False Then
+            Return False
+        End If
+        If CompileShader(fragName, ShaderType.FragmentShader, mFragShader) = False Then
             Return False
         End If
 
@@ -58,7 +60,7 @@ Public Class Shader
     Public Sub SetActive()
         GL.UseProgram(mShaderProgram)
     End Sub
-    Public Sub SetMatrixUniform(ByRef name As Char, ByRef matrix As Matrix4)
+    Public Sub SetMatrixUniform(ByRef name As String, ByRef matrix As Matrix4)
         'nameと同じuniform変数をシェーダープログラムから探し、そのIDを受け取る。
         Dim uniformId As Integer = GL.GetUniformLocation(mShaderProgram, name)
         'matrixで上書き

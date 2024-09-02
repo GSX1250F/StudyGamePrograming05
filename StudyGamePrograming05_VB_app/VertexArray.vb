@@ -7,7 +7,7 @@ Public Class VertexArray
     Implements IDisposable      '明示的にクラスを開放するために必要
 
     'public
-    Public Sub New(ByRef verts As Single(), ByVal numVerts As Integer,
+    Public Sub New(ByRef vertices As Single(), ByVal numVerts As Integer,
                    ByRef indices As UInteger(), ByVal numIndices As Integer)
         mNumVerts = numVerts
         mNumIndices = numIndices
@@ -18,7 +18,7 @@ Public Class VertexArray
         mIndexBuffer = GL.GenBuffer()
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, mIndexBuffer)
         GL.BufferData(BufferTarget.ElementArrayBuffer,
-                      numIndices * Marshal.SizeOf(Of UInteger),
+                      indices.Length * Marshal.SizeOf(Of UInteger),
                       indices,
                       BufferUsageHint.StaticDraw)
 
@@ -26,8 +26,8 @@ Public Class VertexArray
         mVertexBuffer = GL.GenBuffer()
         GL.BindBuffer(BufferTarget.ArrayBuffer, mVertexBuffer)
         GL.BufferData(BufferTarget.ArrayBuffer,
-                      numVerts * 5 * Marshal.SizeOf(Of Single),
-                      verts,
+                      vertices.Length * Marshal.SizeOf(Of Single),
+                      vertices,
                       BufferUsageHint.StaticDraw)
 
 

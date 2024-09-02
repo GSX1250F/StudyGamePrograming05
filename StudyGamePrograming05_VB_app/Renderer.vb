@@ -61,8 +61,8 @@ Public Class Renderer
         GL.ClearColor(0.3, 0.3, 0.3, 1.0)
         GL.Clear(ClearBufferMask.ColorBufferBit)
         'カラーバッファのアルファブレンディングを有効化
-        'GL.Enable(EnableCap.Blend)
-        'GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha)
+        GL.Enable(EnableCap.Blend)
+        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha)
 
         ' シェーダーとバーテックス配列オブジェクトを有効化
         mSpriteVerts.SetActive()

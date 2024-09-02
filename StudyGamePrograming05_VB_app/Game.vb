@@ -161,18 +161,18 @@ Public Class Game
     Private Sub LoadData()
         mShip = New Ship(Me)    'プレイヤーの宇宙船を作成
 
-        ''小惑星を複数生成
-        'Dim initialNumAsteroids = 20        '初期値
-        'For i As Integer = 0 To initialNumAsteroids - 1
-        '    AddAsteroid()
-        'Next
+        '小惑星を複数生成
+        Dim initialNumAsteroids = 20        '初期値
+        For i As Integer = 0 To initialNumAsteroids - 1
+            AddAsteroid()
+        Next
 
-        'Dim astCtrl As New AsteroidControl(Me)
+        Dim astCtrl As New AsteroidControl(Me)
 
-        ''背景を作成
-        'Dim bg As New BackGround(Me)
+        '背景を作成
+        Dim bg As New BackGround(Me)
 
-        'Dim clrPict As New ClearPict(Me)
+        Dim clrPict As New ClearPict(Me)
     End Sub
 
     Private Sub UnloadData()

@@ -127,7 +127,7 @@ Public Class Ship
                 mSSC.SelectTexture(mSSC.TextureFiles(4))
                 GetGame().GetSoundPlayer().SetChunkControl(mChunkFiles(0), "play")
             Else
-                mSSC.SelectTexture(mSSC.TextureFiles(4))
+                mSSC.SelectTexture(mSSC.TextureFiles(0))
             End If
 
             If (keyState.IsKeyDown(Keys.Space) = True) And (mLaserCooldown <= 0.0) Then
@@ -144,11 +144,10 @@ Public Class Ship
     End Sub
 
     Public Sub Init()
-        SetScale(5.0)
+        SetScale(0.8)
         Dim v As Vector2 = Vector2.Zero
         SetPosition(v)
-        'SetRotation(RandomNumberGenerator.GetInt32(0, 1000) * 0.01 * Math.PI * 2.0)        'SetRotation(0.0)
-        SetRotation(0.0)
+        SetRotation(RandomNumberGenerator.GetInt32(0, 1000) * 0.01 * Math.PI * 2.0)        'SetRotation(0.0)
         mIC.SetVelocity(Vector2.Zero)
         mIC.SetRotSpeed(0.0)
         SetState(State.EActive)

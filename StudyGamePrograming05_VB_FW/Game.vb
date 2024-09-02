@@ -106,9 +106,6 @@ Public Class Game
 
     End Sub
     Private Sub UpdateGame()
-        '前のフレームから16ms経つまで待つ
-        While Ticks.ElapsedMilliseconds < mTicksCount + 16
-        End While
         'デルタタイムの計算
         Dim deltaTime As Double = (Ticks.ElapsedMilliseconds - mTicksCount) / 1000
 

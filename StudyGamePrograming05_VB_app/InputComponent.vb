@@ -1,5 +1,5 @@
 ﻿Imports OpenTK.Windowing.GraphicsLibraryFramework
-Imports Windows.Win32.System
+Imports OpenTK.Mathematics
 
 Public Class InputComponent
 	Inherits MoveComponent

@@ -33,7 +33,6 @@ Public Class Texture
     Public Function Load(ByRef filename As String) As Boolean
         mTextureID = GL.GenTexture()
 
-        GL.ActiveTexture(TextureUnit.Texture0)
         GL.BindTexture(TextureTarget.Texture2D, mTextureID)
 
         StbImage.stbi_set_flip_vertically_on_load(1)
@@ -60,7 +59,6 @@ Public Class Texture
         GL.DeleteTextures(1, mTextureID)
     End Sub
     Public Sub SetActive()
-        GL.ActiveTexture(TextureUnit.Texture0)
         GL.BindTexture(TextureTarget.Texture2D, mTextureID)
     End Sub
     Public Function GetTexWidth() As Integer

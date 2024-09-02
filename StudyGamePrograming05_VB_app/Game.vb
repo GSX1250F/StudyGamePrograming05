@@ -1,11 +1,12 @@
-﻿Imports OpenTK.Windowing.Common
-Imports OpenTK.Windowing.Desktop
-Imports OpenTK.Windowing.GraphicsLibraryFramework
-Imports System.Drawing
-Imports System.Runtime.InteropServices
+﻿Imports System.Runtime.InteropServices
 Imports OpenTK
 Imports OpenTK.Graphics
 Imports OpenTK.Graphics.OpenGL
+Imports OpenTK.Mathematics
+Imports OpenTK.Windowing.Common
+Imports OpenTK.Windowing.Desktop
+Imports OpenTK.Windowing.GraphicsLibraryFramework
+
 
 Public Class Game
     Inherits GameWindow
@@ -34,7 +35,7 @@ Public Class Game
         'レンダラー作成
         mRenderer = New Renderer(Me)
         If (mRenderer.Initialize(mWindowWidth, mWindowHeight)) = False Then
-            mRenderer.Dispose()
+            mRenderer.Shutdown()
             Return False
         End If
         'サウンドプレイヤ作成

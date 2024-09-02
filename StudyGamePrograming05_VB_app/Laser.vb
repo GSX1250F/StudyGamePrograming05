@@ -1,4 +1,5 @@
-﻿Public Class Laser
+﻿Imports OpenTK.Mathematics
+Public Class Laser
 	Inherits Actor
 
 	Private mCircle As CircleComponent

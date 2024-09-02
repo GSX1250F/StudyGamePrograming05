@@ -1,8 +1,6 @@
 ﻿Imports OpenTK
 Imports OpenTK.Mathematics
 Imports OpenTK.Windowing.GraphicsLibraryFramework
-Imports System.Numerics
-Imports Vector2 = System.Numerics.Vector2
 
 Public Class Actor
     Implements IDisposable      '明示的にクラスを開放するために必要

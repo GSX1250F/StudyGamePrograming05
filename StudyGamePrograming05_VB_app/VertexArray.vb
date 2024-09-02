@@ -11,42 +11,44 @@ Public Class VertexArray
                    ByRef indices As UInteger(), ByVal numIndices As Integer)
         mNumVerts = numVerts
         mNumIndices = numIndices
-        GL.GenVertexArrays(1, mVertexArray)
+
+        mVertexArray = GL.GenVertexArray()
         GL.BindVertexArray(mVertexArray)
 
-        ' バーテックスバッファをOpenGLに生成し、そのIDをメンバー変数mVertexBufferに保存する
-        GL.GenBuffers(1, mVertexBuffer)
-        GL.BindBuffer(BufferTarget.ArrayBuffer, mVertexBuffer)
-        GL.BufferData(BufferTarget.ArrayBuffer,
-                      numVerts * 5 * Marshal.SizeOf(Of Single),
-                      verts,
-                      BufferUsageHint.StaticDraw)
-
-        ' インデックスバッファをOpenGLに生成し、そのIDをメンバー変数mIndexBufferに保存する
-        GL.GenBuffers(1, mIndexBuffer)
+        mIndexBuffer = GL.GenBuffer()
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, mIndexBuffer)
         GL.BufferData(BufferTarget.ElementArrayBuffer,
                       numIndices * Marshal.SizeOf(Of UInteger),
                       indices,
                       BufferUsageHint.StaticDraw)
 
-        ' バーテックスバッファのレイアウトを指定する。
-        ' 属性0はバーテックス座標
-        GL.EnableVertexAttribArray(0)
+
+        mVertexBuffer = GL.GenBuffer()
+        GL.BindBuffer(BufferTarget.ArrayBuffer, mVertexBuffer)
+        GL.BufferData(BufferTarget.ArrayBuffer,
+                      numVerts * 5 * Marshal.SizeOf(Of Single),
+                      verts,
+                      BufferUsageHint.StaticDraw)
+
+
+
+        'VertexAttribute layout0 = position
         GL.VertexAttribPointer(0,
                                3,
                                VertexAttribPointerType.Float,
                                False,
                                5 * Marshal.SizeOf(Of Single),
                                0)
-        ' 属性1はテクスチャ座標
-        GL.EnableVertexAttribArray(1)
+        GL.EnableVertexAttribArray(0)
+
+        'VertexAttribute layout1 = texCoord
         GL.VertexAttribPointer(1,
                                2,
                                VertexAttribPointerType.Float,
                                False,
                                5 * Marshal.SizeOf(Of Single),
                                3 * Marshal.SizeOf(Of Single))
+        GL.EnableVertexAttribArray(1)
 
     End Sub
     Protected disposed = False     '開放処理が実施済みかのフラグ

@@ -1,5 +1,5 @@
-﻿Imports System.Numerics
-Imports System.Security.Cryptography
+﻿Imports System.Security.Cryptography
+Imports OpenTK.Mathematics
 Imports OpenTK.Windowing.GraphicsLibraryFramework
 
 Public Class Ship
@@ -144,7 +144,7 @@ Public Class Ship
     End Sub
 
     Public Sub Init()
-        SetScale(0.8)
+        SetScale(5.0)
         Dim v As Vector2 = Vector2.Zero
         SetPosition(v)
         'SetRotation(RandomNumberGenerator.GetInt32(0, 1000) * 0.01 * Math.PI * 2.0)        'SetRotation(0.0)

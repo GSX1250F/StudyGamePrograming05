@@ -1,4 +1,4 @@
-﻿Imports System.Numerics
+﻿Imports OpenTK.Mathematics
 
 Public Class MoveComponent
     Inherits Component

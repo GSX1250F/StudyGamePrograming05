@@ -47,6 +47,7 @@ Public Class Renderer
         Return True
     End Function
     Public Sub Shutdown()
+        UnloadData()
         mSpriteVerts.Dispose()
         mSpriteShader.Unload()
         mSpriteShader.Dispose()
@@ -60,9 +61,8 @@ Public Class Renderer
         GL.ClearColor(0.3, 0.3, 0.3, 1.0)
         GL.Clear(ClearBufferMask.ColorBufferBit)
         'カラーバッファのアルファブレンディングを有効化
-        GL.Enable(EnableCap.Blend)
-        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha)
-
+        'GL.Enable(EnableCap.Blend)
+        'GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha)
 
         ' シェーダーとバーテックス配列オブジェクトを有効化
         mSpriteVerts.SetActive()
@@ -127,14 +127,14 @@ Public Class Renderer
 
     'private
     Private Sub InitSpriteVerts()
-        Dim vertices As Single() = New Single() {
+        Dim vertices As Single() = {
             -0.5, -0.5, 0.0, 0.0, 0.0,
             0.5, -0.5, 0.0, 1.0, 0.0,
             -0.5, 0.5, 0.0, 0.0, 1.0,
             0.5, 0.5, 0.0, 1.0, 1.0
         }
 
-        Dim indices As UInteger() = New UInteger() {
+        Dim indices As UInteger() = {
             0, 1, 2,
             2, 1, 3
         }
@@ -147,11 +147,6 @@ Public Class Renderer
         If (mSpriteShader.Load("Shaders/Sprite.vert", "Shaders/Sprite.frag") <> True) Then
             Return False
         End If
-        mSpriteShader.SetActive()
-        ' ビュー変換行列を作成。ここでは平行投影変換を行う。
-        'Dim viewProj As Matrix4 = Matrix4.CreateScale(2.0 / mScreenWidth, 2.0 / mScreenHeight, 1.0)
-        Dim viewProj As Matrix4 = Matrix4.CreateScale(1.0)
-        mSpriteShader.SetMatrixUniform("uViewProj", viewProj)
         Return True
     End Function
     Private disposedValue As Boolean

@@ -1,5 +1,4 @@
-﻿
-Public Class SoundPlayer
+﻿Public Class SoundPlayer
     Implements IDisposable      '明示的にクラスを開放するために必要
 
 #If Win64 Then

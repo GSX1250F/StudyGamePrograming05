@@ -1,10 +1,8 @@
-﻿Imports System.Drawing.Imaging
-Imports System.IO
+﻿Imports System.IO
 Imports OpenTK
 Imports OpenTK.Graphics
 Imports OpenTK.Graphics.OpenGL
 Imports StbImageSharp
-Imports PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat
 
 Public Class Texture
     Implements IDisposable      '明示的にクラスを開放するために必要

@@ -1,4 +1,4 @@
-﻿Imports System.Numerics
+﻿Imports OpenTK
 Imports System.Security.Cryptography
 Public Class Asteroid
 	Inherits Actor

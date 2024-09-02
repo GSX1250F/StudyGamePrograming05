@@ -1,5 +1,4 @@
 ﻿Imports System.Media
-Imports System.Numerics
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify
 Imports OpenTK

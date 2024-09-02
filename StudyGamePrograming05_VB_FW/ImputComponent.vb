@@ -1,5 +1,4 @@
-﻿Imports Windows.Win32.System
-
+﻿
 Public Class InputComponent
 	Inherits MoveComponent
 

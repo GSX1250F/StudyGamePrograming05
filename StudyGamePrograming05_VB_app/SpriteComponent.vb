@@ -38,7 +38,6 @@ Public Class SpriteComponent
             Dim viewProj As Matrix4 = Matrix4.CreateScale(2.0 / mOwner.GetGame().mWindowWidth, 2.0 / mOwner.GetGame.mWindowHeight, 1.0)
             shader.SetMatrixUniform("uViewProj", viewProj)
 
-
             ' 現在のテクスチャをセット
             mTexture.SetActive()
             ' 短形を描画

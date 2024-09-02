@@ -8,9 +8,9 @@ Public Class Texture
     Implements IDisposable      '明示的にクラスを開放するために必要
     Private disposedValue As Boolean
     Sub New()
-        mTextureID = 0
-        mTexWidth = 0
-        mTexHeight = 0
+        mTextureID = Nothing
+        mTexWidth = Nothing
+        mTexHeight = Nothing
     End Sub
     Protected disposed = False     '開放処理が実施済みかのフラグ
     Public Overloads Sub Dispose() Implements IDisposable.Dispose

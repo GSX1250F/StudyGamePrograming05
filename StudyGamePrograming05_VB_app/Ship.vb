@@ -127,7 +127,7 @@ Public Class Ship
                 mSSC.SelectTexture(mSSC.TextureFiles(4))
                 GetGame().GetSoundPlayer().SetChunkControl(mChunkFiles(0), "play")
             Else
-                mSSC.SelectTexture(mSSC.TextureFiles(0))
+                mSSC.SelectTexture(mSSC.TextureFiles(4))
             End If
 
             If (keyState.IsKeyDown(Keys.Space) = True) And (mLaserCooldown <= 0.0) Then

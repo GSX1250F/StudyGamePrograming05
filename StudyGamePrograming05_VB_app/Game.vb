@@ -114,7 +114,8 @@ Public Class Game
     End Sub
     Private Sub UpdateGame()
         'デルタタイムの計算
-        Dim deltaTime As Double = (Ticks.ElapsedMilliseconds - mTicksCount) / 1000
+        Dim deltaTime As Single = (Ticks.ElapsedMilliseconds - mTicksCount) / 1000
+
         'デルタタイムを最大値で制限する
         If deltaTime > 0.05 Then
             deltaTime = 0.05
@@ -147,7 +148,6 @@ Public Class Game
         For Each actor In deadActors
             actor.Dispose()
         Next
-
     End Sub
     Private Sub GenerateOutput()
         mRenderer.Draw()

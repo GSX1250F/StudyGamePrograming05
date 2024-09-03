@@ -10,8 +10,6 @@ Public Class Renderer
     'public
     Sub New(ByRef game As Game)
         mGame = game
-        mSpriteShader = Nothing
-        mSpriteVerts = Nothing
     End Sub
     Protected disposed = False     '開放処理が実施済みかのフラグ
     Public Overloads Sub Dispose() Implements IDisposable.Dispose

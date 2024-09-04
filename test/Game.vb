@@ -7,7 +7,6 @@ Imports OpenTK.Windowing.Common
 Imports OpenTK.Windowing.Desktop
 Imports OpenTK.Windowing.GraphicsLibraryFramework
 
-
 Public Class Game
     Inherits GameWindow
 #If Win64 Then
@@ -16,7 +15,7 @@ Public Class Game
     Private Declare Function mciSendString Lib "winmm" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As Long, ByVal hwndCallback As Long) As Long
 #End If
 
-    'public
+    'Public
     Public Sub New(width As Integer, height As Integer, title As String)
         MyBase.New(GameWindowSettings.Default, New NativeWindowSettings())
         MyBase.ClientSize = (width, height)
@@ -26,52 +25,27 @@ Public Class Game
         mRenderer = Nothing
         mSoundPlayer = Nothing
         mIsRunning = True
-        mTicksCount = 0
         mUpdatingActors = False
     End Sub
+
     Public Function Initialize() As Boolean
         'レンダラー作成
         mRenderer = New Renderer(Me)
         If (mRenderer.Initialize(mWindowWidth, mWindowHeight)) = False Then
             mRenderer.Shutdown()
-            Return False
         End If
         'サウンドプレイヤ作成
         mSoundPlayer = New SoundPlayer(Me)
-
         'ストップウォッチ開始
         Ticks = New Stopwatch()
         Ticks.Start()
+        'タイマー開始
         mTicksCount = Ticks.ElapsedMilliseconds
 
         LoadData()
 
         Return True
     End Function
-
-    Public Sub Shutdown()
-        UnloadData()
-        If mRenderer IsNot Nothing Then
-            mRenderer.Shutdown()
-        End If
-        If mSoundPlayer IsNot Nothing Then
-            mSoundPlayer.Shutdown()
-        End If
-        Ticks.Stop()
-        Me.Close()
-    End Sub
-
-    Public Function GetRenderer() As Renderer
-        Return mRenderer
-    End Function
-    Public Function GetSoundPlayer() As SoundPlayer
-        Return mSoundPlayer
-    End Function
-
-    Public Sub SetRunning(ByVal value As Boolean)
-        mIsRunning = value
-    End Sub
-
     Public Sub AddActor(ByRef actor As Actor)
         If mUpdatingActors Then
             mPendingActors.Add(actor)
@@ -79,7 +53,6 @@ Public Class Game
             mActors.Add(actor)
         End If
     End Sub
-
     Public Sub RemoveActor(ByRef actor As Actor)
         '待ちアクターを検索し、消去
         Dim iter As Integer = mPendingActors.IndexOf(actor)
@@ -93,22 +66,60 @@ Public Class Game
             mActors.RemoveAt(iter)
         End If
     End Sub
+    Public Function GetRenderer() As Renderer
+        Return mRenderer
+    End Function
+    Public Function GetSoundPlayer() As SoundPlayer
+        Return mSoundPlayer
+    End Function
+
+    Public Sub SetRunning(ByVal isrunning As Boolean)
+        mIsRunning = isrunning
+    End Sub
 
     Public mWindowWidth As Integer
     Public mWindowHeight As Integer
 
+    'Game Specific
+    Public Function GetShip() As Ship
+        Return mShip
+    End Function
+    Public Function GetAsteroids() As List(Of Asteroid)
+        Return mAsteroids
+    End Function
+    Public Sub AddAsteroid()
+        Dim ast As New Asteroid(Me)
+        mAsteroids.Add(ast)
+    End Sub
 
-    'private
+    Public Sub RemoveAsteroid(ByRef ast As Asteroid)
+        Dim iter As Integer = mAsteroids.IndexOf(ast)       'Listの中になかったら-1が返される
+        If iter >= 0 Then
+            mAsteroids.RemoveAt(iter)
+        End If
+    End Sub
+
+
+
+
+
+
+
+
+
+    'Private
     Private Sub ProcessInput()
         Dim keyState As KeyboardState = KeyboardState
         If (keyState.IsKeyDown(Keys.Escape)) Then
             mIsRunning = False
         End If
+
         mUpdatingActors = True
         For Each actor In mActors
             actor.ProcessInput(keyState)
         Next
         mUpdatingActors = False
+
     End Sub
     Private Sub UpdateGame()
         'デルタタイムの計算
@@ -129,7 +140,6 @@ Public Class Game
 
         '待ちアクターをmActorsに移動
         For Each pending In mPendingActors
-            pending.ComputeWorldTransform()
             mActors.Add(pending)
         Next
         mPendingActors.Clear()
@@ -151,7 +161,18 @@ Public Class Game
         mRenderer.Draw()
         mSoundPlayer.Play()
     End Sub
+    Private Sub Shutdown()
+        UnloadData()
+        If mRenderer IsNot Nothing Then
+            mRenderer.Shutdown()
+        End If
+        If mSoundPlayer IsNot Nothing Then
+            mSoundPlayer.Shutdown()
+        End If
 
+        Ticks.Stop()
+        Me.Close()
+    End Sub
     Private Sub LoadData()
         mShip = New Ship(Me)    'プレイヤーの宇宙船を作成
 
@@ -167,8 +188,8 @@ Public Class Game
         Dim bg As New BackGround(Me)
 
         Dim clrPict As New ClearPict(Me)
-    End Sub
 
+    End Sub
     Private Sub UnloadData()
         While mActors.Count > 0
             mActors.First.Dispose()
@@ -180,50 +201,22 @@ Public Class Game
             mSoundPlayer.UnloadData()
         End If
     End Sub
-
-    Private mRenderer As Renderer
     Private Ticks As Stopwatch
-    Private mTicksCount As Integer
-    Private mIsRunning As Boolean
+    Private mTicksCount As Integer     'ゲーム開始時からの経過時間
+    Private mIsRunning As Boolean   'ゲーム実行中
+    Private mRenderer As Renderer   'レンダラー
     Private mSoundPlayer As SoundPlayer     'サウンドプレイヤ
     Private mUpdatingActors As Boolean      'アクター更新中
     Private mActors As New List(Of Actor)   'すべてのアクター
     Private mPendingActors As New List(Of Actor)    'すべての待ちアクター
 
-    'Game Specific
-    Public Function GetShip() As Ship
-        Return mShip
-    End Function
-    Public Function GetAsteroids() As List(Of Asteroid)
-        Return mAsteroids
-    End Function
-    Public Sub AddAsteroid()
-        Dim ast As New Asteroid(Me)
-        mAsteroids.Add(ast)
-    End Sub
-
-    Public Sub RemoveAsteroid(ByRef ast As Asteroid)
-        Dim iter As Integer = mAsteroids.IndexOf(ast)       'Listの中になかったら-1が返される
-        If iter >= 0 Then
-            mAsteroids.RemoveAt(iter)
-        End If
-    End Sub
+    'game specific
     Private mShip As Ship
     Private mAsteroids As New List(Of Asteroid)
 
 
-    'OpenTK original function
-    'Protected Overrides Sub OnLoad()        'Loadされたら呼び出される。Initializeと同等？
-    '    MyBase.OnLoad()
-    'End Sub
-
-    'Protected Overrides Sub OnRenderFrame(e As FrameEventArgs)         'フレーム毎の描画時に呼び出される。
-    '    MyBase.OnRenderFrame(e)
-    'End Sub
-
     Protected Overrides Sub OnUpdateFrame(e As FrameEventArgs)
         MyBase.OnUpdateFrame(e)
-        '毎フレーム更新時に呼び出される。
         If mIsRunning Then
             ProcessInput()
             UpdateGame()
@@ -232,13 +225,4 @@ Public Class Game
             Shutdown()
         End If
     End Sub
-
-    'Protected Overrides Sub OnResize(e As ResizeEventArgs)          '画面サイズ変更時に呼び出される。
-    '    MyBase.OnResize(e)
-    'End Sub
-
-    'Protected Overrides Sub OnUnload()
-    '    MyBase.OnUnload()
-    'End Sub
-
 End Class

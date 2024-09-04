@@ -1,6 +1,4 @@
-﻿Imports OpenTK.Windowing.GraphicsLibraryFramework
-
-Public Class Component
+﻿Public Class Component
     Implements IDisposable
 
     Protected mOwner As Actor      '所有アクター
@@ -32,11 +30,14 @@ Public Class Component
         MyBase.Finalize()
     End Sub
 
-    Public Overridable Sub Update(deltaTime As Double)
+
+    ' 各コンポーネント更新（オーバーライド可能）
+    Public Overridable Sub Update(deltaTime As Single)
 
     End Sub
 
-    Public Overridable Sub ProcessInput(ByVal keyState As KeyboardState)
+    ' 各コンポーネント入力処理（オーバーライド可能）
+    Public Overridable Sub ProcessInput(ByVal keyState As Boolean())
 
     End Sub
 

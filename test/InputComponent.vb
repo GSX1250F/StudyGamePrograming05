@@ -1,4 +1,5 @@
 ﻿Imports OpenTK.Mathematics
+Imports OpenTK.Windowing.GraphicsLibraryFramework
 
 Public Class InputComponent
 	Inherits MoveComponent
@@ -19,7 +20,7 @@ Public Class InputComponent
 		mMaxForwardForce = 0.0
 		mMaxRotForce = 0.0
 	End Sub
-	Public Overrides Sub ProcessInput(ByVal keyState As Boolean())
+	Public Overrides Sub ProcessInput(ByVal keyState As KeyboardState)
 		Dim fwd As Single = 0.0
 		Dim rot As Single = 0.0
 		If keyState(mFwdKey) = True Then

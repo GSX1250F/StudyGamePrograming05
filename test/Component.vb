@@ -1,4 +1,5 @@
-﻿Public Class Component
+﻿Imports OpenTK.Windowing.GraphicsLibraryFramework
+Public Class Component
     Implements IDisposable
 
     Protected mOwner As Actor      '所有アクター
@@ -37,7 +38,7 @@
     End Sub
 
     ' 各コンポーネント入力処理（オーバーライド可能）
-    Public Overridable Sub ProcessInput(ByVal keyState As Boolean())
+    Public Overridable Sub ProcessInput(ByVal keyState As KeyboardState)
 
     End Sub
 

@@ -1,5 +1,6 @@
 ﻿Imports OpenTK
 Imports OpenTK.Mathematics
+Imports OpenTK.Windowing.GraphicsLibraryFramework
 Public Class Actor
 	Implements IDisposable      '明示的にクラスを開放するために必要
 
@@ -60,7 +61,7 @@ Public Class Actor
 	End Sub
 
 	'ゲームから呼び出されるProcess Input(オーバーライド不可)
-	Public Sub ProcessInput(ByVal keyState As Boolean())
+	Public Sub ProcessInput(ByVal keyState As KeyboardState)
 		If mState = State.EActive Then
 			For Each comp In mComponents
 				comp.ProcessInput(keyState)
@@ -70,7 +71,7 @@ Public Class Actor
 	End Sub
 
 	'アクター独自の入力処理(オーバーライド可能)
-	Public Overridable Sub ActorInput(ByVal keyState As Boolean())
+	Public Overridable Sub ActorInput(ByVal keyState As KeyboardState)
 	End Sub
 
 	'Getters/setters

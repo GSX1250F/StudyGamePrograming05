@@ -16,7 +16,7 @@ Public Class ClearPict
         sc.SetTexture(game.GetRenderer().GetTexture("Assets\ClearPict.png"))
         sc.SetVisible(False)
     End Sub
-    Public Overrides Sub UpdateActor(ByVal deltaTime As Double)
+    Public Overrides Sub UpdateActor(ByVal deltaTime As Single)
         Dim numAsteroids As Integer = GetGame().GetAsteroids().Count()
         If (numAsteroids <= 0) Then
             SetState(State.EActive)

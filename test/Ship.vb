@@ -1,4 +1,5 @@
-﻿Imports System.Numerics
+﻿Imports OpenTK.Mathematics
+Imports OpenTK.Windowing.GraphicsLibraryFramework
 Imports System.Security.Cryptography
 
 Public Class Ship
@@ -61,21 +62,21 @@ Public Class Ship
 
         If (mCrash = False) Then
             '画面外にでたら反対の位置に移動（ラッピング処理）
-            If (GetPosition().X < 0.0 - 1.0 * GetRadius() Or
-                GetPosition().X > GetGame().mWindowWidth + 1.0 * GetRadius()) _
+            If (GetPosition().X < GetGame().mWindowWidth * (-0.5) - GetRadius() Or
+                GetPosition().X > GetGame().mWindowWidth * 0.5 + GetRadius()) _
                 Then
                 Dim v As Vector2
-                v.X = GetGame().mWindowWidth - GetPosition().X
+                v.X = -GetPosition().X
                 v.Y = GetPosition().Y
                 SetPosition(v)
             End If
 
-            If (GetPosition().Y < 0.0 - 1.0 * GetRadius() Or
-                GetPosition().Y > GetGame().mWindowHeight + 1.0 * GetRadius()) _
+            If (GetPosition().Y < GetGame().mWindowHeight * (-0.5) - GetRadius() Or
+                GetPosition().Y > GetGame().mWindowHeight * 0.5 + GetRadius()) _
                 Then
                 Dim v As Vector2
                 v.X = GetPosition().X
-                v.Y = GetGame().mWindowHeight - GetPosition().Y
+                v.Y = -GetPosition().Y
                 SetPosition(v)
             End If
 
@@ -111,7 +112,7 @@ Public Class Ship
         End If
     End Sub
 
-    Public Overrides Sub ActorInput(ByVal keyState As Boolean())
+    Public Overrides Sub ActorInput(ByVal keyState As KeyboardState)
         If mCrash = False Then
             If keyState(mIC.GetCounterClockwiseKey()) = True Then
                 mSSC.SelectTexture(mSSC.TextureFiles(1))
@@ -144,12 +145,9 @@ Public Class Ship
 
     Public Sub Init()
         SetScale(0.8)
-        Dim v As Vector2
-        v.X = GetGame().mWindowWidth / 2
-        v.Y = GetGame().mWindowHeight / 2
+        Dim v As Vector2 = Vector2.Zero
         SetPosition(v)
-        SetRotation(RandomNumberGenerator.GetInt32(0, 1000) * 0.01 * Math.PI * 2.0)
-        'SetRotation(0.0)
+        SetRotation(RandomNumberGenerator.GetInt32(0, 1000) * 0.01 * Math.PI * 2.0)        'SetRotation(0.0)
         mIC.SetVelocity(Vector2.Zero)
         mIC.SetRotSpeed(0.0)
         SetState(State.EActive)

@@ -125,19 +125,35 @@ Public Class Renderer
 
     'private
     Private Sub InitSpriteVerts()
-        Dim vertices As Single() = {
-            -0.5, -0.5, 0.0, 0.0, 0.0,
-            0.5, -0.5, 0.0, 1.0, 0.0,
-            -0.5, 0.5, 0.0, 0.0, 1.0,
-            0.5, 0.5, 0.0, 1.0, 1.0
+        Dim numVerts As Integer = 4
+        '頂点座標(vector3)
+        Dim vertPos As Single() = {
+            -0.5, -0.5, 0.0,
+            0.5, -0.5, 0.0,
+            -0.5, 0.5, 0.0,
+            0.5, 0.5, 0.0
         }
-
+        'テクスチャ座標(vector2)
+        Dim texPos As Single() = {
+            0.0, 0.0,
+            1.0, 0.0,
+            0.0, 1.0,
+            1.0, 1.0
+        }
+        '頂点カラー(vector4 RGBA)
+        Dim vertColor As Single() = {
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, 1.0
+        }
+        'インデックス
         Dim indices As UInteger() = {
             0, 1, 2,
             2, 1, 3
         }
 
-        mSpriteVerts = New VertexArray(vertices, 4, indices, 6)
+        mSpriteVerts = New VertexArray(numVerts, vertPos, texPos, vertColor, indices)
     End Sub
     Private Function LoadShaders() As Boolean
         ' シェーダーを生成

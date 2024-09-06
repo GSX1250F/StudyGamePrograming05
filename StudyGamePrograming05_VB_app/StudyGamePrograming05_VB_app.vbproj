@@ -26,8 +26,8 @@
     <None Remove="Assets\Stars.png" />
     <None Remove="Assets\thruster.mp3" />
     <None Remove="Assets\thruster.wav" />
-    <None Remove="Shaders\Sprite.frag" />
-    <None Remove="Shaders\Sprite.vert" />
+    <None Remove="Shaders\Shader.frag" />
+    <None Remove="Shaders\Shader.vert" />
   </ItemGroup>
 
   <ItemGroup>
@@ -88,10 +88,10 @@
     <Content Include="Assets\thruster.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Shaders\Sprite.frag">
+    <Content Include="Shaders\shader.frag">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Shaders\Sprite.vert">
+    <Content Include="Shaders\shader.vert">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

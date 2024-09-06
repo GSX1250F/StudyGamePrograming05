@@ -34,8 +34,8 @@ Public Class Renderer
         ' 画面初期化
         GL.Viewport(0, 0, screenWidth, screenHeight)
 
-        ' バーテックス配列オブジェクトの生成
-        InitSpriteVerts()
+        ' 頂点情報オブジェクトの生成
+        InitVertsInfo()
 
         ' シェーダーの生成
         If (LoadShaders() <> True) Then
@@ -46,9 +46,9 @@ Public Class Renderer
     End Function
     Public Sub Shutdown()
         UnloadData()
-        mSpriteVerts.Dispose()
-        mSpriteShader.Unload()
-        mSpriteShader.Dispose()
+        mVertsInfo.Dispose()
+        mShader.Unload()
+        mShader.Dispose()
         Me.Dispose()
     End Sub
     Public Sub UnloadData()
@@ -63,13 +63,13 @@ Public Class Renderer
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha)
 
         ' シェーダーとバーテックス配列オブジェクトを有効化
-        mSpriteVerts.SetActive()
-        mSpriteShader.SetActive()
+        mVertsInfo.SetActive()
+        mShader.SetActive()
 
         'すべてのスプライトコンポーネントを描画
         For Each sprite In mSprites
             If sprite.GetVisible() = True Then
-                sprite.Draw(mSpriteShader)
+                sprite.Draw(mShader)
             End If
         Next
         mGame.SwapBuffers()
@@ -124,14 +124,14 @@ Public Class Renderer
     End Function
 
     'private
-    Private Sub InitSpriteVerts()
+    Private Sub InitVertsInfo()
         Dim numVerts As Integer = 4
         '頂点座標(vector3)
         Dim vertPos As Single() = {
-            -0.5, -0.5, 0.0,
-            0.5, -0.5, 0.0,
-            -0.5, 0.5, 0.0,
-            0.5, 0.5, 0.0
+            -0.5, -0.5,
+            0.5, -0.5,
+            -0.5, 0.5,
+            0.5, 0.5
         }
         'テクスチャ座標(vector2)
         Dim texPos As Single() = {
@@ -153,12 +153,12 @@ Public Class Renderer
             2, 1, 3
         }
 
-        mSpriteVerts = New VertexInfo(numVerts, vertPos, texPos, vertColor, indices)
+        mVertsInfo = New VertexInfo(numVerts, vertPos, texPos, vertColor, indices)
     End Sub
     Private Function LoadShaders() As Boolean
         ' シェーダーを生成
-        mSpriteShader = New Shader()
-        If (mSpriteShader.Load("Shaders/Sprite.vert", "Shaders/Sprite.frag") <> True) Then
+        mShader = New Shader()
+        If (mShader.Load("Shaders/shader.vert", "Shaders/shader.frag") <> True) Then
             Return False
         End If
         Return True
@@ -169,6 +169,6 @@ Public Class Renderer
     Private mScreenHeight As Integer
     Private mTextures As New Dictionary(Of String, Texture)
     Private mSprites As New List(Of SpriteComponent)
-    Private mSpriteVerts As VertexInfo
-    Private mSpriteShader As Shader
+    Private mVertsInfo As VertexInfo
+    Private mShader As Shader
 End Class

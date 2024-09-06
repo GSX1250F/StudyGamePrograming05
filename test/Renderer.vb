@@ -10,6 +10,7 @@ Public Class Renderer
 	Private mScreenHeight As Integer
 	Private mTextures As New Dictionary(Of String, Image)   'テクスチャの配列
 	Private mSprites As New List(Of SpriteComponent)    'スプライトコンポーネントの配列
+	Private mVertsInfo As VertexInfo
 
 	Sub New(ByRef game As Game)
 		mGame = game
@@ -35,6 +36,7 @@ Public Class Renderer
 		mScreenWidth = screenWidth
 		mScreenHeight = screenHeight
 		GL.Viewport(0, 0, screenWidth, screenHeight)
+
 		Return True
 	End Function
 	Public Sub Shutdown()
@@ -97,6 +99,22 @@ Public Class Renderer
 	Public Function GetScreenHeight() As Single
 		Return mScreenHeight
 	End Function
+	Private Sub InitVertsInfo()
+		Dim numVerts As Integer = 4
+		'頂点座標(vector2)
+		Dim vertPos As Single() = {
+			-0.5, -0.5,
+			0.5, -0.5,
+			-0.5, 0.5,
+			0.5, 0.5
+		}
+		'インデックス
+		Dim indices As UInteger() = {
+			0, 1, 2,
+			2, 1, 3
+		}
 
+		mVertsInfo = New VertexInfo(numVerts, vertPos, indices)
+	End Sub
 
 End Class

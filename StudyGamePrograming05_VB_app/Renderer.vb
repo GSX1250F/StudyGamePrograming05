@@ -153,7 +153,7 @@ Public Class Renderer
             2, 1, 3
         }
 
-        mSpriteVerts = New VertexArray(numVerts, vertPos, texPos, vertColor, indices)
+        mSpriteVerts = New VertexInfo(numVerts, vertPos, texPos, vertColor, indices)
     End Sub
     Private Function LoadShaders() As Boolean
         ' シェーダーを生成
@@ -169,6 +169,6 @@ Public Class Renderer
     Private mScreenHeight As Integer
     Private mTextures As New Dictionary(Of String, Texture)
     Private mSprites As New List(Of SpriteComponent)
-    Private mSpriteVerts As VertexArray
+    Private mSpriteVerts As VertexInfo
     Private mSpriteShader As Shader
 End Class

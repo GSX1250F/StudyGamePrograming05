@@ -3,7 +3,7 @@ Imports OpenTK
 Imports OpenTK.Graphics
 Imports OpenTK.Graphics.OpenGL
 
-Public Class VertexArray
+Public Class VertexInfo
     Implements IDisposable      '明示的にクラスを開放するために必要
 
     'public

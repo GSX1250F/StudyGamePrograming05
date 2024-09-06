@@ -126,7 +126,7 @@ Public Class Renderer
     'private
     Private Sub InitVertsInfo()
         Dim numVerts As Integer = 4
-        '頂点座標(vector3)
+        '頂点座標(vector2)
         Dim vertPos As Single() = {
             -0.5, -0.5,
             0.5, -0.5,

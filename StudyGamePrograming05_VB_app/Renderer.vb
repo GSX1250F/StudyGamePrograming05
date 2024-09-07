@@ -35,7 +35,7 @@ Public Class Renderer
         GL.Viewport(0, 0, screenWidth, screenHeight)
 
         ' 頂点情報オブジェクトの生成
-        InitVertsInfo()
+        CreateVertsInfo()
 
         ' シェーダーの生成
         If (LoadShaders() <> True) Then
@@ -124,7 +124,7 @@ Public Class Renderer
     End Function
 
     'private
-    Private Sub InitVertsInfo()
+    Private Sub CreateVertsInfo()
         Dim numVerts As Integer = 4
         '頂点座標(vector2)
         Dim vertPos As Single() = {

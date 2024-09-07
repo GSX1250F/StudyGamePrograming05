@@ -38,7 +38,7 @@ Public Class Renderer
 		mScreenHeight = screenHeight
 		GL.Viewport(0, 0, screenWidth, screenHeight)
 
-		InitVertsInfo()
+		CreateVertsInfo()
 
 		If (LoadShaders() <> True) Then
 			Console.WriteLine("シェーダーの読み込みに失敗しました。")
@@ -116,7 +116,7 @@ Public Class Renderer
 	Public Function GetScreenHeight() As Single
 		Return mScreenHeight
 	End Function
-	Private Sub InitVertsInfo()
+	Private Sub CreateVertsInfo()
 		Dim numVerts As Integer = 4
 		'頂点座標(vector2)
 		Dim vertPos As Single() = {

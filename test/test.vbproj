@@ -26,6 +26,8 @@
     <None Remove="Assets\Stars.png" />
     <None Remove="Assets\thruster.mp3" />
     <None Remove="Assets\thruster.wav" />
+    <None Remove="Shaders\shader.frag" />
+    <None Remove="Shaders\shader.vert" />
   </ItemGroup>
 
   <ItemGroup>
@@ -86,17 +88,17 @@
     <Content Include="Assets\thruster.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Shaders\shader.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Shaders\shader.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="OpenTK" Version="4.8.2" />
     <PackageReference Include="StbImageSharp" Version="2.27.14" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Shaders\shader.frag">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

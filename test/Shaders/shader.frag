@@ -1,3 +1,9 @@
-﻿Public Class shader
+﻿#version 330
 
-End Class
+out vec4 outColor;
+
+void main()
+{
+    outColor = vec4(0.0, 0.0, 1.0, 1.0);
+}   
+

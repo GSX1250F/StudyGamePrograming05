@@ -11,6 +11,7 @@ Public Class Renderer
 	Private mTextures As New Dictionary(Of String, Image)   'テクスチャの配列
 	Private mSprites As New List(Of SpriteComponent)    'スプライトコンポーネントの配列
 	Private mVertsInfo As VertexInfo
+	Private mShader As Shader
 
 	Sub New(ByRef game As Game)
 		mGame = game
@@ -36,6 +37,13 @@ Public Class Renderer
 		mScreenWidth = screenWidth
 		mScreenHeight = screenHeight
 		GL.Viewport(0, 0, screenWidth, screenHeight)
+
+		InitVertsInfo()
+
+		If (LoadShaders() <> True) Then
+			Console.WriteLine("シェーダーの読み込みに失敗しました。")
+			Return False
+		End If
 
 		Return True
 	End Function
@@ -116,5 +124,13 @@ Public Class Renderer
 
 		mVertsInfo = New VertexInfo(numVerts, vertPos, indices)
 	End Sub
+	Private Function LoadShaders() As Boolean
+		' シェーダーを生成
+		mShader = New Shader()
+		If (mShader.Load("Shaders/shader.vert", "Shaders/shader.frag") <> True) Then
+			Return False
+		End If
+		Return True
+	End Function
 
 End Class

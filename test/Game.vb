@@ -46,6 +46,18 @@ Public Class Game
 
         Return True
     End Function
+    Public Sub Shutdown()
+        UnloadData()
+        If mRenderer IsNot Nothing Then
+            mRenderer.Shutdown()
+        End If
+        If mSoundPlayer IsNot Nothing Then
+            mSoundPlayer.Shutdown()
+        End If
+
+        Ticks.Stop()
+        Me.Close()
+    End Sub
     Public Sub AddActor(ByRef actor As Actor)
         If mUpdatingActors Then
             mPendingActors.Add(actor)
@@ -98,14 +110,6 @@ Public Class Game
             mAsteroids.RemoveAt(iter)
         End If
     End Sub
-
-
-
-
-
-
-
-
 
     'Private
     Private Sub ProcessInput()
@@ -161,18 +165,7 @@ Public Class Game
         mRenderer.Draw()
         mSoundPlayer.Play()
     End Sub
-    Private Sub Shutdown()
-        UnloadData()
-        If mRenderer IsNot Nothing Then
-            mRenderer.Shutdown()
-        End If
-        If mSoundPlayer IsNot Nothing Then
-            mSoundPlayer.Shutdown()
-        End If
 
-        Ticks.Stop()
-        Me.Close()
-    End Sub
     Private Sub LoadData()
         mShip = New Ship(Me)    'プレイヤーの宇宙船を作成
 

@@ -8,7 +8,7 @@ Public Class Renderer
 	Private mGame As Game
 	Private mScreenWidth As Integer
 	Private mScreenHeight As Integer
-	Private mTextures As New Dictionary(Of String, Image)   'テクスチャの配列
+	Private mTextures As New Dictionary(Of String, Texture)   'テクスチャの配列
 	Private mSprites As New List(Of SpriteComponent)    'スプライトコンポーネントの配列
 	Private mVertsInfo As VertexInfo
 	Private mShader As Shader
@@ -58,10 +58,13 @@ Public Class Renderer
 		GL.ClearColor(0.3, 0.3, 0.3, 1.0)
 		GL.Clear(ClearBufferMask.ColorBufferBit)
 
+		mVertsInfo.SetActive()
+		mShader.SetActive()
+
 		'すべてのスプライトコンポーネントを描画
 		For Each sprite In mSprites
 			If sprite.GetVisible() = True Then
-				sprite.Draw(mGraphics)
+				sprite.Draw(mShader)
 			End If
 		Next
 		mGame.SwapBuffers()
@@ -88,16 +91,22 @@ Public Class Renderer
 		End If
 	End Sub
 
-	Public Function GetTexture(ByRef filename As String) As Image
-		Dim tex As System.Drawing.Image = Nothing
+	Public Function GetTexture(ByRef filename As String) As Texture
+		Dim tex As Texture = Nothing
+		'画像ファイルが連想配列になければ追加する。
 		Dim b As Boolean = mTextures.ContainsKey(filename)
 		If b = True Then
-			'すでに読み込み済み
+			'すでに読み込み済みなので、そのデータを返す。
 			tex = mTextures(filename)
 		Else
-			'画像ファイルを読み込んで、Imageオブジェクトを作成し、ファイル名と紐づけする
-			tex = Image.FromFile(Application.StartupPath & filename)
-			mTextures.Add(filename, tex)
+			'Textureクラスを生成し、連想配列に追加する。
+			tex = New Texture()
+			If (tex.Load(filename)) Then
+				mTextures.Add(filename, tex)
+			Else
+				tex.Dispose()
+				tex = Nothing
+			End If
 		End If
 		Return tex
 	End Function

@@ -1,7 +1,12 @@
-﻿Public Class SpriteComponent
+﻿Imports OpenTK
+Imports OpenTK.Graphics
+Imports OpenTK.Graphics.OpenGL
+Imports OpenTK.Mathematics
+
+Public Class SpriteComponent
     Inherits Component
 
-    Private mTexture As Image
+    Private mTexture As Texture
     Private mDrawOrder As Integer
     Private mTexWidth As Integer
     Private mTexHeight As Integer
@@ -27,33 +32,21 @@
         MyBase.Dispose(disposing)
     End Sub
 
-    Public Overridable Sub Draw(ByRef mGraphics As Object)
+    Public Overridable Sub Draw(ByRef shader As Shader)
         If (mTexture IsNot Nothing) And (mVisible = True) Then
-            Dim w As Single = mTexWidth * mOwner.GetScale()
-            Dim h As Single = mTexHeight * mOwner.GetScale()
-            Dim x0 As Single = mOwner.GetPosition().X
-            Dim y0 As Single = mOwner.GetPosition().Y
+            ' 短形を描画
+            GL.DrawElements(PrimitiveType.Triangles,
+                            6,
+                            DrawElementsType.UnsignedInt,
+                            0)
 
-            '画像を回転して表示
-            Dim angle As Single = mOwner.GetRotation()
-
-            Dim x1 As Single = (-w / 2) * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0
-            Dim y1 As Single = w / 2 * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0
-            Dim x2 As Single = w / 2 * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0
-            Dim y2 As Single = (-w / 2) * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0
-            Dim x3 As Single = (-w / 2) * Math.Cos(angle) + h / 2 * Math.Sin(angle) + x0
-            Dim y3 As Single = w / 2 * Math.Sin(angle) + h / 2 * Math.Cos(angle) + y0
-            'PointF配列を作成
-            Dim destinationPoints() As PointF = {New PointF(x1, y1), New PointF(x2, y2), New PointF(x3, y3)}
-
-            mGraphics.DrawImage(mTexture, destinationPoints)
         End If
 
     End Sub
-    Public Sub SetTexture(ByRef tex As Image)
+    Public Sub SetTexture(ByRef tex As Texture)
         mTexture = tex
-        mTexWidth = tex.Width
-        mTexHeight = tex.Height
+        mTexWidth = tex.GetTexWidth
+        mTexHeight = tex.GetTexHeight
         ' 高さと幅の平均をActorの直径とする。
         mOwner.SetRadius((mTexWidth + mTexHeight) / 4)
     End Sub
@@ -67,7 +60,7 @@
     Public Function GetTexHeight() As Integer
         Return mTexHeight
     End Function
-    Public Function GetTexture() As Image
+    Public Function GetTexture() As Texture
         Return mTexture
     End Function
     Public Sub SetVisible(ByVal visible As Boolean)

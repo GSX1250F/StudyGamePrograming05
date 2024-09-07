@@ -8,7 +8,7 @@ Public Class VertexInfo
 
     'public
     Public Sub New(ByVal numVerts As Integer, ByRef vertPos As Single(),
-                   ByRef texPos As Single(), ByRef vertColor As Single(),
+                   ByRef texCoord As Single(), ByRef vertColor As Single(),
                    ByRef indices As UInteger())
         mNumVerts = numVerts
 
@@ -38,17 +38,17 @@ Public Class VertexInfo
         GL.EnableVertexAttribArray(0)
 
         'VertexAttribute layout1 = texCoord
-        mTexPosBuffer = GL.GenBuffer()
-        GL.BindBuffer(BufferTarget.ArrayBuffer, mTexPosBuffer)
+        mTexCoordBuffer = GL.GenBuffer()
+        GL.BindBuffer(BufferTarget.ArrayBuffer, mTexCoordBuffer)
         GL.BufferData(BufferTarget.ArrayBuffer,
-                      texPos.Length * Marshal.SizeOf(Of Single),
-                      texPos,
+                      texCoord.Length * Marshal.SizeOf(Of Single),
+                      texCoord,
                       BufferUsageHint.StaticDraw)
         GL.VertexAttribPointer(1,
                                2,
                                VertexAttribPointerType.Float,
                                False,
-                               CInt(texPos.Length / numVerts) * Marshal.SizeOf(Of Single),
+                               CInt(texCoord.Length / numVerts) * Marshal.SizeOf(Of Single),
                                0)
         GL.EnableVertexAttribArray(1)
 
@@ -77,7 +77,7 @@ Public Class VertexInfo
             If disposing Then
                 '*** アンマネージリソースの開放
                 GL.DeleteBuffers(1, mVertPosBuffer)
-                GL.DeleteBuffers(1, mTexPosBuffer)
+                GL.DeleteBuffers(1, mTexCoordBuffer)
                 GL.DeleteBuffers(1, mVertColorBuffer)
                 GL.DeleteBuffers(1, mIndexBuffer)
                 GL.DeleteVertexArrays(1, mVertexArray)
@@ -104,7 +104,7 @@ Public Class VertexInfo
     Private mVertexArray As Integer         ' バーテックス配列オブジェクトのOpenGL ID
     Private mIndexBuffer As Integer         ' インデックスバッファのOpenGL ID
     Private mVertPosBuffer As Integer        ' 頂点座標バッファのOpenGL ID
-    Private mTexPosBuffer As Integer        ' テクスチャ座標バッファのOpenGL ID
+    Private mTexCoordBuffer As Integer        ' テクスチャ座標バッファのOpenGL ID
     Private mVertColorBuffer As Integer        ' 頂点カラーバッファのOpenGL ID
 
 End Class

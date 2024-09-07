@@ -27,22 +27,24 @@ Public Class Texture
         Dispose(False)
     End Sub
     Public Function Load(ByRef filename As String) As Boolean
-        StbImage.stbi_set_flip_vertically_on_load(1)
+        If System.IO.File.Exists(filename) Then
+            StbImage.stbi_set_flip_vertically_on_load(1)
+            mTextureID = GL.GenTexture()
+            GL.BindTexture(TextureTarget.Texture2D, mTextureID)
+            Using stream As Stream = File.OpenRead(filename)
+                Dim image As ImageResult = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha)
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data)
+                mTexWidth = image.Width
+                mTexHeight = image.Height
+            End Using
 
-        Using stream As Stream = File.OpenRead(filename)
-            Dim image As ImageResult = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha)
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data)
-            mTexWidth = image.Width
-            mTexHeight = image.Height
-        End Using
-
-        mTextureID = GL.GenTexture()
-        GL.BindTexture(TextureTarget.Texture2D, mTextureID)
-
-        'バイリニアフィルタリングを有効化
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, Int(TextureMinFilter.Linear))
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, Int(TextureMagFilter.Linear))
-        Return True
+            'バイリニアフィルタリングを有効化
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, Int(TextureMinFilter.Linear))
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, Int(TextureMagFilter.Linear))
+            Return True
+        Else
+            Return False
+        End If
     End Function
     Public Sub Unload()
         GL.DeleteTextures(1, mTextureID)

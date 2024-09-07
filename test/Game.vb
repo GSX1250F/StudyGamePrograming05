@@ -178,7 +178,7 @@ Public Class Game
         Dim astCtrl As New AsteroidControl(Me)
 
         '背景を作成
-        Dim bg As New BackGround(Me)
+        'Dim bg As New BackGround(Me)
 
         Dim clrPict As New ClearPict(Me)
 

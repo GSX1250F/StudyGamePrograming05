@@ -48,6 +48,10 @@ Public Class Renderer
 		Return True
 	End Function
 	Public Sub Shutdown()
+		UnloadData()
+		mVertsInfo.Dispose()
+		mShader.Unload()
+		mShader.Dispose()
 		Me.Dispose()
 	End Sub
 	Public Sub UnloadData()
@@ -57,6 +61,9 @@ Public Class Renderer
 		'画面のクリア
 		GL.ClearColor(0.3, 0.3, 0.3, 1.0)
 		GL.Clear(ClearBufferMask.ColorBufferBit)
+
+		GL.Enable(EnableCap.Blend)
+		GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha)
 
 		mVertsInfo.SetActive()
 		mShader.SetActive()
@@ -131,7 +138,15 @@ Public Class Renderer
 			2, 1, 3
 		}
 
-		mVertsInfo = New VertexInfo(numVerts, vertPos, indices)
+		'テクスチャ座標(vector2)
+		Dim texCoord As Single() = {
+			0.0, 0.0,
+			1.0, 0.0,
+			0.0, 1.0,
+			1.0, 1.0
+		}
+
+		mVertsInfo = New VertexInfo(numVerts, vertPos, texCoord, indices)
 	End Sub
 	Private Function LoadShaders() As Boolean
 		' シェーダーを生成

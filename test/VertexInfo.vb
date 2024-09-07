@@ -6,7 +6,7 @@ Public Class VertexInfo
     Implements IDisposable
 
     'public
-    Public Sub New(ByVal numVerts As Integer, ByRef vertPos As Single(), ByRef indices As UInteger())
+    Public Sub New(ByVal numVerts As Integer, ByRef vertPos As Single(), ByRef texCoord As Single(), ByRef indices As UInteger())
         mNumVerts = numVerts
 
         mVertexArray = GL.GenVertexArray()
@@ -34,7 +34,20 @@ Public Class VertexInfo
                                0)
         GL.EnableVertexAttribArray(0)
 
-
+        'VertexAttribute layout1 = texCoord
+        mTexCoordBuffer = GL.GenBuffer()
+        GL.BindBuffer(BufferTarget.ArrayBuffer, mTexCoordBuffer)
+        GL.BufferData(BufferTarget.ArrayBuffer,
+                      texCoord.Length * Marshal.SizeOf(Of Single),
+                      texCoord,
+                      BufferUsageHint.StaticDraw)
+        GL.VertexAttribPointer(1,
+                               2,
+                               VertexAttribPointerType.Float,
+                               False,
+                               CInt(texCoord.Length / numVerts) * Marshal.SizeOf(Of Single),
+                               0)
+        GL.EnableVertexAttribArray(1)
 
     End Sub
     Protected disposed = False
@@ -46,6 +59,7 @@ Public Class VertexInfo
             If disposing Then
                 '*** アンマネージリソースの開放
                 GL.DeleteBuffers(1, mVertPosBuffer)
+                GL.DeleteBuffers(1, mTexCoordBuffer)
                 GL.DeleteBuffers(1, mIndexBuffer)
                 GL.DeleteVertexArrays(1, mVertexArray)
             End If
@@ -71,4 +85,6 @@ Public Class VertexInfo
     Private mVertexArray As Integer         ' バーテックス配列オブジェクトのOpenGL ID
     Private mIndexBuffer As Integer         ' インデックスバッファのOpenGL ID
     Private mVertPosBuffer As Integer        ' 頂点座標バッファのOpenGL ID
+    Private mTexCoordBuffer As Integer        ' テクスチャ座標バッファのOpenGL ID
+
 End Class

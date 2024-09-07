@@ -134,7 +134,7 @@ Public Class Renderer
             0.5, 0.5
         }
         'テクスチャ座標(vector2)
-        Dim texPos As Single() = {
+        Dim texCoord As Single() = {
             0.0, 0.0,
             1.0, 0.0,
             0.0, 1.0,
@@ -153,7 +153,7 @@ Public Class Renderer
             2, 1, 3
         }
 
-        mVertsInfo = New VertexInfo(numVerts, vertPos, texPos, vertColor, indices)
+        mVertsInfo = New VertexInfo(numVerts, vertPos, texCoord, vertColor, indices)
     End Sub
     Private Function LoadShaders() As Boolean
         ' シェーダーを生成

@@ -9,8 +9,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "StudyGamePrograming05_VB_FW
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "StudyGamePrograming05_VB_app", "StudyGamePrograming05_VB_app\StudyGamePrograming05_VB_app.vbproj", "{68775ADE-0359-49DE-BB5B-8D02410B32A6}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "test", "test\test.vbproj", "{D61C9D8A-6513-42DA-A3C5-074BBF37AE7A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,18 +55,6 @@ Global
 		{68775ADE-0359-49DE-BB5B-8D02410B32A6}.Release|x64.Build.0 = Release|Any CPU
 		{68775ADE-0359-49DE-BB5B-8D02410B32A6}.Release|x86.ActiveCfg = Release|Any CPU
 		{68775ADE-0359-49DE-BB5B-8D02410B32A6}.Release|x86.Build.0 = Release|Any CPU
-		{D61C9D8A-6513-42DA-A3C5-074BBF37AE7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D61C9D8A-6513-42DA-A3C5-074BBF37AE7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D61C9D8A-6513-42DA-A3C5-074BBF37AE7A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D61C9D8A-6513-42DA-A3C5-074BBF37AE7A}.Debug|x64.Build.0 = Debug|Any CPU
-		{D61C9D8A-6513-42DA-A3C5-074BBF37AE7A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D61C9D8A-6513-42DA-A3C5-074BBF37AE7A}.Debug|x86.Build.0 = Debug|Any CPU
-		{D61C9D8A-6513-42DA-A3C5-074BBF37AE7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D61C9D8A-6513-42DA-A3C5-074BBF37AE7A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D61C9D8A-6513-42DA-A3C5-074BBF37AE7A}.Release|x64.ActiveCfg = Release|Any CPU
-		{D61C9D8A-6513-42DA-A3C5-074BBF37AE7A}.Release|x64.Build.0 = Release|Any CPU
-		{D61C9D8A-6513-42DA-A3C5-074BBF37AE7A}.Release|x86.ActiveCfg = Release|Any CPU
-		{D61C9D8A-6513-42DA-A3C5-074BBF37AE7A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

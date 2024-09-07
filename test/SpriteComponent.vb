@@ -34,7 +34,13 @@ Public Class SpriteComponent
 
     Public Overridable Sub Draw(ByRef shader As Shader)
         If (mTexture IsNot Nothing) And (mVisible = True) Then
-            ' 短形を描画
+            Dim scaleMat As Matrix4 = Matrix4.CreateScale(mTexture.GetTexWidth, mTexture.GetTexHeight, 1.0)
+            Dim world As Matrix4 = scaleMat * mOwner.GetWOrldTransform()
+            shader.SetMatrixUniform("uWorldTransform", world)
+            Dim viewProj As Matrix4 = Matrix4.CreateScale(2.0 / mOwner.GetGame().mWindowWidth, 2.0 / mOwner.GetGame.mWindowHeight, 1.0)
+            shader.SetMatrixUniform("uViewProj", viewProj)
+
+            mTexture.SetActive()
             GL.DrawElements(PrimitiveType.Triangles,
                             6,
                             DrawElementsType.UnsignedInt,

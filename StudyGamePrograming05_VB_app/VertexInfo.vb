@@ -100,7 +100,7 @@ Public Class VertexInfo
 
     'private
     Private disposedValue As Boolean
-    Private mNumVerts As Integer    ' 頂点の数
+    Private mNumVerts As Integer         ' 頂点の数
     Private mVertexArray As Integer         ' バーテックス配列オブジェクトのOpenGL ID
     Private mIndexBuffer As Integer         ' インデックスバッファのOpenGL ID
     Private mVertPosBuffer As Integer        ' 頂点座標バッファのOpenGL ID

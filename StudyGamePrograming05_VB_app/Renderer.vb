@@ -35,7 +35,7 @@ Public Class Renderer
         GL.Viewport(0, 0, screenWidth, screenHeight)
 
         ' 頂点情報オブジェクトの生成
-        CreateVertsInfo()
+        CreateVertexInfo()
 
         ' シェーダーの生成
         If (LoadShaders() <> True) Then
@@ -46,7 +46,7 @@ Public Class Renderer
     End Function
     Public Sub Shutdown()
         UnloadData()
-        mVertsInfo.Dispose()
+        mVertexInfo.Dispose()
         mShader.Unload()
         mShader.Dispose()
         Me.Dispose()
@@ -63,7 +63,7 @@ Public Class Renderer
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha)
 
         ' シェーダーとバーテックス配列オブジェクトを有効化
-        mVertsInfo.SetActive()
+        mVertexInfo.SetActive()
         mShader.SetActive()
 
         'すべてのスプライトコンポーネントを描画
@@ -124,7 +124,7 @@ Public Class Renderer
     End Function
 
     'private
-    Private Sub CreateVertsInfo()
+    Private Sub CreateVertexInfo()
         Dim numVerts As Integer = 4
         '頂点座標(vector2)
         Dim vertPos As Single() = {
@@ -153,7 +153,7 @@ Public Class Renderer
             2, 1, 3
         }
 
-        mVertsInfo = New VertexInfo(numVerts, vertPos, texCoord, vertColor, indices)
+        mVertexInfo = New VertexInfo(numVerts, vertPos, texCoord, vertColor, indices)
     End Sub
     Private Function LoadShaders() As Boolean
         ' シェーダーを生成
@@ -169,6 +169,6 @@ Public Class Renderer
     Private mScreenHeight As Integer
     Private mTextures As New Dictionary(Of String, Texture)
     Private mSprites As New List(Of SpriteComponent)
-    Private mVertsInfo As VertexInfo
+    Private mVertexInfo As VertexInfo
     Private mShader As Shader
 End Class

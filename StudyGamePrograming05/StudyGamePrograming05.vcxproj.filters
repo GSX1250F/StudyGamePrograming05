@@ -78,7 +78,7 @@
     <ClCompile Include="Shader.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="VertexArray.cpp">
+    <ClCompile Include="VertexInfo.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
@@ -143,7 +143,7 @@
     <ClInclude Include="Shader.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="VertexArray.h">
+    <ClInclude Include="VertexInfo.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
@@ -152,16 +152,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Shaders\Basic.frag">
+    <None Include="Shaders\basic.frag">
       <Filter>シェーダーファイル</Filter>
     </None>
-    <None Include="Shaders\Basic.vert">
+    <None Include="Shaders\basic.vert">
       <Filter>シェーダーファイル</Filter>
     </None>
-    <None Include="Shaders\Sprite.vert">
+    <None Include="Shaders\shader.vert">
       <Filter>シェーダーファイル</Filter>
     </None>
-    <None Include="Shaders\Sprite.frag">
+    <None Include="Shaders\shader.frag">
       <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>

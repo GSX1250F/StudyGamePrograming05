@@ -166,7 +166,7 @@ xcopy "..\..\external\GLEW\lib\$(PlatformTarget)\*.dll" "$(OutDir)" /i/s/y
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="VertexArray.cpp" />
+    <ClCompile Include="VertexInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -189,14 +189,14 @@ xcopy "..\..\external\GLEW\lib\$(PlatformTarget)\*.dll" "$(OutDir)" /i/s/y
     <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="VertexArray.h" />
+    <ClInclude Include="VertexInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Shaders\Basic.frag" />
-    <None Include="Shaders\Basic.vert" />
-    <None Include="Shaders\Sprite.frag" />
-    <None Include="Shaders\Sprite.vert" />
+    <None Include="Shaders\basic.frag" />
+    <None Include="Shaders\basic.vert" />
+    <None Include="Shaders\shader.frag" />
+    <None Include="Shaders\shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

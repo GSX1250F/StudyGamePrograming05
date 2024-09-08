@@ -108,7 +108,7 @@ void Renderer::Shutdown()
 void Renderer::Draw()
 {
 	// 背景色を指定して画面をクリア
-	glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
+	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	// カラーバッファのアルファブレンディングを有効化
 	glEnable(GL_BLEND);

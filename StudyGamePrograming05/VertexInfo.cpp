@@ -6,7 +6,6 @@ VertexInfo::VertexInfo(unsigned int numVerts, const float* vertPos,
 					   const unsigned int* indices)
 	: mNumVerts(numVerts)
 {
-
 	// バーテックス配列オブジェクトをOpenGLに生成し、そのIDをメンバー変数mVertexArrayに保存する
 	glGenVertexArrays(1, &mVertexArray);
 	glBindVertexArray(mVertexArray);

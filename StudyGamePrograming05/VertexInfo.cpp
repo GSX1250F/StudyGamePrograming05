@@ -11,7 +11,7 @@ VertexInfo::VertexInfo(unsigned int numVerts, const float* vertPos,
 	glBindVertexArray(mVertexArray);
 
 	// インデックスバッファをOpenGLに生成し、そのIDをメンバー変数mIndexBufferに保存する
-	int cnt = sizeof(indices);
+	int cnt = 6;	//インデックスバッファの要素数
 	glGenBuffers(1, &mIndexBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
 	glBufferData(
@@ -22,7 +22,7 @@ VertexInfo::VertexInfo(unsigned int numVerts, const float* vertPos,
 	);
 
 	//VertexAttribute layout0 = position
-	cnt = sizeof(vertPos);
+	cnt = 2 * numVerts;		//頂点座標配列の要素数
 	glGenBuffers(1, &mVertPosBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, mVertPosBuffer);
 	glBufferData(
@@ -42,7 +42,7 @@ VertexInfo::VertexInfo(unsigned int numVerts, const float* vertPos,
 	glEnableVertexAttribArray(0);
 
 	// VertexAttribute layout1 = texCoord
-	cnt = sizeof(texCoord);
+	cnt = 2 * numVerts;		//テクスチャ座標配列の要素数
 	glGenBuffers(1, &mTexCoordBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, mTexCoordBuffer);
 	glBufferData(
@@ -62,7 +62,7 @@ VertexInfo::VertexInfo(unsigned int numVerts, const float* vertPos,
 	glEnableVertexAttribArray(1);
 
 	// VertexAttribute layout2 = vertColor
-	cnt = sizeof(vertColor);
+	cnt = 4 * numVerts;		//頂点カラー配列の要素数
 	glGenBuffers(1, &mVertColorBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, mVertColorBuffer);
 	glBufferData(

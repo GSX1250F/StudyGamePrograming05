@@ -1,4 +1,5 @@
 ﻿Imports System.Runtime.InteropServices
+Imports System.Threading
 Imports OpenTK
 Imports OpenTK.Graphics
 Imports OpenTK.Graphics.OpenGL
@@ -111,6 +112,12 @@ Public Class Game
         mUpdatingActors = False
     End Sub
     Private Sub UpdateGame()
+        ' フレームレート調整（62.5fps)
+        If (Ticks.ElapsedMilliseconds - mTicksCount < 16) Then
+            Dim sleeptime As Integer = 16 - (Ticks.ElapsedMilliseconds - mTicksCount)
+            System.Threading.Thread.Sleep(sleeptime)
+        End If
+
         'デルタタイムの計算
         Dim deltaTime As Single = (Ticks.ElapsedMilliseconds - mTicksCount) / 1000
 

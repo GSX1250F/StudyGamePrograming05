@@ -42,31 +42,27 @@ Public Class SpriteComponent
             Dim vertices As List(Of Vector2) = New List(Of Vector2) From {
                     New Vector2(-0.5, -0.5),
                     New Vector2(0.5, -0.5),
-                    New Vector2(-0.5, 0.5),
-                    New Vector2(0.5, 0.5)}
-            'Textureの座標は頂点座標と上下反転する
-            Dim texcoords As List(Of Vector2) = New List(Of Vector2) From {New Vector2(0.0, 0.0),
-                                                                       New Vector2(1.0, 0.0),
-                                                                       New Vector2(0.0, 1.0),
-                                                                       New Vector2(1.0, 1.0)}
+                    New Vector2(0.5, 0.5),
+                    New Vector2(-0.5, 0.5)}
+
+            Dim texcoords As List(Of Vector2) = New List(Of Vector2) From {
+                    New Vector2(0.0, 0.0),
+                    New Vector2(1.0, 0.0),
+                    New Vector2(1.0, 1.0),
+                    New Vector2(0.0, 1.0)}
 
             ' テクスチャサイズで再スケーリングしたワールド変換行列を作成
             Dim scaleMat As Matrix4 = Matrix4.CreateScale(mTexWidth, mTexHeight, 1.0)
             Dim world As Matrix4 = scaleMat * mOwner.GetWorldTransform()
-
+            ' ビューポート変換行列
+            Dim viewProj = Matrix4.CreateOrthographic(mOwner.GetGame().mWindowWidth, mOwner.GetGame().mWindowHeight, 0.01, 1.0)
             'OpenGLで四角形を描画（'TriangleStripの場合、0,1,2→1つ目、1,2,3→2つ目の三角形となる。）
-            GL.Begin(PrimitiveType.TriangleStrip)
+            GL.Begin(PrimitiveType.Quads)
             ' 各頂点を行列で変換
             For i = 0 To vertices.Count - 1
                 Dim v As Vector4 = New Vector4(vertices(i).X, vertices(i).Y, 0.0, 1.0)
-                'ワールド変換
-                v *= world
-                ' ビュー変換　（2D不要）
-                ' 射影変換　（2D不要）
-                ' ビューポート変換
-                scaleMat = Matrix4.CreateOrthographic(mOwner.GetGame().mWindowWidth, mOwner.GetGame().mWindowHeight, 0.01, 1.0)
-                'scaleMat = Matrix4.CreateScale(1.0 / mOwner.GetGame().mWindowWidth, 1.0 / mOwner.GetGame().mWindowHeight, 0.0)
-                v *= scaleMat
+
+                v = v * world * viewProj
 
                 GL.TexCoord2(texcoords(i).X, texcoords(i).Y)
                 GL.Vertex2(v.X, v.Y)

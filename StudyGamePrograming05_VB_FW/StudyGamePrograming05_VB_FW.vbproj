@@ -97,7 +97,7 @@
       <DependentUpon>Game.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ImputComponent.vb" />
+    <Compile Include="InputComponent.vb" />
     <Compile Include="Laser.vb" />
     <Compile Include="MoveComponent.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

@@ -123,6 +123,7 @@ Public Class Game
 
         '待ちアクターをmActorsに移動
         For Each pending In mPendingActors
+            pending.ComputeWorldTransform()
             mActors.Add(pending)
         Next
         mPendingActors.Clear()

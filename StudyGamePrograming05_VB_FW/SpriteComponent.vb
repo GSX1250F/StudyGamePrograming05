@@ -36,10 +36,7 @@ Public Class SpriteComponent
 
     Public Overridable Sub Draw()
         If (mTexture IsNot Nothing) And (mVisible = True) Then
-            mTexture.SetActive()
-
-            'TriangleStripの場合、0,1,2→1つ目、2,1,3→2つ目の三角形となる。
-            Dim vertices As List(Of Vector2) = New List(Of Vector2) From {
+            Dim vertices = New List(Of Vector2) From {
                     New Vector2(-0.5, -0.5),
                     New Vector2(0.5, -0.5),
                     New Vector2(0.5, 0.5),
@@ -56,13 +53,16 @@ Public Class SpriteComponent
             Dim world As Matrix4 = scaleMat * mOwner.GetWorldTransform()
             ' ビューポート変換行列
             Dim viewProj = Matrix4.CreateOrthographic(mOwner.GetGame().mWindowWidth, mOwner.GetGame().mWindowHeight, 0.01, 1.0)
+
+            mTexture.SetActive()
+
             'OpenGLで四角形を描画（'TriangleStripの場合、0,1,2→1つ目、1,2,3→2つ目の三角形となる。）
             GL.Begin(PrimitiveType.Quads)
             ' 各頂点を行列で変換
             For i = 0 To vertices.Count - 1
                 Dim v As Vector4 = New Vector4(vertices(i).X, vertices(i).Y, 0.0, 1.0)
 
-                v = v * world * viewProj
+                v *= world * viewProj
 
                 GL.TexCoord2(texcoords(i).X, texcoords(i).Y)
                 GL.Vertex2(v.X, v.Y)

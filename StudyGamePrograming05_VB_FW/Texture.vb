@@ -42,6 +42,8 @@ Public Class Texture
         GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data)
         'OpenGLに登録が完了したら画像データを開放する。
         image = Nothing
+        'テクスチャ有効化
+        GL.Enable(EnableCap.Texture2D)
         'バイリニアフィルタリングを有効化
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, Int(TextureMinFilter.Linear))
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, Int(TextureMagFilter.Linear))

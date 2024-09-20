@@ -1,17 +1,9 @@
-﻿Imports System.Drawing.Imaging
-Imports OpenTK
+﻿Imports OpenTK
 Imports OpenTK.Graphics
 Imports OpenTK.Graphics.OpenGL
 Public Class Renderer
 	Implements IDisposable      '明示的にクラスを開放するために必要
-	Private disposedValue As Boolean
-	Private mGame As Game
-	Private mWindow As GLControl
-	Private mScreenWidth As Integer
-	Private mScreenHeight As Integer
-	Private mTextures As New Dictionary(Of String, Texture)   'ファイル名→OpenGLのテクスチャのインデックスの連想配列
-	Private mSprites As New List(Of SpriteComponent)    'スプライトコンポーネントの配列
-
+	'public
 	Sub New(ByRef game As Game)
 		mGame = game
 		mWindow = Nothing
@@ -40,10 +32,20 @@ Public Class Renderer
 
 		' 背景色の設定
 		GL.ClearColor(0.3, 0.3, 0.3, 1.0)
-		' 画面初期化
-		GL.Viewport(0, 0, screenWidth, screenHeight)
-		'テクスチャ有効化
-		GL.Enable(EnableCap.Texture2D)
+		'ビュー変換の初期化
+		GL.MatrixMode(MatrixMode.Modelview)
+		mView = Matrix4.Identity
+		GL.LoadMatrix(mView)
+		' ビューポート設定
+		GL.Viewport(0, 0, mScreenWidth, mScreenHeight)
+		'クリッピングウィンドウの設定
+		GL.MatrixMode(MatrixMode.Projection)
+		mProj = Matrix4.CreateOrthographic(screenWidth, screenHeight, -500, 500)
+		GL.LoadMatrix(mProj)
+		'マトリックスモードを戻しておく
+		GL.MatrixMode(MatrixMode.Modelview)
+
+
 		Return True
 	End Function
 	Public Sub Shutdown()
@@ -55,9 +57,7 @@ Public Class Renderer
 	End Sub
 	Public Sub Draw()
 		'画面のクリア
-		GL.ClearColor(0.3, 0.3, 0.3, 1.0)
 		GL.Clear(ClearBufferMask.ColorBufferBit)
-
 		'アルファブレンディング
 		GL.Enable(EnableCap.Blend)
 		GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha)
@@ -68,6 +68,18 @@ Public Class Renderer
 				sprite.Draw()
 			End If
 		Next
+		'ビュー変換
+		GL.MatrixMode(MatrixMode.Modelview)
+		GL.LoadMatrix(mView)
+
+		' ビューポート再設定
+		GL.Viewport(0, 0, mScreenWidth, mScreenHeight)
+
+		'クリッピングウィンドウの再設定
+		GL.MatrixMode(MatrixMode.Projection)
+		GL.LoadMatrix(mProj)
+		GL.MatrixMode(MatrixMode.Modelview)
+
 		mWindow.SwapBuffers()
 		mWindow.Refresh()
 	End Sub
@@ -119,4 +131,14 @@ Public Class Renderer
 		Return mScreenHeight
 	End Function
 
+	'private
+	Private disposedValue As Boolean
+	Private mGame As Game
+	Private mWindow As GLControl
+	Private mScreenWidth As Integer
+	Private mScreenHeight As Integer
+	Private mTextures As New Dictionary(Of String, Texture)   'ファイル名→OpenGLのテクスチャのインデックスの連想配列
+	Private mSprites As New List(Of SpriteComponent)    'スプライトコンポーネントの配列
+	Private mView As Matrix4
+	Private mProj As Matrix4
 End Class

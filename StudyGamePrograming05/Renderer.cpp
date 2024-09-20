@@ -55,15 +55,7 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 		SDL_Log("ウィンドウの作成に失敗しました: %s", SDL_GetError());
 		return false;
 	}
-	/*
-	// SDLレンダラーを作成
-	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (!mRenderer)
-	{
-		SDL_Log("レンダラーの作成に失敗しました: %s", SDL_GetError());
-		return false;
-	}
-	*/
+
 	// OpenGLコンテクストを生成（すべてのOpenGL機能にアクセスする）
 	mContext = SDL_GL_CreateContext(mWindow);
 
@@ -86,6 +78,8 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 		return false;
 	}
 
+	// 画面クリアの色を設定
+	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 
 	return true;
 }
@@ -107,8 +101,7 @@ void Renderer::Shutdown()
 
 void Renderer::Draw()
 {
-	// 背景色を指定して画面をクリア
-	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+	// 画面をクリア	
 	glClear(GL_COLOR_BUFFER_BIT);
 	// カラーバッファのアルファブレンディングを有効化
 	glEnable(GL_BLEND);
@@ -182,17 +175,17 @@ void Renderer::CreateVertexInfo()
 	int numVerts = 4;		//頂点の数
 	//頂点座標(vector2)
 	float vertPos[] = {
-		-0.5f, 0.5f, 			// 左上 (インデックス 0) 
-		-0.5f, -0.5f, 			// 左下 (インデックス 1)
-		0.5f, -0.5f, 			// 右下 (インデックス 2)
+		-0.5f, -0.5f, 			// 左下 (インデックス 0)
+		0.5f, -0.5f, 			// 右下 (インデックス 1)
+		-0.5f, 0.5f, 			// 左上 (インデックス 2) 
 		0.5f, 0.5f, 			// 右上 (インデックス 3)
 	};
 	//テクスチャ座標(vector2)
 	float texCoord[] = {
-		0.0f, 0.0f,			//テクスチャ座標左下
+		0.0f, 0.0f,			//テクスチャ座標左下		
+		1.0f, 0.0f,			//テクスチャ座標右下
 		0.0f, 1.0f,			//テクスチャ座標左上
-		1.0f, 1.0f,			//テクスチャ座標右上
-		1.0f, 0.0f			//テクスチャ座標右下
+		1.0f, 1.0f			//テクスチャ座標右上
 	};
 	//頂点カラー(vector4 RGBA)
 	float vertColor[] = {
@@ -205,7 +198,7 @@ void Renderer::CreateVertexInfo()
 	//インデックス
 	unsigned int indices[] = {
 		0, 1, 2,
-		2, 3, 0
+		2, 1, 3
 	};
 
 	mVertexInfo = new VertexInfo(numVerts, vertPos, texCoord, vertColor, indices);

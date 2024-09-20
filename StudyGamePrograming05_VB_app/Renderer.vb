@@ -31,6 +31,10 @@ Public Class Renderer
     Public Function Initialize(ByVal screenWidth As Integer, ByVal screenHeight As Integer) As Boolean
         mScreenWidth = screenWidth
         mScreenHeight = screenHeight
+
+        ' 画面クリアの色を設定
+        GL.ClearColor(0.3, 0.3, 0.3, 1.0)
+
         ' 画面初期化
         GL.Viewport(0, 0, screenWidth, screenHeight)
 
@@ -55,8 +59,7 @@ Public Class Renderer
         mTextures.Clear()
     End Sub
     Public Sub Draw()
-        '背景色を指定して画面をクリア
-        GL.ClearColor(0.3, 0.3, 0.3, 1.0)
+        '画面をクリア
         GL.Clear(ClearBufferMask.ColorBufferBit)
         'カラーバッファのアルファブレンディングを有効化
         GL.Enable(EnableCap.Blend)

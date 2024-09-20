@@ -3,10 +3,7 @@
 #include <glew.h>
 #include <SOIL2.h>
 
-Texture::Texture()
-	: mTextureID(0)
-	, mTexWidth(0)
-	, mTexHeight(0)
+Texture::Texture()	
 {}
 
 Texture::~Texture()

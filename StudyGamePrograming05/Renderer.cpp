@@ -172,7 +172,7 @@ class Texture* Renderer::GetTexture(const std::string& filename)
 
 void Renderer::CreateVertexInfo()
 {
-	int numVerts = 4;		//頂点の数
+	int numVerts = 4;			//頂点の数
 	//頂点座標(vector2)
 	float vertPos[] = {
 		-0.5f, -0.5f, 			// 左下 (インデックス 0)
@@ -194,14 +194,14 @@ void Renderer::CreateVertexInfo()
 		0.0f, 0.0f, 1.0f, 1.0f,		//B
 		1.0f, 1.0f, 1.0f, 1.0f		//W
 	};
-
+	int numIndices = 6;			//頂点の数
 	//インデックス
 	unsigned int indices[] = {
 		0, 1, 2,
 		2, 1, 3
 	};
 
-	mVertexInfo = new VertexInfo(numVerts, vertPos, texCoord, vertColor, indices);
+	mVertexInfo = new VertexInfo(vertPos, texCoord, vertColor, indices, numVerts, numIndices);
 }
 
 bool Renderer::LoadShaders()

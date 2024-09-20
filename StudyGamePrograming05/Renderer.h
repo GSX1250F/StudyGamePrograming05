@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include "Math.h"
 #include "Texture.h"
+#include "VertexInfo.h"
 
 class Renderer
 {
@@ -21,15 +22,14 @@ public:
 	void AddSprite(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
 
-	//SDL_Texture* GetTexture(const std::string& fileName);
 	class Texture* GetTexture(const std::string& fileName);
+	class VertexInfo* GetVertexInfo() { return mVertexInfo; }
 	
 	float GetScreenWidth() const { return mScreenWidth; }
 	float GetScreenHeight() const { return mScreenHeight; }
 
 private:
 	// テクスチャのマップ
-	//std::unordered_map<std::string, SDL_Texture*> mTextures;
 	std::unordered_map<std::string, class Texture*> mTextures;
 	
 	// スプライトコンポーネントの配列

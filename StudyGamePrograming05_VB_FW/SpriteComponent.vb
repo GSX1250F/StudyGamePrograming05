@@ -53,7 +53,9 @@ Public Class SpriteComponent
             ' 各頂点を行列で変換
             For i = 0 To vertices.Count - 1
                 Dim v = New Vector4(vertices(i).X, vertices(i).Y, 0.0, 1.0)
+                'ワールド変換
                 v *= world
+
                 'テクスチャ座標設定
                 GL.TexCoord2(texcoords(i).X, texcoords(i).Y)
 

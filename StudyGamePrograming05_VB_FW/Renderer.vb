@@ -32,6 +32,9 @@ Public Class Renderer
 
 		' 背景色の設定
 		GL.ClearColor(0.3, 0.3, 0.3, 1.0)
+
+
+
 		'ビュー変換の初期化
 		GL.MatrixMode(MatrixMode.Modelview)
 		mView = Matrix4.Identity
@@ -45,10 +48,10 @@ Public Class Renderer
 		'マトリックスモードを戻しておく
 		GL.MatrixMode(MatrixMode.Modelview)
 
-
 		Return True
 	End Function
 	Public Sub Shutdown()
+		UnloadData()
 		mWindow.Dispose()
 		Me.Dispose()
 	End Sub

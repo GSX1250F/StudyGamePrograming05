@@ -35,8 +35,12 @@ Public Class Renderer
         ' 画面クリアの色を設定
         GL.ClearColor(0.3, 0.3, 0.3, 1.0)
 
-        ' 画面初期化
+        ' ビューポート設定
         GL.Viewport(0, 0, screenWidth, screenHeight)
+
+        ' ビュー射影変換行列の設定
+        mView = Matrix4.Identity
+        mProj = Matrix4.CreateOrthographic(mScreenWidth, mScreenHeight, -500.0, 500.0)
 
         ' 頂点情報オブジェクトの生成
         CreateVertexInfo()
@@ -46,6 +50,10 @@ Public Class Renderer
             Console.WriteLine("シェーダーの読み込みに失敗しました。")
             Return False
         End If
+
+        ' 画面クリアの色を設定
+        GL.ClearColor(0.3, 0.3, 0.3, 1.0)
+
         Return True
     End Function
     Public Sub Shutdown()
@@ -75,6 +83,9 @@ Public Class Renderer
                 sprite.Draw(mShader)
             End If
         Next
+        'ビューポート、ビュー変換、ビュー射影変換を更新
+        GL.Viewport(0, 0, mScreenWidth, mScreenHeight)
+        mShader.SetMatrixUniform("uViewProj", mView * mProj)
         mGame.SwapBuffers()
     End Sub
 
@@ -125,6 +136,9 @@ Public Class Renderer
     Public Function GetScreenHeight() As Double
         Return mScreenHeight
     End Function
+    Public Function GetVertexInfo() As VertexInfo
+        Return mVertexInfo
+    End Function
 
     'private
     Private Sub CreateVertexInfo()
@@ -151,12 +165,13 @@ Public Class Renderer
             1.0, 1.0, 1.0, 1.0
         }
         'インデックス
+        Dim numIndices As Integer = 6
         Dim indices As UInteger() = {
             0, 1, 2,
             2, 1, 3
         }
 
-        mVertexInfo = New VertexInfo(numVerts, vertPos, texCoord, vertColor, indices)
+        mVertexInfo = New VertexInfo(vertPos, texCoord, vertColor, indices, numVerts, numIndices)
     End Sub
     Private Function LoadShaders() As Boolean
         ' シェーダーを生成
@@ -164,6 +179,8 @@ Public Class Renderer
         If (mShader.Load("Shaders/shader.vert", "Shaders/shader.frag") <> True) Then
             Return False
         End If
+        Dim mViewProj = mView * mProj
+        mShader.SetMatrixUniform("uViewProj", mViewProj)
         Return True
     End Function
     Private disposedValue As Boolean
@@ -174,4 +191,6 @@ Public Class Renderer
     Private mSprites As New List(Of SpriteComponent)
     Private mVertexInfo As VertexInfo
     Private mShader As Shader
+    Private mView As Matrix4
+    Private mProj As Matrix4
 End Class

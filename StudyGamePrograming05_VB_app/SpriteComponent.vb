@@ -29,25 +29,19 @@ Public Class SpriteComponent
     Public Overridable Sub Draw(ByRef shader As Shader)
         If (mTexture IsNot Nothing) And (mVisible = True) Then
             ' テクスチャサイズで再スケーリングしたワールド変換行列を作成
-            Dim scaleMat As Matrix4 = Matrix4.CreateScale(mTexture.GetTexWidth, mTexture.GetTexHeight, 1.0)
-            Dim world As Matrix4 = scaleMat * mOwner.GetWorldTransform()
+            Dim world = Matrix4.CreateScale(mTexture.GetTexWidth, mTexture.GetTexHeight, 1.0)
+            world *= mOwner.GetWorldTransform()
             ' ワールド変換
             shader.SetMatrixUniform("uWorldTransform", world)
-
-            ' ビュー変換。ここでは平行投影変換を行う。
-            Dim viewProj As Matrix4 = Matrix4.CreateScale(2.0 / mOwner.GetGame().mWindowWidth, 2.0 / mOwner.GetGame.mWindowHeight, 1.0)
-            shader.SetMatrixUniform("uViewProj", viewProj)
-
             ' 現在のテクスチャをセット
             mTexture.SetActive()
             ' 短形を描画
             GL.DrawElements(PrimitiveType.Triangles,
-                            6,
+                            mOwner.GetGame.GetRenderer.GetVertexInfo.GetNumIndices,
                             DrawElementsType.UnsignedInt,
                             0)
 
         End If
-
     End Sub
 
     Public Function GetDrawOrder() As Integer

@@ -183,9 +183,9 @@ void Renderer::CreateVertexInfo()
 	//テクスチャ座標(vector2)		頂点座標とは上下反転させる
 	float texCoord[] = {
 		0.0f, 1.0f,			//テクスチャ座標左上
+		1.0f, 1.0f,			//テクスチャ座標右上
 		0.0f, 0.0f,			//テクスチャ座標左下		
-		1.0f, 0.0f,			//テクスチャ座標右下
-		1.0f, 1.0f			//テクスチャ座標右上
+		1.0f, 0.0f			//テクスチャ座標右下
 	};
 	//頂点カラー(vector4 RGBA)
 	float vertColor[] = {

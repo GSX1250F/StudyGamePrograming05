@@ -36,21 +36,37 @@ Public Class SpriteComponent
 
     Public Overridable Sub Draw()
         If (mTexture IsNot Nothing) And (mVisible = True) Then
-            Dim vertices = New List(Of Vector2) From {
-                    New Vector2(-0.5, -0.5),
-                    New Vector2(0.5, -0.5),
-                    New Vector2(0.5, 0.5),
-                    New Vector2(-0.5, 0.5)}
+            Dim vertices = New List(Of Vector3) From {
+                    New Vector3(-0.5, -0.5, 0.0),
+                    New Vector3(0.5, -0.5, 0.0),
+                    New Vector3(0.5, 0.5, 0.0),
+                    New Vector3(-0.5, 0.5, 0.0),
+                    New Vector3(-0.5, -0.5, 0.0),
+                    New Vector3(0.5, -0.5, 0.0),
+                    New Vector3(0.5, 0.5, 0.0),
+                    New Vector3(-0.5, 0.5, 0.0)
+            }
 
             Dim texcoords As List(Of Vector2) = New List(Of Vector2) From {
                     New Vector2(0.0, 0.0),
                     New Vector2(1.0, 0.0),
                     New Vector2(1.0, 1.0),
-                    New Vector2(0.0, 1.0)}
+                    New Vector2(0.0, 1.0),
+                    New Vector2(0.0, 0.0),
+                    New Vector2(1.0, 0.0),
+                    New Vector2(1.0, 1.0),
+                    New Vector2(0.0, 1.0)
+            }
 
             ' テクスチャサイズで再スケーリングしたワールド変換行列を作成
             Dim scaleMat As Matrix4 = Matrix4.CreateScale(mTexWidth, mTexHeight, 1.0)
             Dim world As Matrix4 = scaleMat * mOwner.GetWorldTransform()
+            Dim cameraPos = New Vector3(0.0, 0.0, 0.1)
+            Dim cameraTarget = New Vector3(0.0, 0.0, 0.0)
+            Dim cameraUp = Vector3.UnitY
+            Dim mView As Matrix4 = Matrix4.LookAt(cameraPos, cameraTarget, cameraUp)
+            Dim mProj As Matrix4 = Matrix4.CreatePerspectiveFieldOfView(MathHelper.Pi * 0.995, mOwner.GetGame.mWindowWidth / mOwner.GetGame.mWindowHeight, 0.01, 1000.0)
+
             ' ビューポート変換行列
             Dim viewProj = Matrix4.CreateOrthographic(mOwner.GetGame().mWindowWidth, mOwner.GetGame().mWindowHeight, 0.01, 1.0)
 
@@ -60,12 +76,12 @@ Public Class SpriteComponent
             GL.Begin(PrimitiveType.Quads)
             ' 各頂点を行列で変換
             For i = 0 To vertices.Count - 1
-                Dim v As Vector4 = New Vector4(vertices(i).X, vertices(i).Y, 0.0, 1.0)
+                Dim v As Vector4 = New Vector4(vertices(i).X, vertices(i).Y, vertices(i).Z, 1.0)
 
-                v *= world * viewProj
+                v *= world * mView * mProj
 
                 GL.TexCoord2(texcoords(i).X, texcoords(i).Y)
-                GL.Vertex2(v.X, v.Y)
+                GL.Vertex3(v.X, v.Y, v.Z)
             Next
             GL.End()
 

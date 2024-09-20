@@ -180,11 +180,11 @@ void Renderer::CreateVertexInfo()
 		-0.5f, 0.5f, 			// 左上 (インデックス 2) 
 		0.5f, 0.5f, 			// 右上 (インデックス 3)
 	};
-	//テクスチャ座標(vector2)
+	//テクスチャ座標(vector2)		頂点座標とは上下反転させる
 	float texCoord[] = {
+		0.0f, 1.0f,			//テクスチャ座標左上
 		0.0f, 0.0f,			//テクスチャ座標左下		
 		1.0f, 0.0f,			//テクスチャ座標右下
-		0.0f, 1.0f,			//テクスチャ座標左上
 		1.0f, 1.0f			//テクスチャ座標右上
 	};
 	//頂点カラー(vector4 RGBA)
@@ -214,7 +214,8 @@ bool Renderer::LoadShaders()
 	}
 	mShader->SetActive();
 	// ビュー変換行列を作成。ここでは平行投影変換を行う。
-	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
+	//Matrix4 viewProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
+	Matrix4 viewProj = Matrix4::CreateOrtho(mScreenWidth, mScreenHeight, -500.0f, 500.0f);
 	mShader->SetMatrixUniform("uViewProj", viewProj);
 	return true;
 }

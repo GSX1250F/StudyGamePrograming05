@@ -119,9 +119,7 @@
     <Compile Include="Ship.vb" />
     <Compile Include="SomeSpriteComponent.vb" />
     <Compile Include="SoundPlayer.vb" />
-    <Compile Include="SpriteComponent.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="SpriteComponent.vb" />
     <Compile Include="Texture.vb" />
   </ItemGroup>
   <ItemGroup>

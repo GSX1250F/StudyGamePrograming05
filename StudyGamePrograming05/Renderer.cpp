@@ -175,17 +175,17 @@ void Renderer::CreateVertexInfo()
 	int numVerts = 4;			//頂点の数
 	//頂点座標(vector2)
 	float vertPos[] = {
-		-0.5f, -0.5f, 			// 左下 (インデックス 0)
-		0.5f, -0.5f, 			// 右下 (インデックス 1)
-		-0.5f, 0.5f, 			// 左上 (インデックス 2) 
-		0.5f, 0.5f, 			// 右上 (インデックス 3)
+		-0.5f, 0.5f, 			// 左上
+		-0.5f, -0.5f, 			// 左下
+		 0.5f, -0.5f, 			// 右下
+		 0.5f, 0.5f, 			// 右上
 	};
-	//テクスチャ座標(vector2)		頂点座標とは上下反転させる
+	//テクスチャ座標(vector2)
 	float texCoord[] = {
-		0.0f, 1.0f,			//テクスチャ座標左上
-		1.0f, 1.0f,			//テクスチャ座標右上
-		0.0f, 0.0f,			//テクスチャ座標左下		
-		1.0f, 0.0f			//テクスチャ座標右下
+		0.0f, 0.0f,			//左上
+		0.0f, 1.0f,			//左下		
+		1.0f, 1.0f,			//右下
+		1.0f, 0.0f			//右上
 	};
 	//頂点カラー(vector4 RGBA)
 	float vertColor[] = {
@@ -198,7 +198,7 @@ void Renderer::CreateVertexInfo()
 	//インデックス
 	unsigned int indices[] = {
 		0, 1, 2,
-		2, 1, 3
+		2, 3, 0
 	};
 
 	mVertexInfo = new VertexInfo(vertPos, texCoord, vertColor, indices, numVerts, numIndices);

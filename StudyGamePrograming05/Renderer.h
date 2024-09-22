@@ -54,4 +54,7 @@ private:
 	class VertexInfo* mVertexInfo;
 	// シェーダー
 	class Shader* mShader;
+	// ビュー変換と射影変換行列
+	Matrix4 mView;
+	Matrix4 mProj;
 };

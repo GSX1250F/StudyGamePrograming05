@@ -213,9 +213,10 @@ bool Renderer::LoadShaders()
 		return false;
 	}
 	mShader->SetActive();
-	// ビュー変換行列を作成。ここでは平行投影変換を行う。
-	//Matrix4 viewProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
-	Matrix4 viewProj = Matrix4::CreateOrtho(mScreenWidth, mScreenHeight, -500.0f, 500.0f);
-	mShader->SetMatrixUniform("uViewProj", viewProj);
+	// ビュー変換と射影変換行列を作成。ここでは平行投影変換を行う。
+	mView = Matrix4::Identity;
+	//mProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
+	mProj = Matrix4::CreateOrtho(mScreenWidth, mScreenHeight, -500.0f, 500.0f);
+	mShader->SetMatrixUniform("uViewProj", mView * mProj);
 	return true;
 }

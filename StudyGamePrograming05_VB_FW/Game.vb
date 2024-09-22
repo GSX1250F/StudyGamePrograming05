@@ -14,33 +14,13 @@ Public Class Game
     Private Declare Function mciSendString Lib "winmm" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As Long, ByVal hwndCallback As Long) As Long
 #End If
 
-    '変数群
     'Public
-    Public mWindowWidth As Integer      'glControlの横幅
-    Public mWindowHeight As Integer     'glControlの縦幅
-
-    'Private
-    Private Ticks As New System.Diagnostics.Stopwatch()     '時間管理
-    Private mTicksCount As Integer     'ゲーム開始時からの経過時間
-    Private mIsRunning As Boolean   'ゲーム実行中
-    Private mRenderer As Renderer   'レンダラー
-    Private mKeyBoardByte(255) As Byte      'キーボード入力検知
-    Private mKeyState(255) As Boolean      'キーボード状態
-    Private mSoundPlayer As SoundPlayer     'サウンドプレイヤ
-    Private mUpdatingActors As Boolean      'アクター更新中
-    Private mActors As New List(Of Actor)   'すべてのアクター
-    Private mPendingActors As New List(Of Actor)    'すべての待ちアクター
-
-
-    'game specific
-    Private mShip As Ship
-    Private mAsteroids As New List(Of Asteroid)
-
-    'コンストラクタ
     Public Sub Game_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         mRenderer = Nothing
         mIsRunning = True
         mUpdatingActors = False
+        mWindowWidth = 1024
+        mWindowHeight = 768
 
         Dim success = Initialize()
         If success = True Then
@@ -53,10 +33,7 @@ Public Class Game
 
     Public Function Initialize() As Boolean
         'ウィンドウ初期化
-        mWindowWidth = 1024
-        mWindowHeight = 768
         Me.SetBounds(100, 100, mWindowWidth + 26, mWindowHeight + 49)
-        'Me.DoubleBuffered = True
 
         'glControl初期化
         glControl.SetBounds(5, 5, mWindowWidth, mWindowHeight)
@@ -76,6 +53,63 @@ Public Class Game
 
         Return True
     End Function
+    Public Sub AddActor(ByRef actor As Actor)
+        If mUpdatingActors Then
+            mPendingActors.Add(actor)
+        Else
+            mActors.Add(actor)
+        End If
+    End Sub
+
+    Public Sub RemoveActor(ByRef actor As Actor)
+        '待ちアクターを検索し、消去
+        Dim iter As Integer = mPendingActors.IndexOf(actor)
+        '見つからなかったら-1が返される。
+        If iter >= 0 Then
+            mPendingActors.RemoveAt(iter)
+        End If
+        'アクターを検索し、消去
+        iter = mActors.IndexOf(actor)
+        If iter >= 0 Then
+            mActors.RemoveAt(iter)
+        End If
+    End Sub
+    Public Function GetRenderer() As Renderer
+        Return mRenderer
+    End Function
+    Public Function GetGLControl() As GLControl
+        Return glControl
+    End Function
+    Public Function GetSoundPlayer() As SoundPlayer
+        Return mSoundPlayer
+    End Function
+
+    Public Sub SetRunning(ByVal isrunning As Boolean)
+        mIsRunning = isrunning
+    End Sub
+    Public mWindowWidth As Integer      'glControlの横幅
+    Public mWindowHeight As Integer     'glControlの縦幅
+
+    'Game Specific
+    Public Function GetShip() As Ship
+        Return mShip
+    End Function
+    Public Function GetAsteroids() As List(Of Asteroid)
+        Return mAsteroids
+    End Function
+    Public Sub AddAsteroid()
+        Dim ast As New Asteroid(Me)
+        mAsteroids.Add(ast)
+    End Sub
+
+    Public Sub RemoveAsteroid(ByRef ast As Asteroid)
+        Dim iter As Integer = mAsteroids.IndexOf(ast)       'Listの中になかったら-1が返される
+        If iter >= 0 Then
+            mAsteroids.RemoveAt(iter)
+        End If
+    End Sub
+
+    'Private
     Private Sub RunLoop_Tick(sender As Object, e As EventArgs) Handles RunLoop.Tick
         If mIsRunning Then
             ProcessInput()
@@ -185,58 +219,19 @@ Public Class Game
             mSoundPlayer.UnloadData()
         End If
     End Sub
-    Public Sub AddActor(ByRef actor As Actor)
-        If mUpdatingActors Then
-            mPendingActors.Add(actor)
-        Else
-            mActors.Add(actor)
-        End If
-    End Sub
 
-    Public Sub RemoveActor(ByRef actor As Actor)
-        '待ちアクターを検索し、消去
-        Dim iter As Integer = mPendingActors.IndexOf(actor)
-        '見つからなかったら-1が返される。
-        If iter >= 0 Then
-            mPendingActors.RemoveAt(iter)
-        End If
-        'アクターを検索し、消去
-        iter = mActors.IndexOf(actor)
-        If iter >= 0 Then
-            mActors.RemoveAt(iter)
-        End If
-    End Sub
-    Public Function GetRenderer() As Renderer
-        Return mRenderer
-    End Function
-    Public Function GetGLControl() As GLControl
-        Return glControl
-    End Function
-    Public Function GetSoundPlayer() As SoundPlayer
-        Return mSoundPlayer
-    End Function
+    Private Ticks As New System.Diagnostics.Stopwatch()     '時間管理
+    Private mTicksCount As Integer     'ゲーム開始時からの経過時間
+    Private mIsRunning As Boolean   'ゲーム実行中
+    Private mRenderer As Renderer   'レンダラー
+    Private mKeyBoardByte(255) As Byte      'キーボード入力検知
+    Private mKeyState(255) As Boolean      'キーボード状態
+    Private mSoundPlayer As SoundPlayer     'サウンドプレイヤ
+    Private mUpdatingActors As Boolean      'アクター更新中
+    Private mActors As New List(Of Actor)   'すべてのアクター
+    Private mPendingActors As New List(Of Actor)    'すべての待ちアクター
 
-    Public Sub SetRunning(ByVal isrunning As Boolean)
-        mIsRunning = isrunning
-    End Sub
-
-
-    'Game Specific
-    Public Function GetShip() As Ship
-        Return mShip
-    End Function
-    Public Function GetAsteroids() As List(Of Asteroid)
-        Return mAsteroids
-    End Function
-    Public Sub AddAsteroid()
-        Dim ast As New Asteroid(Me)
-        mAsteroids.Add(ast)
-    End Sub
-
-    Public Sub RemoveAsteroid(ByRef ast As Asteroid)
-        Dim iter As Integer = mAsteroids.IndexOf(ast)       'Listの中になかったら-1が返される
-        If iter >= 0 Then
-            mAsteroids.RemoveAt(iter)
-        End If
-    End Sub
+    'game specific
+    Private mShip As Ship
+    Private mAsteroids As New List(Of Asteroid)
 End Class

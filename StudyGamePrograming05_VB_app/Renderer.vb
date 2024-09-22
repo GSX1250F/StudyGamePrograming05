@@ -38,10 +38,6 @@ Public Class Renderer
         ' ビューポート設定
         GL.Viewport(0, 0, screenWidth, screenHeight)
 
-        ' ビュー射影変換行列の設定
-        mView = Matrix4.Identity
-        mProj = Matrix4.CreateOrthographic(mScreenWidth, mScreenHeight, -500.0, 500.0)
-
         ' 頂点情報オブジェクトの生成
         CreateVertexInfo()
 
@@ -50,9 +46,6 @@ Public Class Renderer
             Console.WriteLine("シェーダーの読み込みに失敗しました。")
             Return False
         End If
-
-        ' 画面クリアの色を設定
-        GL.ClearColor(0.3, 0.3, 0.3, 1.0)
 
         Return True
     End Function
@@ -145,16 +138,16 @@ Public Class Renderer
         Dim numVerts As Integer = 4
         '頂点座標(vector2)
         Dim vertPos As Single() = {
+            -0.5, 0.5,
             -0.5, -0.5,
             0.5, -0.5,
-            -0.5, 0.5,
             0.5, 0.5
         }
         'テクスチャ座標(vector2)
         Dim texCoord As Single() = {
+            0.0, 1.0,
             0.0, 0.0,
             1.0, 0.0,
-            0.0, 1.0,
             1.0, 1.0
         }
         '頂点カラー(vector4 RGBA)
@@ -168,7 +161,7 @@ Public Class Renderer
         Dim numIndices As Integer = 6
         Dim indices As UInteger() = {
             0, 1, 2,
-            2, 1, 3
+            2, 3, 0
         }
 
         mVertexInfo = New VertexInfo(vertPos, texCoord, vertColor, indices, numVerts, numIndices)
@@ -179,8 +172,11 @@ Public Class Renderer
         If (mShader.Load("Shaders/shader.vert", "Shaders/shader.frag") <> True) Then
             Return False
         End If
-        Dim mViewProj = mView * mProj
-        mShader.SetMatrixUniform("uViewProj", mViewProj)
+        mShader.SetActive()
+        'ビュー変換&射影変換行列の作成
+        mView = Matrix4.Identity
+        mProj = Matrix4.CreateOrthographic(mScreenWidth, mScreenHeight, -500.0, 500.0)
+        mShader.SetMatrixUniform("uViewProj", mProj)
         Return True
     End Function
     Private disposedValue As Boolean

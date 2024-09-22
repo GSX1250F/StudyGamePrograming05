@@ -194,7 +194,7 @@ void Renderer::CreateVertexInfo()
 		0.0f, 0.0f, 1.0f, 1.0f,		//B
 		1.0f, 1.0f, 1.0f, 1.0f		//W
 	};
-	int numIndices = 6;			//頂点の数
+	int numIndices = 6;			//インデックスの数
 	//インデックス
 	unsigned int indices[] = {
 		0, 1, 2,

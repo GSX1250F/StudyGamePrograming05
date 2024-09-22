@@ -11,4 +11,5 @@ void main()
 {
 	// テクスチャから色をサンプリングする
 	outColor = texture(uTexture, fragTexCoord);
+	//outColor =  fragVertColor;
 }

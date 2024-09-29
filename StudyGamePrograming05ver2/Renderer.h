@@ -25,6 +25,9 @@ public:
 	class Texture* GetTexture(const std::string& fileName);
 	class VertexInfo* GetVertexInfo() { return mVertexInfo; }
 	
+	void SetViewMatrix(const Matrix4& matrix) { mView = matrix; }
+	void SetProjMatrix(const Matrix4& matrix) { mProj = matrix; }
+
 	float GetScreenWidth() const { return mScreenWidth; }
 	float GetScreenHeight() const { return mScreenHeight; }
 
@@ -48,8 +51,7 @@ private:
 	SDL_Renderer* mRenderer;
 	// OpenGL context
 	SDL_GLContext mContext;
-	void CreateVertexInfo();
-	bool LoadShaders();
+	
 	// バーテックス配列オブジェクト
 	class VertexInfo* mVertexInfo;
 	// シェーダー
@@ -57,4 +59,7 @@ private:
 	// ビュー変換と射影変換行列
 	Matrix4 mView;
 	Matrix4 mProj;
+
+	void CreateVertexInfo();
+	bool LoadShaders();
 };

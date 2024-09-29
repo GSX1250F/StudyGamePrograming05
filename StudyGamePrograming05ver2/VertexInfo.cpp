@@ -21,7 +21,7 @@ VertexInfo::VertexInfo(const float* vertPos, const float* texCoord,
 	);
 
 	//VertexAttribute layout0 = position
-	unsigned int cnt = 2;					//óvëfêî
+	unsigned int cnt = 3;					//óvëfêî
 	glGenBuffers(1, &mVertPosBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, mVertPosBuffer);
 	glBufferData(

@@ -6,7 +6,7 @@
 ClearPict::ClearPict(Game* game) : Actor(game)
 {
 	SetState(EPaused);
-	SetPosition(Vector2::Zero);
+	SetPosition(-50.0f * Vector3::UnitZ);
 
 	//スプライトコンポーネント作成、テクスチャ設定
 	sc = new SpriteComponent(this, 100);

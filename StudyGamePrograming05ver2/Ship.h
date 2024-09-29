@@ -18,7 +18,7 @@ private:
 	bool mCrash;				//衝突検知
 	float mCrashingTime;		//衝突演出時間
 	float mCrashCooldown;		//衝突演出後、リセットされるまでスプライトを消す時間
-	Vector2 mCrashPos;		//衝突したときの位置
+	Vector3 mCrashPos;		//衝突したときの位置
 	float mCrashRot;			//衝突したときの向き
 	class CircleComponent* mCircle; 
 	class SomeSpriteComponent* mSSC;

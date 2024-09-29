@@ -19,7 +19,7 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 	{
 		randPos = Random::GetVector(-0.5f * Vector2(GetGame()->mWindowWidth, GetGame()->mWindowHeight), 0.5f * Vector2(GetGame()->mWindowWidth, GetGame()->mWindowHeight));
 	}
-	SetPosition(randPos);
+	SetPosition(Vector3(randPos.x,randPos.y,0.0f));
 	SetRotation(Random::GetFloatRange(0.0f, Math::TwoPi));
 	SetScale(Random::GetFloatRange(0.8f, 2.5f));
 	
@@ -52,11 +52,11 @@ void Asteroid::UpdateActor(float deltaTime)
 	if (GetPosition().x < GetGame()->mWindowWidth * (-0.5f) - 1.5f * GetRadius() ||
 		GetPosition().x > GetGame()->mWindowWidth * 0.5f + 1.5f * GetRadius())
 	{
-		SetPosition(Vector2(- GetPosition().x, GetPosition().y));
+		SetPosition(Vector3(- GetPosition().x, GetPosition().y, GetPosition().z));
 	}
 	if (GetPosition().y < GetGame()->mWindowHeight * (-0.5f) - 1.5f * GetRadius() ||
 		GetPosition().y > GetGame()->mWindowHeight * 0.5f + 1.5f * GetRadius())
 	{
-		SetPosition(Vector2(GetPosition().x , - GetPosition().y));
+		SetPosition(Vector3(GetPosition().x , - GetPosition().y, GetPosition().z));
 	}
 }

@@ -102,17 +102,23 @@ void Renderer::Shutdown()
 void Renderer::Draw()
 {
 	// 画面をクリア	
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// カラーバッファのアルファブレンディングを有効化
 	glEnable(GL_BLEND);
 	glBlendFunc(
 		GL_SRC_ALPHA,				// srcFactorはsrcAlpha
 		GL_ONE_MINUS_SRC_ALPHA		// dstFactorは(1-srcAlpha)
 	);
+	//深度有効化
+	//glEnable(GL_DEPTH_TEST);
 
 	// シェーダーとバーテックス配列オブジェクトを有効化
 	mVertexInfo->SetActive();
 	mShader->SetActive();
+
+	// シェーダーのビュー変換&射影変換行列を更新
+	mShader->SetMatrixUniform("uViewProj", mView * mProj);
+
 	for (auto sprite : mSprites)
 	{
 		if (sprite->GetVisible())
@@ -175,10 +181,10 @@ void Renderer::CreateVertexInfo()
 	int numVerts = 4;			//頂点の数
 	//頂点座標(vector2)
 	float vertPos[] = {
-		-0.5f, 0.5f, 			// 左上
-		-0.5f, -0.5f, 			// 左下
-		 0.5f, -0.5f, 			// 右下
-		 0.5f, 0.5f, 			// 右上
+		-0.5f, 0.5f, 0.0f, 			// 左上
+		-0.5f, -0.5f, 0.0f,			// 左下
+		 0.5f, -0.5f, 0.0f,			// 右下
+		 0.5f, 0.5f, 0.0f 			// 右上
 	};
 	//テクスチャ座標(vector2)
 	float texCoord[] = {
@@ -216,7 +222,7 @@ bool Renderer::LoadShaders()
 	// ビュー変換と射影変換行列を作成。ここでは平行投影変換を行う。
 	mView = Matrix4::Identity;
 	//mProj = Matrix4::CreateSimpleViewProj(mScreenWidth, mScreenHeight);
-	mProj = Matrix4::CreateOrtho(mScreenWidth, mScreenHeight, -500.0f, 500.0f);
+	mProj = Matrix4::CreateOrtho(mScreenWidth, mScreenHeight, 0.1f, 1000.0f);
 	mShader->SetMatrixUniform("uViewProj", mView * mProj);
 	return true;
 }

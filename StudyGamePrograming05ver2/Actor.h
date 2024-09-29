@@ -30,23 +30,24 @@ public:
 	
 	// ゲッター・セッター
 	// 位置
-	const Vector2& GetPosition() const { return mPosition; }
-	void SetPosition(const Vector2& pos) { mPosition = pos; mRecomputeWorldTransform = true; }
+	const Vector3& GetPosition() const { return mPosition; }
+	void SetPosition(const Vector3& pos) { mPosition = pos; mRecomputeWorldTransform = true; }
 	// 拡大率（質量は変えない。半径に影響する）
 	float GetScale() const { return mScale; }
 	void SetScale(float scale) { mScale = scale; mRecomputeWorldTransform = true;
 	}
 	// 回転
 	const float& GetRotation() const { return mRotation; }
-	void SetRotation(const float& rotation) { mRotation = rotation; mRecomputeWorldTransform = true;
-	}
+	void SetRotation(const float& rotation) { mRotation = rotation; mRecomputeWorldTransform = true;}
 	// 半径
 	float GetRadius() const { return mRadius * mScale; }	//拡大率を考慮
-	void SetRadius(float radius) { mRadius = radius; mRecomputeWorldTransform = true;
-	}
+	void SetRadius(float radius) { mRadius = radius; mRecomputeWorldTransform = true;}
 
 	// 向きの単位ベクトル
-	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), Math::Sin(mRotation)); }
+	Vector3 GetForward() const { return Vector3(Math::Cos(mRotation), Math::Sin(mRotation), 0.0f); }
+	Vector3 GetStrafe() const { return Vector3(Math::Cos(mRotation-Math::PiOver2), Math::Sin(mRotation-Math::PiOver2), 0.0f);}
+	Vector3 GetUpward() const { return Vector3::UnitZ; }
+
 
 	// 状態
 	State GetState() const { return mState; }
@@ -64,7 +65,7 @@ public:
 
 private:
 	State mState;			//アクター状態
-	Vector2 mPosition;		//画面上の位置
+	Vector3 mPosition;		//画面上の位置
 	float mScale;			//拡大率
 	float mRotation;		//回転
 	float mRadius;			//半径（拡大率は無視）

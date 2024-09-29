@@ -56,10 +56,10 @@ Ship::Ship(Game* game):Actor(game)
 void Ship::Init()
 {
 	SetScale(0.8f);
-	SetPosition(Vector2::Zero);
+	SetPosition(Vector3::Zero);
 	//ƒ‰ƒ“ƒ_ƒ€‚ÈŒü‚«‚Å‰Šú‰»
 	SetRotation(Random::GetFloatRange(0.0f, Math::TwoPi));
-	mIC->SetVelocity(Vector2::Zero);
+	mIC->SetVelocity(Vector3::Zero);
 	mIC->SetRotSpeed(0.0f);
 	SetState(EActive);
 	mSSC->SetVisible(true);
@@ -125,12 +125,12 @@ void Ship::UpdateActor(float deltaTime)
 		if (GetPosition().x < GetGame()->mWindowWidth * (-0.5f) - GetRadius() ||
 			GetPosition().x > GetGame()->mWindowWidth * 0.5f + GetRadius())
 		{
-			SetPosition(Vector2(- GetPosition().x, GetPosition().y));
+			SetPosition(Vector3(- GetPosition().x, GetPosition().y, GetPosition().z));
 		}
 		if (GetPosition().y < GetGame()->mWindowHeight * (-0.5f) - GetRadius() ||
 			GetPosition().y > GetGame()->mWindowHeight * 0.5f + GetRadius())
 		{
-			SetPosition(Vector2(GetPosition().x, - GetPosition().y));
+			SetPosition(Vector3(GetPosition().x, - GetPosition().y, GetPosition().z));
 		}
 		//¬˜f¯‚ÆÕ“Ë‚µ‚½‚©‚ð”»’è
 		for (auto ast : GetGame()->GetAsteroids())
@@ -170,4 +170,12 @@ void Ship::UpdateActor(float deltaTime)
 			}
 		}
 	}
+	
+	// Compute new camera from this actor
+	Vector3 cameraPos = -500.0f * Vector3::UnitZ;
+	Vector3 cameraTarget = Vector3::Zero;
+	Vector3 cameraUp = Vector3::UnitY;
+	Matrix4 view = Matrix4::CreateLookAt(cameraPos, cameraTarget, cameraUp);
+	GetGame()->GetRenderer()->SetViewMatrix(view);
+	
 }

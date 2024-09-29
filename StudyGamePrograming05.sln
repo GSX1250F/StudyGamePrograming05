@@ -9,6 +9,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "StudyGamePrograming05_VB_FW
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "StudyGamePrograming05_VB_app", "StudyGamePrograming05_VB_app\StudyGamePrograming05_VB_app.vbproj", "{68775ADE-0359-49DE-BB5B-8D02410B32A6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StudyGamePrograming05ver2", "StudyGamePrograming05ver2\StudyGamePrograming05ver2.vcxproj", "{36F46B9B-2457-4F52-8DE6-E7D3E4C7F4CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{68775ADE-0359-49DE-BB5B-8D02410B32A6}.Release|x64.Build.0 = Release|Any CPU
 		{68775ADE-0359-49DE-BB5B-8D02410B32A6}.Release|x86.ActiveCfg = Release|Any CPU
 		{68775ADE-0359-49DE-BB5B-8D02410B32A6}.Release|x86.Build.0 = Release|Any CPU
+		{36F46B9B-2457-4F52-8DE6-E7D3E4C7F4CC}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{36F46B9B-2457-4F52-8DE6-E7D3E4C7F4CC}.Debug|Any CPU.Build.0 = Debug|x64
+		{36F46B9B-2457-4F52-8DE6-E7D3E4C7F4CC}.Debug|x64.ActiveCfg = Debug|x64
+		{36F46B9B-2457-4F52-8DE6-E7D3E4C7F4CC}.Debug|x64.Build.0 = Debug|x64
+		{36F46B9B-2457-4F52-8DE6-E7D3E4C7F4CC}.Debug|x86.ActiveCfg = Debug|Win32
+		{36F46B9B-2457-4F52-8DE6-E7D3E4C7F4CC}.Debug|x86.Build.0 = Debug|Win32
+		{36F46B9B-2457-4F52-8DE6-E7D3E4C7F4CC}.Release|Any CPU.ActiveCfg = Release|x64
+		{36F46B9B-2457-4F52-8DE6-E7D3E4C7F4CC}.Release|Any CPU.Build.0 = Release|x64
+		{36F46B9B-2457-4F52-8DE6-E7D3E4C7F4CC}.Release|x64.ActiveCfg = Release|x64
+		{36F46B9B-2457-4F52-8DE6-E7D3E4C7F4CC}.Release|x64.Build.0 = Release|x64
+		{36F46B9B-2457-4F52-8DE6-E7D3E4C7F4CC}.Release|x86.ActiveCfg = Release|Win32
+		{36F46B9B-2457-4F52-8DE6-E7D3E4C7F4CC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

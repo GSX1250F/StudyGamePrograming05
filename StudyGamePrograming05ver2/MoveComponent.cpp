@@ -4,69 +4,47 @@
 
 MoveComponent::MoveComponent(Actor* owner, int updateOrder) 
 	: Component(owner) 
-	,mVelocity(Vector3::Zero)		// 並進移動速度
-	,mRotSpeed(Vector3::Zero)				// 回転速度
-	,mMass(1.0f)					// 質量
-	,mMoveForce(Vector3::Zero)		// 重心にかかる力
-	,mRotForce(Vector3::Zero)				// 回転方向の力F +方向はCCW
-	,mMoveResist(0.0f)				// 重心速度抵抗率(%)
-	,mRotResist(0.0f)				// 回転速度抵抗率(%)
-{
-}
+	,mVelocity(Vector3::Zero)
+	,mRotSpeed(Vector3::Zero)
+	,mMass(1.0f)
+	,mForce(Vector3::Zero)
+	,mRotForce(Vector3::Zero)
+	,mResist(0.0f)
+	,mRotResist(0.0f)
+{}
 
-MoveComponent::~MoveComponent()
-{
-}
+MoveComponent::~MoveComponent(){}
 
 void MoveComponent::Update(float deltatime)
 {
-	// 位置と向きを更新
-	// Actorの位置と方向を更新
-	Vector3 gVelocity = Vector3::Transform(mVelocity, mOwner->GetRotation());
-	mOwner->SetPosition(mOwner->GetPosition() + gVelocity * deltatime);
-
-	if (!Math::NearZero(mRotSpeed.x))
-	{
-		// x軸周り回転
-		Quaternion rot = mOwner->GetRotation();
-		// 回転を変化させるクォータニオンを作成
-		Quaternion inc(Vector3::UnitX, mRotSpeed.x * deltatime);
-		// もとのrotと増分のクォータニオンを結合
-		rot = Quaternion::Concatenate(rot, inc);
-		mOwner->SetRotation(rot);
+	if (!Math::NearZero(mVelocity.Length())) {
+		// 位置を更新
+		mOwner->SetPosition(mOwner->GetPosition() + mVelocity * deltatime);
 	}
-	if (!Math::NearZero(mRotSpeed.y))
-	{
-		// y軸周り回転
+	if (!Math::NearZero(mRotSpeed.Length())) {
+		// 向きを更新
 		Quaternion rot = mOwner->GetRotation();
-		// 回転を変化させるクォータニオンを作成
-		Quaternion inc(Vector3::UnitY, mRotSpeed.y * deltatime);
-		// もとのrotと増分のクォータニオンを結合
-		rot = Quaternion::Concatenate(rot, inc);
-		mOwner->SetRotation(rot);
-	}
-	if (!Math::NearZero(mRotSpeed.z))
-	{
-		// Z軸周り回転
-		Quaternion rot = mOwner->GetRotation();
-		// 回転を変化させるクォータニオンを作成
-		Quaternion inc(Vector3::UnitZ, mRotSpeed.z * deltatime);
+		// クォータニオン生成。回転速度モーメントベクトルの大きさが角速度の大きさ
+		Vector3 axis = mRotSpeed;
+		axis.Normalize();	// 回転軸。正規化する。
+		float angle = deltatime * mRotSpeed.Length();	//角度変化量
+		Quaternion inc(axis, angle);
 		// もとのrotと増分のクォータニオンを結合
 		rot = Quaternion::Concatenate(rot, inc);
 		mOwner->SetRotation(rot);
 	}
 
 	// 速度と角速度を更新
-	SetVelocity(mVelocity + GetMoveAccel() * deltatime);	//v = vo + at
+	SetVelocity(mVelocity + GetAccel() * deltatime);	//v = vo + at
 	SetRotSpeed(mRotSpeed + GetRotAccel() * deltatime);		//ω = ωo + bt
 }
 
-Vector3 MoveComponent::GetMoveAccel() const
+Vector3 MoveComponent::GetAccel() const
 {
 	if (!Math::NearZero(mMass))
 	{
-		Vector3 accel = mMoveForce * (1 / mMass);    //重心加速度の計算　F=ma  a=F*(1/m)
-		accel -= mVelocity * mMoveResist * 0.01f * (1 / mMass);
+		Vector3 accel = mForce * (1 / mMass);    //重心加速度の計算　F=ma  a=F*(1/m)
+		accel -= mVelocity * mResist * 0.01f * (1 / mMass);
 		return accel;
 	}
 	else

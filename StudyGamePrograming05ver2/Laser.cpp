@@ -53,5 +53,5 @@ void Laser::Shot()
 {
 	//MoveComponentì¬
 	MoveComponent* mc = new MoveComponent(this);
-	mc->SetVelocity(mLaserSpeed * Vector3::UnitX);
+	mc->SetVelocity(mLaserSpeed * GetForward());
 }

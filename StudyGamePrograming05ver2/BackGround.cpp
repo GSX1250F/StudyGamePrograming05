@@ -8,7 +8,7 @@ BackGround::BackGround(Game* game) :Actor(game)
 {
 	//1‚Â–Ú‚Ì”wŒi
 	Actor* bgactor = new Actor(game);
-	bgactor->SetPosition(Vector3(0.0f, 0.0f, 300.0f));
+	bgactor->SetPosition(Vector3::Zero);
 	SpriteComponent* sc = new SpriteComponent(bgactor, 5);
 	sc->SetTexture(game->GetRenderer()->GetTexture("Assets/Farback01.png"));
 	MoveComponent* mc = new MoveComponent(bgactor);
@@ -17,7 +17,7 @@ BackGround::BackGround(Game* game) :Actor(game)
 
 	//2‚Â–Ú‚Ì”wŒi
 	bgactor = new Actor(game);
-	bgactor->SetPosition(Vector3(game->mWindowWidth, 0.0f, 300.0f));
+	bgactor->SetPosition(game->mWindowWidth * Vector3::UnitX);
 	sc = new SpriteComponent(bgactor, 5);
 	sc->SetTexture(game->GetRenderer()->GetTexture("Assets/Farback02.png"));
 	mc = new MoveComponent(bgactor);
@@ -26,7 +26,7 @@ BackGround::BackGround(Game* game) :Actor(game)
 
 	//3‚Â–Ú‚Ì”wŒi
 	bgactor = new Actor(game);
-	bgactor->SetPosition(Vector3(0.0f, 0.0f, 100.0f));
+	bgactor->SetPosition(Vector3::Zero);
 	sc = new SpriteComponent(bgactor, 10);
 	sc->SetTexture(game->GetRenderer()->GetTexture("Assets/Stars.png"));
 	mc = new MoveComponent(bgactor);
@@ -35,7 +35,7 @@ BackGround::BackGround(Game* game) :Actor(game)
 
 	//4‚Â–Ú‚Ì”wŒi
 	bgactor = new Actor(game);
-	bgactor->SetPosition(Vector3(game->mWindowWidth, 0.0f, 100.0f));
+	bgactor->SetPosition(game->mWindowWidth * Vector3::UnitX);
 	sc = new SpriteComponent(bgactor, 10);
 	sc->SetTexture(game->GetRenderer()->GetTexture("Assets/Stars.png"));
 	mc = new MoveComponent(bgactor);

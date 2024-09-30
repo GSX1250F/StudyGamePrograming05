@@ -37,17 +37,16 @@ public:
 	void SetScale(float scale) { mScale = scale; mRecomputeWorldTransform = true;
 	}
 	// 回転
-	const float& GetRotation() const { return mRotation; }
-	void SetRotation(const float& rotation) { mRotation = rotation; mRecomputeWorldTransform = true;}
+	const Quaternion& GetRotation() const { return mRotation; }
+	void SetRotation(const Quaternion& rotation) { mRotation = rotation; mRecomputeWorldTransform = true;}
 	// 半径
 	float GetRadius() const { return mRadius * mScale; }	//拡大率を考慮
 	void SetRadius(float radius) { mRadius = radius; mRecomputeWorldTransform = true;}
 
 	// 向きの単位ベクトル
-	Vector3 GetForward() const { return Vector3(Math::Cos(mRotation), Math::Sin(mRotation), 0.0f); }
-	Vector3 GetStrafe() const { return Vector3(Math::Cos(mRotation-Math::PiOver2), Math::Sin(mRotation-Math::PiOver2), 0.0f);}
-	Vector3 GetUpward() const { return Vector3::UnitZ; }
-
+	Vector3 GetForward() const { return Vector3::Transform(Vector3::UnitX, mRotation); }
+	Vector3 GetStrafe() const { return Vector3::Transform(Vector3::UnitY, mRotation); }
+	Vector3 GetUpward() const { return Vector3::Transform(Vector3::UnitZ, mRotation); }
 
 	// 状態
 	State GetState() const { return mState; }
@@ -67,7 +66,7 @@ private:
 	State mState;			//アクター状態
 	Vector3 mPosition;		//画面上の位置
 	float mScale;			//拡大率
-	float mRotation;		//回転
+	Quaternion mRotation;	//回転（軸と角度）
 	float mRadius;			//半径（拡大率は無視）
 	std::vector<class Component*> mComponents;
 	class Game* mGame;

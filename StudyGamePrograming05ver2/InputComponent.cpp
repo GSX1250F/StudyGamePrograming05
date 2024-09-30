@@ -42,6 +42,6 @@ void InputComponent::ProcessInput(const uint8_t* keyState)
 	// SetRotSpeed(rot);
 	
 	// ニュートン力学を使う場合
-	SetMoveForce(fwd * mOwner->GetForward());
-	SetRotForce(rot);
+	SetMoveForce(fwd * Vector3::UnitX);
+	SetRotForce(rot * Vector3::UnitZ);
 }

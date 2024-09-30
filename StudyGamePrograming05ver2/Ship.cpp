@@ -58,9 +58,9 @@ void Ship::Init()
 	SetScale(0.8f);
 	SetPosition(Vector3::Zero);
 	//ランダムな向きで初期化
-	SetRotation(Random::GetFloatRange(0.0f, Math::TwoPi));
+	SetRotation(Quaternion(-1.0f * Vector3::UnitZ, Random::GetFloatRange(0.0f, Math::TwoPi)));
 	mIC->SetVelocity(Vector3::Zero);
-	mIC->SetRotSpeed(0.0f);
+	mIC->SetRotSpeed(Vector3::Zero);
 	SetState(EActive);
 	mSSC->SetVisible(true);
 
@@ -152,7 +152,8 @@ void Ship::UpdateActor(float deltaTime)
 		if (mCrashingTime > 0.0f)
 		{
 			SetPosition(mCrashPos);		// MoveComponentが更新されても衝突したときの位置に置きなおし
-			mCrashRot -= 3.0f * Math::TwoPi * deltaTime;
+			Quaternion inc(Vector3::UnitZ, -3.0f * Math::TwoPi * deltaTime);
+			mCrashRot = Quaternion::Concatenate(mCrashRot, inc);
 			SetRotation(mCrashRot);		// MoveComponentが更新されても衝突してからの回転角度に置きなおし
 			SetScale(GetScale() * 0.98f);
 		}

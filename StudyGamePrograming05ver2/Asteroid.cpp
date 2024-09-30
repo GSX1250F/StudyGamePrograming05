@@ -20,7 +20,7 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 		randPos = Random::GetVector(-0.5f * Vector2(GetGame()->mWindowWidth, GetGame()->mWindowHeight), 0.5f * Vector2(GetGame()->mWindowWidth, GetGame()->mWindowHeight));
 	}
 	SetPosition(Vector3(randPos.x,randPos.y,0.0f));
-	SetRotation(Random::GetFloatRange(0.0f, Math::TwoPi));
+	SetRotation(Quaternion(Vector3::UnitZ, Random::GetFloatRange(0.0f, Math::TwoPi)));
 	SetScale(Random::GetFloatRange(0.8f, 2.5f));
 	
 	//スプライトコンポーネント作成、テクスチャ設定
@@ -29,8 +29,8 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 
 	//MoveComponent作成
 	MoveComponent* mc = new MoveComponent(this);
-	mc->SetVelocity(GetForward() * Random::GetFloatRange(50.0f, 200.0f));
-	mc->SetRotSpeed(Random::GetFloatRange(-1.0f * Math::Pi, 1.0f * Math::Pi));
+	mc->SetVelocity(Random::GetFloatRange(50.0f, 200.0f) * GetForward());
+	mc->SetRotSpeed(Vector3(0.0f, 0.0f, Random::GetFloatRange(-1.0f * Math::Pi, 1.0f * Math::Pi)));
 	
 	//CircleComponent作成
 	mCircle = new CircleComponent(this);

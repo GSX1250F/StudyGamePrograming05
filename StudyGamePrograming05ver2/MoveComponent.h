@@ -20,6 +20,7 @@ public:
 	void SetVelocity(Vector3 value) { mVelocity = value; }		// 速度
 	Vector3 GetVelocity() { return mVelocity; }
 	void SetRotSpeed(Vector3 value) { mRotSpeed = value; }	// 回転速度モーメントベクトル
+	Vector3 GetRotSpeed() { return mRotSpeed; }
 	Vector3 GetAccel() const;		// 加速度
 	Vector3 GetRotAccel() const;		// 回転加速度モーメントベクトル
 	void SetForce(Vector3 value) { mForce = value; }		//力	

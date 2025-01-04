@@ -1,4 +1,6 @@
-﻿Public Class Component
+﻿Imports OpenTK.Input
+
+Public Class Component
     Implements IDisposable
 
     Protected mOwner As Actor      '所有アクター
@@ -30,14 +32,11 @@
         MyBase.Finalize()
     End Sub
 
-
-    ' 各コンポーネント更新（オーバーライド可能）
     Public Overridable Sub Update(deltaTime As Double)
 
     End Sub
 
-    ' 各コンポーネント入力処理（オーバーライド可能）
-    Public Overridable Sub ProcessInput(ByVal keyState As Boolean())
+    Public Overridable Sub ProcessInput(ByVal keyState As KeyboardState)
 
     End Sub
 

@@ -26,9 +26,9 @@ Public Class Asteroid
 			randPos.X = bs(0) / 255 * GetGame().mWindowWidth - 0.5 * GetGame().mWindowWidth
 			randPos.Y = bs(1) / 255 * GetGame().mWindowHeight - 0.5 * GetGame().mWindowHeight
 		End While
-		SetPosition(randPos)
+		SetPosition(New Vector3(randPos.X, randPos.Y, 0.0))
 		rng.GetBytes(bs)    '乱数生成
-		SetRotation(bs(0) / 255 * Math.PI * 2)
+		SetRotation(Quaternion.FromAxisAngle(Vector3.UnitZ, bs(0) / 255 * Math.PI * 2))
 		SetScale(bs(1) / 255 * (2.5 - 0.8) + 0.8)   '拡大率 0.8～2.5
 
 		'スプライトコンポーネント作成、テクスチャ設定
@@ -39,7 +39,7 @@ Public Class Asteroid
 		Dim mc As New MoveComponent(Me, 10)
 		rng.GetBytes(bs)    '乱数生成
 		mc.SetVelocity(GetForward() * (bs(0) / 255 * (200 - 50) + 50))  '速さ50～200
-		mc.SetRotSpeed((bs(1) / 255 * 2.0 * Math.PI) - Math.PI) '角速度-π～π
+		mc.SetRotSpeed(New Vector3(0.0, 0.0, bs(1) / 255 * 2.0 * Math.PI - Math.PI)) '角速度-π～π
 
 		rng.Dispose()   '乱数生成器の開放
 
@@ -65,24 +65,17 @@ Public Class Asteroid
 
 	Public Overrides Sub UpdateActor(ByVal detaTime As Double)
 		'画面外にでたら反対の位置に移動（ラッピング処理）
-		If (GetPosition().X < GetGame().mWindowWidth * (-0.5) - GetRadius() Or
-			GetPosition().X > GetGame().mWindowWidth * 0.5 + GetRadius()) _
+		If (GetPosition.X < GetGame().mWindowWidth * (-0.5) - 1.5 * GetRadius() Or
+			GetPosition.X > GetGame().mWindowWidth * 0.5 + 1.5 * GetRadius()) _
 			   Then
-			Dim v As Vector2
-			v.X = -GetPosition().X
-			v.Y = GetPosition().Y
-			SetPosition(v)
+			SetPosition(New Vector3(-GetPosition.X, GetPosition.Y, GetPosition.Z))
 		End If
 
-		If (GetPosition().Y < GetGame().mWindowHeight * (-0.5) - GetRadius() Or
-			GetPosition().Y > GetGame().mWindowHeight * 0.5 + GetRadius()) _
+		If (GetPosition().Y < GetGame().mWindowHeight * (-0.5) - 1.5 * GetRadius() Or
+			GetPosition().Y > GetGame().mWindowHeight * 0.5 + 1.5 * GetRadius()) _
 			Then
-			Dim v As Vector2
-			v.X = GetPosition().X
-			v.Y = -GetPosition().Y
-			SetPosition(v)
+			SetPosition(New Vector3(GetPosition.X, -GetPosition.Y, GetPosition.Z))
 		End If
-
 	End Sub
 
 	Public Function GetCircle() As CircleComponent

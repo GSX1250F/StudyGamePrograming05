@@ -1,13 +1,8 @@
-﻿Imports System.Media
-Imports System.Runtime.InteropServices
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify
-Imports OpenTK
+﻿Imports OpenTK
+Imports OpenTK.Input
 
 
 Public Class Game
-    <DllImport("user32.dll", ExactSpelling:=True)>
-    Private Shared Function GetKeyboardState(ByVal keyStates() As Byte) As Boolean
-    End Function
 #If Win64 Then
     Private Declare PtrSafe Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String,     ByVal uReturnLength As Long, ByVal hwndCallback As Long) As Long
 #Else
@@ -121,22 +116,15 @@ Public Class Game
     End Sub
 
     Private Sub ProcessInput()
-        GetKeyboardState(mKeyBoardByte)
-        For i As Integer = 0 To mKeyBoardByte.Count - 1
-            'キー入力状態を、ON=True, OFF=Falseに変換
-            mKeyState(i) = CBool(mKeyBoardByte(i) And &H80)
-        Next
-
-        If mKeyState(Keys.Escape) = True Then
+        Dim keyState As KeyboardState = Keyboard.GetState
+        If (keyState.IsKeyDown(Key.Escape)) Then
             mIsRunning = False
         End If
-
         mUpdatingActors = True
         For Each actor In mActors
-            actor.ProcessInput(mKeyState)
+            actor.ProcessInput(keyState)
         Next
         mUpdatingActors = False
-
     End Sub
     Private Sub UpdateGame()
         'デルタタイムの計算

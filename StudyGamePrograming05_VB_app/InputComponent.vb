@@ -84,8 +84,4 @@ Public Class InputComponent
 	Public Sub SetMaxRotForce(ByVal value As Double)
 		mMaxRotForce = value
 	End Sub
-
-
-
-
 End Class

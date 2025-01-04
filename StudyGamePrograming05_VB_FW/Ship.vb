@@ -1,21 +1,11 @@
 ﻿Imports OpenTK
+Imports OpenTK.Input
 Imports System.Security.Cryptography
 
 Public Class Ship
     Inherits Actor
 
-    Private mLaserCooldown As Double     'レーザーを次に撃てるまでの時間
-    Private mCrash As Boolean        '衝突検知
-    Private mCrashingTime As Double     '衝突演出時間
-    Private mCrashCooldown As Double  '衝突演出後、リセットされるまでスプライトを消す時間
-    Private mCrashPos As Vector2     '衝突時の位置
-    Private mCrashRot As Double      '衝突時の向き
-    Private mCircle As CircleComponent
-    Private mSSC As SomeSpriteComponent
-    Private mIC As InputComponent
-    Private mChunkFiles As New List(Of String)
-
-
+    'public:
     Sub New(ByRef game As Game)
         MyBase.New(game)
         mSSC = New SomeSpriteComponent(Me, 30)
@@ -35,10 +25,10 @@ Public Class Ship
         mIC.SetMoveResist(30.0)
         mIC.SetRotResist(15.0)
         mIC.SetMass(1.0)
-        mIC.SetForwardKey(Keys.Up)
-        mIC.SetBackwardKey(Keys.Down)
-        mIC.SetClockwiseKey(Keys.Right)
-        mIC.SetCounterClockwiseKey(Keys.Left)
+        mIC.SetForwardKey(Key.Up)
+        mIC.SetBackwardKey(Key.Down)
+        mIC.SetClockwiseKey(Key.Right)
+        mIC.SetCounterClockwiseKey(Key.Left)
 
         mCircle = New CircleComponent(Me, 10)
 
@@ -53,7 +43,36 @@ Public Class Ship
 
         Init()
     End Sub
+    Public Overrides Sub ActorInput(ByVal keyState As KeyboardState)
+        If mCrash = False Then
+            If keyState.IsKeyDown(mIC.GetCounterClockwiseKey()) = True Then
+                mSSC.SelectTexture(mSSC.TextureFiles(1))
+                GetGame().GetSoundPlayer().SetChunkControl(mChunkFiles(0), "play")
+            ElseIf keyState.IsKeyDown(mIC.GetClockwiseKey()) = True Then
+                mSSC.SelectTexture(mSSC.TextureFiles(2))
+                GetGame().GetSoundPlayer().SetChunkControl(mChunkFiles(0), "play")
+            ElseIf keyState.IsKeyDown(mIC.GetForwardKey()) = True Then
+                mSSC.SelectTexture(mSSC.TextureFiles(3))
+                GetGame().GetSoundPlayer().SetChunkControl(mChunkFiles(0), "play")
+            ElseIf keyState.IsKeyDown(mIC.GetBackwardKey()) = True Then
+                mSSC.SelectTexture(mSSC.TextureFiles(4))
+                GetGame().GetSoundPlayer().SetChunkControl(mChunkFiles(0), "play")
+            Else
+                mSSC.SelectTexture(mSSC.TextureFiles(0))
+            End If
 
+            If (keyState.IsKeyDown(Keys.Space) = True) And (mLaserCooldown <= 0.0) Then
+                ' レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
+                Dim laser As New Laser(GetGame())
+                laser.SetPosition(GetPosition() + GetRadius() * GetForward())
+                laser.SetRotation(GetRotation())
+                laser.Shot()
+                ' レーザー冷却期間リセット
+                mLaserCooldown = 0.7
+                GetGame().GetSoundPlayer().SetChunkControl(mChunkFiles(1), "replay")
+            End If
+        End If
+    End Sub
     Public Overrides Sub UpdateActor(ByVal deltaTime As Double)
         mLaserCooldown -= deltaTime
         mCrashCooldown -= deltaTime
@@ -64,19 +83,13 @@ Public Class Ship
             If (GetPosition().X < GetGame().mWindowWidth * (-0.5) - GetRadius() Or
                 GetPosition().X > GetGame().mWindowWidth * 0.5 + GetRadius()) _
                 Then
-                Dim v As Vector2
-                v.X = -GetPosition().X
-                v.Y = GetPosition().Y
-                SetPosition(v)
+                SetPosition(New Vector3(-GetPosition().X, GetPosition().Y, GetPosition().Z))
             End If
 
             If (GetPosition().Y < GetGame().mWindowHeight * (-0.5) - GetRadius() Or
                 GetPosition().Y > GetGame().mWindowHeight * 0.5 + GetRadius()) _
                 Then
-                Dim v As Vector2
-                v.X = GetPosition().X
-                v.Y = -GetPosition().Y
-                SetPosition(v)
+                SetPosition(New Vector3(GetPosition().X, -GetPosition().Y, GetPosition().Z))
             End If
 
             '小惑星と衝突したかを判定
@@ -95,7 +108,8 @@ Public Class Ship
             If mCrashingTime > 0.0 Then
                 '衝突時の演出。
                 SetPosition(mCrashPos)       'MoveComponentが更新されても衝突したときの位置に置きなおし
-                mCrashRot -= 3.0 * 2.0 * Math.PI * deltaTime
+                Dim inc = Quaternion.FromAxisAngle(Vector3.UnitZ, -3.0 * 2.0 * Math.PI * deltaTime)
+                mCrashRot = Quaternion.Multiply(mCrashRot, inc)
                 SetRotation(mCrashRot)       'MoveComponentが更新されても衝突してからの回転角度に置きなおし
                 SetScale(GetScale() * 0.98)
             Else
@@ -110,59 +124,25 @@ Public Class Ship
             End If
         End If
     End Sub
-
-    Public Overrides Sub ActorInput(ByVal keyState As Boolean())
-        If mCrash = False Then
-            If keyState(mIC.GetCounterClockwiseKey()) = True Then
-                mSSC.SelectTexture(mSSC.TextureFiles(1))
-                GetGame().GetSoundPlayer().SetChunkControl(mChunkFiles(0), "play")
-            ElseIf keyState(mIC.GetClockwiseKey()) = True Then
-                mSSC.SelectTexture(mSSC.TextureFiles(2))
-                GetGame().GetSoundPlayer().SetChunkControl(mChunkFiles(0), "play")
-            ElseIf keyState(mIC.GetForwardKey()) = True Then
-                mSSC.SelectTexture(mSSC.TextureFiles(3))
-                GetGame().GetSoundPlayer().SetChunkControl(mChunkFiles(0), "play")
-            ElseIf keyState(mIC.GetBackwardKey()) = True Then
-                mSSC.SelectTexture(mSSC.TextureFiles(4))
-                GetGame().GetSoundPlayer().SetChunkControl(mChunkFiles(0), "play")
-            Else
-                mSSC.SelectTexture(mSSC.TextureFiles(0))
-            End If
-
-            If (keyState(Keys.Space) = True) And (mLaserCooldown <= 0.0) Then
-                ' レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
-                Dim laser As New Laser(GetGame())
-                laser.SetPosition(GetPosition() + GetRadius() * GetForward())
-                laser.SetRotation(GetRotation())
-                laser.Shot()
-                ' レーザー冷却期間リセット
-                mLaserCooldown = 0.7
-                GetGame().GetSoundPlayer().SetChunkControl(mChunkFiles(1), "replay")
-            End If
-        End If
-    End Sub
-
     Public Sub Init()
-
         SetScale(0.8)
-        Dim v As Vector2
-        v.X = 0.0
-        v.Y = 0.0
-        SetPosition(v)
+        SetPosition(Vector3.Zero)
         Dim rng As RandomNumberGenerator = RandomNumberGenerator.Create()
         Dim b(0) As Byte
         rng.GetBytes(b)
-        SetRotation(b(0) / 255 * Math.PI * 2.0)     'ランダムな向き
-        rng.Dispose()
-        'SetRotation(0.0)
-        mIC.SetVelocity(Vector2.Zero)
-        mIC.SetRotSpeed(0.0)
-        SetState(State.EActive)
-        mSSC.SetVisible(True)
-
-        mLaserCooldown = 0.0
-        mCrashCooldown = 0.0
-        mCrashingTime = 0.0
-        mCrash = False
+        SetRotation(Quaternion.FromAxisAngle(-1.0 * Vector3.UnitZ, b(0) / 255 * Math.PI * 2.0))        'SetRotation(0.0)
+        mIC.SetVelocity(Vector3.Zero)
+        mIC.SetRotSpeed(Vector3.Zero)
     End Sub
+    'private:
+    Private mLaserCooldown As Double     'レーザーを次に撃てるまでの時間
+    Private mCrash As Boolean        '衝突検知
+    Private mCrashingTime As Double     '衝突演出時間
+    Private mCrashCooldown As Double  '衝突演出後、リセットされるまでスプライトを消す時間
+    Private mCrashPos As Vector3     '衝突時の位置
+    Private mCrashRot As Quaternion      '衝突時の向き
+    Private mCircle As CircleComponent
+    Private mSSC As SomeSpriteComponent
+    Private mIC As InputComponent
+    Private mChunkFiles As New List(Of String)
 End Class

@@ -1,27 +1,21 @@
 ﻿Imports OpenTK
-
+Imports OpenTK.Input
 
 Public Class Actor
     Implements IDisposable      '明示的にクラスを開放するために必要
 
+    'public
     Public Enum State
         EActive     '稼働中
         EPaused     '休止中
         EDead       '削除対象
     End Enum
-    Private mState As State              ' アクターの状態
-    Private mPosition As Vector2        '位置
-    Private mScale As Double            '拡大率
-    Private mRotation As Double         '回転
-    Private mRadius As Double           '半径（拡大率は無視）
-    Private mComponents As New List(Of Component)   '各コンポーネントのリスト
-    Private mGame As Game   'Gameクラスのメンバにアクセスするための変数
 
     Sub New(ByRef game As Game)
         mState = State.EActive
-        mPosition = Vector2.Zero
+        mPosition = Vector3.Zero
         mScale = 1.0
-        mRotation = 0.0
+        mRotation = Quaternion.Identity
         mRadius = 0.0
         mRecomputeWorldTransform = True
         mGame = game
@@ -49,25 +43,7 @@ Public Class Actor
         MyBase.Finalize()
         Dispose(False)
     End Sub
-
-    'ゲームから呼び出される更新関数(オーバーライド不可)
-    Public Sub Update(ByVal deltaTime As Double)
-        If mState = State.EActive Or mState = State.EPaused Then
-            ComputeWorldTransform()
-            For Each comp In mComponents
-                comp.Update(deltaTime)
-            Next
-            UpdateActor(deltaTime)
-            ComputeWorldTransform()
-        End If
-    End Sub
-
-    'アクター独自の更新処理(オーバーライド可能)
-    Public Overridable Sub UpdateActor(ByVal deltaTime As Double)
-    End Sub
-
-    'ゲームから呼び出されるProcess Input(オーバーライド不可)
-    Public Sub ProcessInput(ByVal keyState As Boolean())
+    Public Sub ProcessInput(ByVal keyState As KeyboardState)
         If mState = State.EActive Then
             For Each comp In mComponents
                 comp.ProcessInput(keyState)
@@ -75,55 +51,23 @@ Public Class Actor
         End If
         ActorInput(keyState)
     End Sub
-
-    'アクター独自の入力処理(オーバーライド可能)
-    Public Overridable Sub ActorInput(ByVal keyState As Boolean())
+    Public Overridable Sub ActorInput(ByVal keyState As KeyboardState)
     End Sub
-
-    'Getters/setters
-    Public Function GetPosition() As Vector2
-        Return mPosition
-    End Function
-    Public Sub SetPosition(ByRef pos As Vector2)
-        mPosition = pos
-        mRecomputeWorldTransform = True
+    Public Sub Update(ByVal deltaTime As Double)
+        If mState = State.EActive Or mState = State.EPaused Then
+            ComputeWorldTransform()
+            UpdateComponents(deltaTime)
+            UpdateActor(deltaTime)
+            ComputeWorldTransform()
+        End If
     End Sub
-    Public Function GetScale() As Double
-        Return mScale
-    End Function
-    Public Sub SetScale(ByRef scale As Double)
-        mScale = scale
-        mRecomputeWorldTransform = True
+    Public Sub UpdateComponents(ByVal deltaTime As Double)
+        For Each comp In mComponents
+            comp.Update(deltaTime)
+        Next
     End Sub
-    Public Function GetRotation() As Double
-        Return mRotation
-    End Function
-    Public Sub SetRotation(ByRef rotation As Double)
-        mRotation = rotation
-        mRecomputeWorldTransform = True
+    Public Overridable Sub UpdateActor(ByVal deltaTime As Double)
     End Sub
-    Public Function GetRadius() As Double
-        Return mRadius * mScale
-    End Function
-    Public Sub SetRadius(ByRef radius As Double)
-        mRadius = radius
-        mRecomputeWorldTransform = True
-    End Sub
-    Public Function GetForward() As Vector2
-        Dim v = New Vector2(Math.Cos(mRotation), Math.Sin(mRotation))       '向きの単位ベクトル
-        Return v
-    End Function
-    Public Function GetState() As State
-        Return mState
-    End Function
-    Public Sub SetState(ByVal state As State)
-        mState = state
-    End Sub
-    Public Function GetGame() As Game
-        Return mGame
-    End Function
-
-    ' Add/remove components
     Public Sub AddComponent(ByRef component As Component)
         'ソート済みの配列で挿入点を見つける
         Dim myOrder As Integer = component.GetUpdateOrder()
@@ -145,7 +89,9 @@ Public Class Actor
             mComponents.RemoveAt(iter)
         End If
     End Sub
-
+    Public Function GetGame() As Game
+        Return mGame
+    End Function
     Public Function GetWorldTransform() As Matrix4
         Return mWorldTransform
     End Function
@@ -154,10 +100,64 @@ Public Class Actor
             mRecomputeWorldTransform = False
             'スケーリング→回転→平行移動
             mWorldTransform = Matrix4.CreateScale(mScale)
-            mWorldTransform *= Matrix4.CreateRotationZ(mRotation)
-            mWorldTransform *= Matrix4.CreateTranslation(mPosition.X, mPosition.Y, 0.0)
+            mWorldTransform *= Matrix4.CreateFromQuaternion(mRotation)
+            mWorldTransform *= Matrix4.CreateTranslation(mPosition)
         End If
     End Sub
-    Private mRecomputeWorldTransform As Boolean
+    Public Function GetState() As State
+        Return mState
+    End Function
+    Public Sub SetState(ByVal state As State)
+        mState = state
+    End Sub
+    Public Function GetRadius() As Double
+        Return mRadius * mScale
+    End Function
+    Public Sub SetRadius(ByRef radius As Double)
+        mRadius = radius
+        mRecomputeWorldTransform = True
+    End Sub
+    Public Function GetScale() As Double
+        Return mScale
+    End Function
+    Public Sub SetScale(ByRef scale As Double)
+        mScale = scale
+        mRecomputeWorldTransform = True
+    End Sub
+    Public Function GetPosition() As Vector3
+        Return mPosition
+    End Function
+    Public Sub SetPosition(ByRef pos As Vector3)
+        mPosition = pos
+        mRecomputeWorldTransform = True
+    End Sub
+
+    Public Function GetRotation() As Quaternion
+        Return mRotation
+    End Function
+    Public Sub SetRotation(ByRef rotation As Quaternion)
+        mRotation = rotation
+        mRecomputeWorldTransform = True
+    End Sub
+    Public Function GetForward() As Vector3
+        Return Vector3.Transform(Vector3.UnitX, mRotation)
+    End Function
+    Public Function GetRightward() As Vector3
+        Return Vector3.Transform(Vector3.UnitY, mRotation)
+    End Function
+    Public Function GetUpward() As Vector3
+        Return Vector3.Transform(Vector3.UnitZ, mRotation)
+    End Function
+
+    'private
+    Private mGame As Game
+    Private mComponents As New List(Of Component)
     Private mWorldTransform As Matrix4
+    Private mRecomputeWorldTransform As Boolean
+
+    Private mState As State             ' アクターの状態
+    Private mScale As Double            '拡大率
+    Private mRadius As Double           '半径（拡大率は無視）
+    Private mPosition As Vector3        '位置
+    Private mRotation As Quaternion     '回転
 End Class

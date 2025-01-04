@@ -45,8 +45,8 @@ Public Class InputComponent
 		'SetRotSpeed(rot)
 
 		'ニュートン力学を使う場合
-		SetMoveForce(fwd * mOwner.GetForward())
-		SetRotForce(rot)
+		SetForce(fwd * mOwner.GetForward())
+		SetRotForce(rot * Vector3.UnitZ)
 	End Sub
 	Public Function GetForwardKey() As Integer
 		Return mFwdKey

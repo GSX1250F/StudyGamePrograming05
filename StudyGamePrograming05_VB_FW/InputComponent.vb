@@ -10,10 +10,10 @@ Public Class InputComponent
     Private mMaxRotForce As Double
     Private mMaxForwardVelocity As Double
     Private mMaxRotSpeed As Double
-    Private mFwdKey As Integer
-    Private mBwdKey As Integer
-    Private mCwsKey As Integer
-    Private mCCwsKey As Integer
+    Private mFwdKey As Key
+    Private mBwdKey As Key
+    Private mCwsKey As Key
+    Private mCCwsKey As Key
     Sub New(ByRef owner As Actor, ByVal updateOrder As Integer)
         MyBase.New(owner, updateOrder)
         mMaxForwardVelocity = 0.0

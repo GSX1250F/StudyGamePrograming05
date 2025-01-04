@@ -61,7 +61,7 @@ Public Class Ship
                 mSSC.SelectTexture(mSSC.TextureFiles(0))
             End If
 
-            If (keyState.IsKeyDown(Keys.Space) = True) And (mLaserCooldown <= 0.0) Then
+            If (keyState.IsKeyDown(Key.Space) = True) And (mLaserCooldown <= 0.0) Then
                 ' レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
                 Dim laser As New Laser(GetGame())
                 laser.SetPosition(GetPosition() + GetRadius() * GetForward())
